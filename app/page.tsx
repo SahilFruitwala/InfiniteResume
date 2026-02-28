@@ -190,14 +190,14 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <div className="flex h-screen w-full bg-slate-100 justify-center items-center">
+      <div className="flex h-screen w-full bg-slate-100 dark:bg-slate-950 justify-center items-center text-slate-800 dark:text-slate-200">
         Loading resume builder...
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen w-full bg-slate-100 overflow-hidden font-sans print:h-auto print:overflow-visible print:block">
+    <div className="flex h-screen w-full bg-slate-100 dark:bg-slate-950 overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
       <AnimatePresence initial={false}>
         {leftSidebarOpen && (
           <motion.div
@@ -205,7 +205,7 @@ export default function Home() {
             animate={{ width: "auto", opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50"
+            className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50"
           >
             <LeftSidebar
               data={resumeData}

@@ -24,6 +24,9 @@ import {
   ArrowDown,
   Undo2,
   Redo2,
+  Moon,
+  Sun,
+  Laptop,
 } from "lucide-react";
 import { RichTextEditor } from "./RichTextEditor";
 import { Button } from "@/components/ui/button";
@@ -69,12 +72,12 @@ const AccordionItem = ({
   return (
     <ShadcnAccordionItem
       value={itemValue}
-      className="border-b border-slate-200 last:border-0"
+      className="border-b border-slate-200 dark:border-slate-800 last:border-0"
     >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white hover:bg-slate-50 transition-colors text-left font-semibold text-slate-800 hover:no-underline data-[state=open]:bg-slate-50">
+      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-slate-800">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="p-6 bg-slate-50/50 px-6">
+      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-slate-900/50 px-6">
         {children}
       </AccordionContent>
     </ShadcnAccordionItem>
@@ -99,22 +102,22 @@ const ExperienceSection = React.memo(
           {items.map((exp, index) => (
             <div
               key={exp.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 shadow-sm"
             >
               <Button
                 onClick={() => onRemove(exp.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Experience {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Company
                   </Label>
                   <Input
@@ -123,12 +126,12 @@ const ExperienceSection = React.memo(
                     onChange={(e) =>
                       onUpdate(exp.id, "company", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Acme Corp"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Position
                   </Label>
                   <Input
@@ -137,13 +140,13 @@ const ExperienceSection = React.memo(
                     onChange={(e) =>
                       onUpdate(exp.id, "position", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Software Engineer"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       Start Date
                     </Label>
                     <Input
@@ -152,12 +155,12 @@ const ExperienceSection = React.memo(
                       onChange={(e) =>
                         onUpdate(exp.id, "startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Jan 2020"
                     />
                   </div>
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       End Date
                     </Label>
                     <Input
@@ -166,13 +169,13 @@ const ExperienceSection = React.memo(
                       onChange={(e) =>
                         onUpdate(exp.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Present"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Description
                   </Label>
                   <RichTextEditor
@@ -187,7 +190,7 @@ const ExperienceSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Experience
           </Button>
@@ -215,22 +218,22 @@ const EducationSection = React.memo(
           {items.map((edu, index) => (
             <div
               key={edu.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(edu.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Education {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Institution
                   </Label>
                   <Input
@@ -239,25 +242,25 @@ const EducationSection = React.memo(
                     onChange={(e) =>
                       onUpdate(edu.id, "institution", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="University of Technology"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Degree
                   </Label>
                   <Input
                     type="text"
                     value={edu.degree}
                     onChange={(e) => onUpdate(edu.id, "degree", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="B.S. Computer Science"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       Start Date
                     </Label>
                     <Input
@@ -266,12 +269,12 @@ const EducationSection = React.memo(
                       onChange={(e) =>
                         onUpdate(edu.id, "startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Aug 2016"
                     />
                   </div>
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       End Date
                     </Label>
                     <Input
@@ -280,7 +283,7 @@ const EducationSection = React.memo(
                       onChange={(e) =>
                         onUpdate(edu.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="May 2020"
                     />
                   </div>
@@ -291,7 +294,7 @@ const EducationSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Education
           </Button>
@@ -319,46 +322,46 @@ const ProjectSection = React.memo(
           {items.map((proj, index) => (
             <div
               key={proj.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(proj.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Project {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Project Name
                   </Label>
                   <Input
                     type="text"
                     value={proj.name}
                     onChange={(e) => onUpdate(proj.id, "name", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="E-commerce Platform"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Link
                   </Label>
                   <Input
                     type="text"
                     value={proj.link}
                     onChange={(e) => onUpdate(proj.id, "link", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="github.com/johndoe/project"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Description
                   </Label>
                   <RichTextEditor
@@ -373,7 +376,7 @@ const ProjectSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Project
           </Button>
@@ -401,41 +404,41 @@ const SocialLinkSection = React.memo(
           {items.map((link, index) => (
             <div
               key={link.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(link.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Link {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Platform / Title
                   </Label>
                   <Input
                     type="text"
                     value={link.name}
                     onChange={(e) => onUpdate(link.id, "name", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="LinkedIn, GitHub, Portfolio…"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     URL
                   </Label>
                   <Input
                     type="text"
                     value={link.url}
                     onChange={(e) => onUpdate(link.id, "url", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="https://…"
                   />
                 </div>
@@ -445,7 +448,7 @@ const SocialLinkSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Link
           </Button>
@@ -473,34 +476,34 @@ const LanguageSection = React.memo(
           {items.map((lang, index) => (
             <div
               key={lang.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(lang.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Language {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Language
                   </Label>
                   <Input
                     type="text"
                     value={lang.name}
                     onChange={(e) => onUpdate(lang.id, "name", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="English"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Proficiency
                   </Label>
                   <Input
@@ -509,7 +512,7 @@ const LanguageSection = React.memo(
                     onChange={(e) =>
                       onUpdate(lang.id, "proficiency", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Native, Fluent, Beginner…"
                   />
                 </div>
@@ -519,7 +522,7 @@ const LanguageSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Language
           </Button>
@@ -547,22 +550,22 @@ const VolunteerSection = React.memo(
           {items.map((vol, index) => (
             <div
               key={vol.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(vol.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Volunteer {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Organization
                   </Label>
                   <Input
@@ -571,12 +574,12 @@ const VolunteerSection = React.memo(
                     onChange={(e) =>
                       onUpdate(vol.id, "organization", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Red Cross"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Position
                   </Label>
                   <Input
@@ -585,13 +588,13 @@ const VolunteerSection = React.memo(
                     onChange={(e) =>
                       onUpdate(vol.id, "position", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Volunteer Coordinator"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       Start Date
                     </Label>
                     <Input
@@ -600,12 +603,12 @@ const VolunteerSection = React.memo(
                       onChange={(e) =>
                         onUpdate(vol.id, "startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Jan 2018"
                     />
                   </div>
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       End Date
                     </Label>
                     <Input
@@ -614,13 +617,13 @@ const VolunteerSection = React.memo(
                       onChange={(e) =>
                         onUpdate(vol.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Present"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Description
                   </Label>
                   <RichTextEditor
@@ -635,7 +638,7 @@ const VolunteerSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Volunteer Work
           </Button>
@@ -663,22 +666,22 @@ const InterestSection = React.memo(
           {items.map((interest, index) => (
             <div
               key={interest.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(interest.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Interest {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Interest Name
                   </Label>
                   <Input
@@ -687,7 +690,7 @@ const InterestSection = React.memo(
                     onChange={(e) =>
                       onUpdate(interest.id, "name", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Photography, Hiking…"
                   />
                 </div>
@@ -697,7 +700,7 @@ const InterestSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Interest
           </Button>
@@ -725,22 +728,22 @@ const SkillCategorySection = React.memo(
           {items.map((category, index) => (
             <div
               key={category.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(category.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Category {index + 1}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Category Name
                   </Label>
                   <Input
@@ -749,12 +752,12 @@ const SkillCategorySection = React.memo(
                     onChange={(e) =>
                       onUpdate(category.id, "name", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Frontend, Backend, Tools…"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Skills
                   </Label>
                   <RichTextEditor
@@ -769,7 +772,7 @@ const SkillCategorySection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Skill Category
           </Button>
@@ -812,49 +815,48 @@ const CustomSectionEditor = React.memo(
       <div className="space-y-6">
         <div className="flex items-center gap-4 mb-4">
           <div className="flex-1">
-            <Label className="block text-xs font-medium text-slate-700 mb-1">
+            <Label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">
               Section Title
             </Label>
             <Input
-              type="text"
               value={section.title}
               onChange={(e) => onUpdateTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
-              placeholder="e.g. Publications, Research, Military Service"
+              className="text-lg font-bold bg-transparent border-none px-0 focus-visible:ring-0 dark:text-slate-100"
+              placeholder="e.g., Publications, Projects, etc."
             />
           </div>
           <Button
             onClick={onRemoveSection}
             variant="ghost"
             size="icon"
-            className="mt-5 h-10 w-10 text-slate-400 hover:text-red-500 hover:bg-slate-100"
-            title="Remove entire section"
+            className="text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            title="Remove Section"
           >
             <Trash2 className="w-5 h-5" />
           </Button>
         </div>
 
-        <div className="space-y-6 pl-4 border-l-2 border-slate-200">
+        <div className="space-y-6 pl-4 border-l-2 border-slate-200 dark:border-slate-700">
           {section.items.map((item, index) => (
             <div
               key={item.id}
-              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemoveItem(item.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                 Item {index + 1}
               </h4>
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       Title
                     </Label>
                     <Input
@@ -868,7 +870,7 @@ const CustomSectionEditor = React.memo(
                     />
                   </div>
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       Subtitle / Org
                     </Label>
                     <Input
@@ -884,7 +886,7 @@ const CustomSectionEditor = React.memo(
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       Start Date
                     </Label>
                     <Input
@@ -898,7 +900,7 @@ const CustomSectionEditor = React.memo(
                     />
                   </div>
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                       End Date
                     </Label>
                     <Input
@@ -913,7 +915,7 @@ const CustomSectionEditor = React.memo(
                   </div>
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Location
                   </Label>
                   <Input
@@ -927,7 +929,7 @@ const CustomSectionEditor = React.memo(
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Description
                   </Label>
                   <RichTextEditor
@@ -944,7 +946,7 @@ const CustomSectionEditor = React.memo(
           <Button
             onClick={onAddItem}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Item
           </Button>
@@ -1309,8 +1311,8 @@ export const LeftSidebar = ({
   );
 
   return (
-    <div className="w-[400px] bg-white border-r border-slate-200 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0">
-      <div className="p-6 border-b border-slate-200 bg-slate-800 text-white flex justify-between items-start shrink-0">
+    <div className="w-80 md:w-96 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-800 dark:bg-slate-950 text-white flex justify-between items-center shrink-0">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>
           <p className="text-sm text-slate-400 mt-1">
@@ -1346,7 +1348,7 @@ export const LeftSidebar = ({
           <AccordionItem title="Personal Information" defaultOpen>
             <div className="space-y-4">
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-1">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                   Profile Picture (Optional)
                 </Label>
                 <div className="flex items-center gap-4">
@@ -1376,7 +1378,7 @@ export const LeftSidebar = ({
                         reader.readAsDataURL(file);
                       }
                     }}
-                    className="flex-1 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-50 file:text-slate-700 hover:file:bg-slate-100 transition-all cursor-pointer"
+                    className="flex-1 text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-50 dark:file:bg-slate-800 file:text-slate-700 dark:file:text-slate-300 hover:file:bg-slate-100 dark:hover:file:bg-slate-700 transition-all cursor-pointer"
                   />
                   {data.personalInfo.profilePicture && (
                     <Button
@@ -1391,7 +1393,7 @@ export const LeftSidebar = ({
                 </div>
               </div>
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-1">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                   Full Name
                 </Label>
                 <Input
@@ -1402,13 +1404,13 @@ export const LeftSidebar = ({
                   onChange={(e) =>
                     updatePersonalInfo("fullName", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   placeholder="John Doe"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Email
                   </Label>
                   <Input
@@ -1419,12 +1421,12 @@ export const LeftSidebar = ({
                     onChange={(e) =>
                       updatePersonalInfo("email", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="john@example.com"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Phone
                   </Label>
                   <Input
@@ -1435,13 +1437,13 @@ export const LeftSidebar = ({
                     onChange={(e) =>
                       updatePersonalInfo("phone", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="+1 234 567 890"
                   />
                 </div>
               </div>
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-1">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                   Location
                 </Label>
                 <Input
@@ -1452,12 +1454,12 @@ export const LeftSidebar = ({
                   onChange={(e) =>
                     updatePersonalInfo("location", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   placeholder="New York, NY"
                 />
               </div>
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-1">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                   Website (Optional)
                 </Label>
                 <Input
@@ -1468,12 +1470,12 @@ export const LeftSidebar = ({
                   onChange={(e) =>
                     updatePersonalInfo("website", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   placeholder="johndoe.com"
                 />
               </div>
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-1">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                   Professional Summary
                 </Label>
                 <RichTextEditor
@@ -1526,7 +1528,7 @@ export const LeftSidebar = ({
               {(data.awards || []).map((award, index) => (
                 <div
                   key={award.id}
-                  className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+                  className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 shadow-sm"
                 >
                   <Button
                     onClick={() => removeAward(award.id)}
@@ -1536,12 +1538,12 @@ export const LeftSidebar = ({
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
-                  <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+                  <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
                     Award {index + 1}
                   </h4>
                   <div className="space-y-4">
                     <div>
-                      <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                         Award Name
                       </Label>
                       <Input
@@ -1555,7 +1557,7 @@ export const LeftSidebar = ({
                       />
                     </div>
                     <div>
-                      <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                         Issuer
                       </Label>
                       <Input
@@ -1569,7 +1571,7 @@ export const LeftSidebar = ({
                       />
                     </div>
                     <div>
-                      <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                         Date
                       </Label>
                       <Input
@@ -1583,7 +1585,7 @@ export const LeftSidebar = ({
                       />
                     </div>
                     <div>
-                      <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                         Description
                       </Label>
                       <RichTextEditor
@@ -1600,7 +1602,7 @@ export const LeftSidebar = ({
               <Button
                 onClick={addAward}
                 variant="outline"
-                className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+                className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
               >
                 <Plus className="w-4 h-4" /> Add Award
               </Button>
@@ -1755,7 +1757,7 @@ export const LeftSidebar = ({
                 }));
               }}
               variant="outline"
-              className="w-full border-2 border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2 font-semibold"
+              className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 font-semibold transition-colors"
             >
               <Plus className="w-4 h-4" /> Add Custom Section
             </Button>

@@ -8,9 +8,21 @@
   body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    background-color: white !important;
+    color: black !important;
   }
   @page {
     margin: 0;
+  }
+  /* Enforce light mode for resume content during print */
+  .resume-content {
+    background-color: white !important;
+    color: black !important;
+  }
+  /* Ensure all templates reset to light mode on print */
+  [data-resume-theme="dark"] {
+    background-color: white !important;
+    color: black !important;
   }
 }
 
@@ -136,4 +148,77 @@ a {
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Resume Dark Mode Styles */
+  [data-resume-theme="dark"] {
+    background-color: #0f172a !important; /* slate-950 */
+    color: #f1f5f9 !important; /* slate-100 */
+  }
+
+  [data-resume-theme="dark"] .bg-white {
+    background-color: #0f172a !important;
+  }
+
+  [data-resume-theme="dark"] .bg-slate-100,
+  [data-resume-theme="dark"] .bg-slate-50,
+  [data-resume-theme="dark"] .bg-gray-100,
+  [data-resume-theme="dark"] .bg-gray-50 {
+    background-color: #1e293b !important; /* slate-800 */
+  }
+
+  [data-resume-theme="dark"] .text-slate-950,
+  [data-resume-theme="dark"] .text-slate-900,
+  [data-resume-theme="dark"] .text-slate-800,
+  [data-resume-theme="dark"] .text-slate-700,
+  [data-resume-theme="dark"] .text-slate-600,
+  [data-resume-theme="dark"] .text-slate-500,
+  [data-resume-theme="dark"] .text-gray-950,
+  [data-resume-theme="dark"] .text-gray-900,
+  [data-resume-theme="dark"] .text-gray-800,
+  [data-resume-theme="dark"] .text-gray-700,
+  [data-resume-theme="dark"] .text-gray-600,
+  [data-resume-theme="dark"] .text-gray-500,
+  [data-resume-theme="dark"] .text-blue-900,
+  [data-resume-theme="dark"] .text-blue-800,
+  [data-resume-theme="dark"] .text-blue-700,
+  [data-resume-theme="dark"] .text-blue-600,
+  [data-resume-theme="dark"] .text-black {
+    color: #f1f5f9 !important; /* slate-100 */
+  }
+
+
+  [data-resume-theme="dark"] .text-slate-400,
+  [data-resume-theme="dark"] .text-gray-400,
+  [data-resume-theme="dark"] .text-slate-300,
+  [data-resume-theme="dark"] .text-gray-300 {
+    color: #94a3b8 !important; /* slate-400 */
+  }
+
+  [data-resume-theme="dark"] .border-slate-300,
+  [data-resume-theme="dark"] .border-slate-200,
+  [data-resume-theme="dark"] .border-slate-100,
+  [data-resume-theme="dark"] .border-gray-300,
+  [data-resume-theme="dark"] .border-gray-200,
+  [data-resume-theme="dark"] .border-gray-100,
+  [data-resume-theme="dark"] .border-white,
+  [data-resume-theme="dark"] .border-black {
+    border-color: #334155 !important; /* slate-700 */
+  }
+
+  [data-resume-theme="dark"] .bg-slate-700\/50 {
+    background-color: rgba(51, 65, 85, 0.5) !important;
+  }
+
+  /* Overwrite inline styles for headings if they are using dark defaults in dark mode */
+  [data-resume-theme="dark"] h1[style*="color: rgb(15, 23, 42)"],
+  [data-resume-theme="dark"] h1[style*="color: #0f172a"],
+  [data-resume-theme="dark"] h1[style*="color: rgb(30, 58, 138)"],
+  [data-resume-theme="dark"] h1[style*="color: #1e3a8a"],
+  [data-resume-theme="dark"] h2[style*="color: rgb(15, 23, 42)"],
+  [data-resume-theme="dark"] h2[style*="color: #0f172a"],
+  [data-resume-theme="dark"] h2[style*="color: rgb(30, 58, 138)"],
+  [data-resume-theme="dark"] h2[style*="color: #1e3a8a"] {
+    color: #60a5fa !important;
+  }
 }
+

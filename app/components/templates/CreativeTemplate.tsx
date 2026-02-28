@@ -10,8 +10,21 @@ export const CreativeTemplate = memo(({ data }: { data: ResumeData }) => {
   const itemGap = spacing?.itemGap ?? 20;
   const pageMarginTop = spacing?.pageMarginTop ?? 40;
   const pageMarginBottom = spacing?.pageMarginBottom ?? 40;
-  const accentColor =
-    theme?.creative?.accentColor ?? theme?.accentColor ?? "#ec4899"; // pink-500
+  const isDark = data.theme?.previewTheme === "dark";
+  const defaultAccentColor = isDark ? "#f472b6" : "#ec4899"; // pink-400 : pink-500
+
+  // If in dark mode, we check if the provided accent color is too dark.
+  // We check for common dark defaults from other templates too.
+  let accentColor =
+    theme?.creative?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
+  const darkColors = ["#ec4899", "#1e3a8a", "#0f172a", "#111827", "#000000"];
+  if (
+    isDark &&
+    (darkColors.includes(accentColor.toLowerCase()) ||
+      (!theme?.creative?.accentColor && !theme?.accentColor))
+  ) {
+    accentColor = defaultAccentColor;
+  }
 
   const renderSection = (sectionId: string) => {
     switch (sectionId) {
@@ -517,7 +530,7 @@ export const CreativeTemplate = memo(({ data }: { data: ResumeData }) => {
 
   return (
     <div
-      className="bg-white max-w-4xl mx-auto w-full min-h-[1056px] overflow-hidden relative shadow-md"
+      className="bg-white text-gray-900 dark:bg-slate-950 dark:text-slate-100 max-w-4xl mx-auto w-full min-h-[1056px] overflow-hidden relative shadow-md"
       style={
         {
           fontFamily: typography?.fontFamily || "var(--font-poppins)",
@@ -569,7 +582,7 @@ export const CreativeTemplate = memo(({ data }: { data: ResumeData }) => {
               {data.personalInfo.fullName || "Your Name"}
             </h1>
 
-            <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mt-4 text-[0.95em] font-medium text-gray-600">
+            <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mt-4 text-[0.95em] font-medium text-gray-600 dark:text-slate-400">
               {data.personalInfo.email && (
                 <div className="flex items-center gap-2">
                   <span

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { ResumeData, TemplateType } from "../types";
 import { MinimalTemplate } from "./templates/MinimalTemplate";
 import { ProfessionalTemplate } from "./templates/ProfessionalTemplate";
@@ -34,6 +35,10 @@ export const Preview = ({
 }: PreviewProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
+  const { theme, resolvedTheme } = useTheme();
+
+  // Use resolvedTheme to handle 'system' preference correctly
+  const isDark = resolvedTheme === "dark";
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -77,9 +82,9 @@ export const Preview = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-slate-100 overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block">
+    <div className="flex-1 flex flex-col h-screen bg-slate-100 dark:bg-slate-950 overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors duration-300">
       {/* Toolbar */}
-      <div className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0 shadow-sm z-10 print:hidden">
+      <div className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shrink-0 shadow-sm z-10 print:hidden transition-colors">
         <div className="flex items-center gap-2">
           <button
             onClick={onToggleLeftSidebar}
@@ -130,8 +135,9 @@ export const Preview = ({
       {/* Preview Area */}
       <div className="flex-1 overflow-y-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
         <div
-          className="bg-white shadow-xl max-w-4xl w-full print:shadow-none print:m-0 print:max-w-none print:w-full relative"
+          className="bg-white shadow-xl max-w-4xl w-full print:shadow-none print:m-0 print:max-w-none print:w-full relative transition-colors duration-300"
           style={{ minHeight: `${PAGE_HEIGHT}px` }}
+          data-resume-theme={isDark ? "dark" : "light"}
         >
           <style
             dangerouslySetInnerHTML={{

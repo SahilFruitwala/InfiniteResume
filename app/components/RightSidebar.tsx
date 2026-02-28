@@ -3,7 +3,17 @@ import { ResumeData, TemplateType } from "../types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown, LayoutTemplate, GripVertical } from "lucide-react";
+import {
+  ArrowUp,
+  ArrowDown,
+  LayoutTemplate,
+  GripVertical,
+  Moon,
+  Sun,
+  Laptop,
+  Palette,
+} from "lucide-react";
+import { useTheme } from "next-themes";
 import {
   DndContext,
   closestCenter,
@@ -57,12 +67,12 @@ const AccordionItem = ({
   return (
     <ShadcnAccordionItem
       value={itemValue}
-      className="border-b border-slate-200 last:border-0"
+      className="border-b border-slate-200 dark:border-slate-800 last:border-0"
     >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white hover:bg-slate-50 transition-colors text-left font-semibold text-slate-800 hover:no-underline data-[state=open]:bg-slate-50">
+      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-slate-800">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="p-6 bg-slate-50/50 px-6">
+      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-slate-900/50 px-6">
         {children}
       </AccordionContent>
     </ShadcnAccordionItem>
@@ -103,26 +113,30 @@ const SortableSectionItem = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex justify-between items-center bg-white border border-slate-200 p-3 rounded-md shadow-sm mb-2 ${
-        isDragging ? "opacity-50 border-slate-400 ring-2 ring-slate-200" : ""
+      className={`flex justify-between items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-md shadow-sm mb-2 ${
+        isDragging
+          ? "opacity-50 border-slate-400 dark:border-slate-500 ring-2 ring-slate-200 dark:ring-slate-700"
+          : ""
       }`}
     >
       <div className="flex items-center gap-2">
         <button
-          className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 p-1"
+          className="cursor-grab active:cursor-grabbing text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 p-1"
           {...attributes}
           {...listeners}
           type="button"
         >
           <GripVertical className="w-4 h-4" />
         </button>
-        <span className="text-sm font-medium text-slate-700">{name}</span>
+        <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+          {name}
+        </span>
       </div>
       <div className="flex gap-1">
         <Button
           variant="ghost"
           size="icon"
-          className="h-7 w-7 bg-slate-50 text-slate-400 hover:text-slate-800"
+          className="h-7 w-7 bg-slate-50 dark:bg-slate-700 text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
           onClick={(e) => {
             e.stopPropagation();
             onMoveUp();
@@ -134,7 +148,7 @@ const SortableSectionItem = ({
         <Button
           variant="ghost"
           size="icon"
-          className="h-7 w-7 bg-slate-50 text-slate-400 hover:text-slate-800"
+          className="h-7 w-7 bg-slate-50 dark:bg-slate-700 text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
           onClick={(e) => {
             e.stopPropagation();
             onMoveDown();
@@ -207,9 +221,11 @@ export const RightSidebar = ({
     }
     return id;
   };
+  const { theme: appTheme, setTheme: setAppTheme } = useTheme();
+
   return (
-    <div className="w-80 bg-white border-l border-slate-200 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0">
-      <div className="p-6 border-b border-slate-200 bg-slate-800 text-white flex justify-between items-start shrink-0">
+    <div className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-800 dark:bg-slate-950 text-white flex justify-between items-center shrink-0">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Design Settings</h2>
           <p className="text-sm text-slate-400 mt-1">
@@ -218,16 +234,59 @@ export const RightSidebar = ({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto pb-10">
+      <div className="flex-1 overflow-y-auto pb-10 custom-scrollbar">
         <Accordion
           type="multiple"
           className="w-full"
-          defaultValue={["template"]}
+          defaultValue={["template", "theme-modes"]}
         >
+          <AccordionItem title="Theme & Appearance" value="theme-modes">
+            <div className="space-y-6">
+              {/* Unified Theme Control */}
+              <div>
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider">
+                  Application Theme
+                </Label>
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    variant={appTheme === "light" ? "secondary" : "outline"}
+                    size="sm"
+                    className={`flex flex-col gap-1 h-auto py-3 ${appTheme === "light" ? "ring-2 ring-slate-800 dark:ring-slate-400" : "bg-white dark:bg-slate-900"}`}
+                    onClick={() => setAppTheme("light")}
+                  >
+                    <Sun className="w-4 h-4" />
+                    <span className="text-[10px]">Light</span>
+                  </Button>
+                  <Button
+                    variant={appTheme === "dark" ? "secondary" : "outline"}
+                    size="sm"
+                    className={`flex flex-col gap-1 h-auto py-3 ${appTheme === "dark" ? "ring-2 ring-slate-800 dark:ring-slate-400" : "bg-white dark:bg-slate-900"}`}
+                    onClick={() => setAppTheme("dark")}
+                  >
+                    <Moon className="w-4 h-4" />
+                    <span className="text-[10px]">Dark</span>
+                  </Button>
+                  <Button
+                    variant={appTheme === "system" ? "secondary" : "outline"}
+                    size="sm"
+                    className={`flex flex-col gap-1 h-auto py-3 ${appTheme === "system" ? "ring-2 ring-slate-800 dark:ring-slate-400" : "bg-white dark:bg-slate-900"}`}
+                    onClick={() => setAppTheme("system")}
+                  >
+                    <Laptop className="w-4 h-4" />
+                    <span className="text-[10px]">System</span>
+                  </Button>
+                </div>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-3 leading-tight">
+                  <Palette className="w-3 h-3 inline mr-1 mb-0.5" />
+                  Controls the entire app interface and resume preview.
+                </p>
+              </div>
+            </div>
+          </AccordionItem>
           <AccordionItem title="Template Selection" value="template">
             <div className="space-y-4">
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-2">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-2">
                   Select Template
                 </Label>
                 <Select
@@ -236,7 +295,7 @@ export const RightSidebar = ({
                     onTemplateChange(value as TemplateType)
                   }
                 >
-                  <SelectTrigger className="w-full bg-white">
+                  <SelectTrigger className="w-full bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
                     <SelectValue placeholder="Select Template" />
                   </SelectTrigger>
                   <SelectContent>
@@ -253,7 +312,7 @@ export const RightSidebar = ({
           <AccordionItem title="Theme & Colors">
             <div className="space-y-4">
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-2">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-2">
                   Global Accent Color
                 </Label>
                 <div className="flex items-center gap-3">
@@ -277,18 +336,18 @@ export const RightSidebar = ({
                         theme: { ...data.theme, accentColor: e.target.value },
                       })
                     }
-                    className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all font-mono"
+                    className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
-                <p className="text-xs text-slate-500 mt-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                   Used for headings, borders, and decorative elements depending
                   on the template.
                 </p>
               </div>
 
               {template === "professional" && (
-                <div className="pt-4 border-t border-slate-200">
-                  <Label className="block text-xs font-medium text-slate-700 mb-2">
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-2">
                     Section Border Color (Professional)
                   </Label>
                   <div className="flex items-center gap-3">
@@ -318,7 +377,7 @@ export const RightSidebar = ({
                           },
                         });
                       }}
-                      className="w-10 h-10 p-1 border border-slate-300 rounded-md cursor-pointer"
+                      className="w-10 h-10 p-1 border border-slate-300 dark:border-slate-700 rounded-md cursor-pointer dark:bg-slate-800"
                     />
                     <Input
                       type="text"
@@ -338,18 +397,18 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all font-mono"
+                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     />
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                     Supports hex with opacity (e.g. #0f172a40).
                   </p>
                 </div>
               )}
 
               {template === "modern" && (
-                <div className="pt-4 border-t border-slate-200">
-                  <Label className="block text-xs font-medium text-slate-700 mb-2">
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-2">
                     Primary Accent Color (Modern)
                   </Label>
                   <div className="flex items-center gap-3">
@@ -368,7 +427,7 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="w-10 h-10 p-1 border border-slate-300 rounded-md cursor-pointer"
+                      className="w-10 h-10 p-1 border border-slate-300 dark:border-slate-700 rounded-md cursor-pointer dark:bg-slate-800"
                     />
                     <Input
                       type="text"
@@ -385,10 +444,10 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all font-mono"
+                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     />
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                     Used for icons, links, and decorative elements in the Modern
                     template.
                   </p>
@@ -396,8 +455,8 @@ export const RightSidebar = ({
               )}
 
               {template === "minimal" && (
-                <div className="pt-4 border-t border-slate-200">
-                  <Label className="block text-xs font-medium text-slate-700 mb-2">
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-2">
                     Accent Color (Minimal)
                   </Label>
                   <div className="flex items-center gap-3">
@@ -416,7 +475,7 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="w-10 h-10 p-1 border border-slate-300 rounded-md cursor-pointer"
+                      className="w-10 h-10 p-1 border border-slate-300 dark:border-slate-700 rounded-md cursor-pointer dark:bg-slate-800"
                     />
                     <Input
                       type="text"
@@ -433,7 +492,7 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all font-mono"
+                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -444,7 +503,7 @@ export const RightSidebar = ({
           <AccordionItem title="Typography">
             <div className="space-y-4">
               <div>
-                <Label className="block text-xs font-medium text-slate-700 mb-1">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                   Font Family
                 </Label>
                 <Select
@@ -456,7 +515,7 @@ export const RightSidebar = ({
                     })
                   }
                 >
-                  <SelectTrigger className="w-full bg-white">
+                  <SelectTrigger className="w-full bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
                     <SelectValue placeholder="Select a font" />
                   </SelectTrigger>
                   <SelectContent>
@@ -496,7 +555,7 @@ export const RightSidebar = ({
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Body (px)
                   </Label>
                   <Input
@@ -513,11 +572,11 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Name (px)
                   </Label>
                   <Input
@@ -534,11 +593,11 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Section (px)
                   </Label>
                   <Input
@@ -556,11 +615,11 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Item Title (px)
                   </Label>
                   <Input
@@ -577,7 +636,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -588,7 +647,7 @@ export const RightSidebar = ({
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Section Gap (px)
                   </Label>
                   <Input
@@ -605,11 +664,11 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Title Gap (px)
                   </Label>
                   <Input
@@ -626,11 +685,11 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Item Gap (px)
                   </Label>
                   <Input
@@ -647,13 +706,13 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Top Margin (px)
                   </Label>
                   <Input
@@ -670,11 +729,11 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Bottom Margin (px)
                   </Label>
                   <Input
@@ -691,13 +750,13 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     Bullet Gap (px)
                   </Label>
                   <Input
@@ -714,11 +773,11 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
                     List Margin (px)
                   </Label>
                   <Input
@@ -735,12 +794,12 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
-              <div className="pt-4 border-t border-slate-200 mt-4">
-                <Label className="block text-xs font-medium text-slate-700 mb-2">
+              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 mt-4">
+                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-2">
                   Page Size
                 </Label>
                 <Select
@@ -755,7 +814,7 @@ export const RightSidebar = ({
                     })
                   }
                 >
-                  <SelectTrigger className="w-full bg-white">
+                  <SelectTrigger className="w-full bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
                     <SelectValue placeholder="Select Page Size" />
                   </SelectTrigger>
                   <SelectContent>
@@ -765,7 +824,7 @@ export const RightSidebar = ({
                     <SelectItem value="A4">A4 (210mm x 297mm)</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-slate-500 mt-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                   Adjusts the preview dimensions and PDF generation format.
                 </p>
               </div>
@@ -774,7 +833,7 @@ export const RightSidebar = ({
 
           <AccordionItem title="Layout & Structure">
             <div className="space-y-2">
-              <p className="text-xs text-slate-500 mb-3">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
                 Drag handles or use arrows to reorder resume sections.
               </p>
               <DndContext

@@ -9,8 +9,19 @@ export const MinimalTemplate = memo(({ data }: { data: ResumeData }) => {
   const itemGap = spacing?.itemGap ?? 16;
   const pageMarginTop = spacing?.pageMarginTop ?? 32;
   const pageMarginBottom = spacing?.pageMarginBottom ?? 32;
-  const accentColor =
-    theme?.minimal?.accentColor ?? theme?.accentColor ?? "#0f172a";
+  const isDark = data.theme?.previewTheme === "dark";
+  const defaultAccentColor = isDark ? "#94a3b8" : "#0f172a";
+
+  let accentColor =
+    theme?.minimal?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
+  const darkColors = ["#0f172a", "#1e3a8a", "#111827", "#000000"];
+  if (
+    isDark &&
+    (darkColors.includes(accentColor.toLowerCase()) ||
+      (!theme?.minimal?.accentColor && !theme?.accentColor))
+  ) {
+    accentColor = defaultAccentColor;
+  }
 
   const renderSection = (sectionId: string) => {
     switch (sectionId) {
@@ -435,7 +446,7 @@ export const MinimalTemplate = memo(({ data }: { data: ResumeData }) => {
 
   return (
     <div
-      className="px-8 bg-white text-gray-900 max-w-4xl mx-auto w-full min-h-[1056px]"
+      className="px-8 bg-white text-gray-900 dark:bg-slate-950 dark:text-slate-100 max-w-4xl mx-auto w-full min-h-[1056px]"
       style={
         {
           paddingTop: `${pageMarginTop}px`,

@@ -10,8 +10,21 @@ export const AcademicTemplate = memo(({ data }: { data: ResumeData }) => {
   const itemGap = spacing?.itemGap ?? 16;
   const pageMarginTop = spacing?.pageMarginTop ?? 48;
   const pageMarginBottom = spacing?.pageMarginBottom ?? 48;
-  const accentColor =
-    theme?.academic?.accentColor ?? theme?.accentColor ?? "#1e3a8a"; // deep blue
+  const isDark = data.theme?.previewTheme === "dark";
+  const defaultAccentColor = isDark ? "#60a5fa" : "#1e3a8a"; // blue-400 : deep blue
+
+  // If in dark mode, we check if the provided accent color is too dark.
+  // We check for common dark defaults from other templates too.
+  let accentColor =
+    theme?.academic?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
+  const darkColors = ["#1e3a8a", "#0f172a", "#111827", "#000000"];
+  if (
+    isDark &&
+    (darkColors.includes(accentColor.toLowerCase()) ||
+      (!theme?.academic?.accentColor && !theme?.accentColor))
+  ) {
+    accentColor = defaultAccentColor;
+  }
 
   const renderSection = (sectionId: string) => {
     switch (sectionId) {
@@ -519,7 +532,7 @@ export const AcademicTemplate = memo(({ data }: { data: ResumeData }) => {
 
   return (
     <div
-      className="px-12 bg-white text-gray-900 max-w-4xl mx-auto w-full min-h-[1056px]"
+      className="px-12 bg-white text-gray-900 dark:bg-slate-950 dark:text-slate-100 max-w-4xl mx-auto w-full min-h-[1056px]"
       style={
         {
           paddingTop: `${pageMarginTop}px`,
@@ -556,7 +569,7 @@ export const AcademicTemplate = memo(({ data }: { data: ResumeData }) => {
         >
           {data.personalInfo.fullName || "Your Name"}
         </h1>
-        <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-[0.9em] text-gray-700">
+        <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-[0.9em] text-gray-700 dark:text-slate-400">
           {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
           {data.personalInfo.phone && <span>| {data.personalInfo.phone}</span>}
           {data.personalInfo.location && (

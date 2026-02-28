@@ -9,7 +9,9 @@ export const ProfessionalTemplate = memo(({ data }: { data: ResumeData }) => {
   const itemGap = spacing?.itemGap ?? 16;
   const pageMarginTop = spacing?.pageMarginTop ?? 40;
   const pageMarginBottom = spacing?.pageMarginBottom ?? 40;
-  const accentColor = theme?.accentColor ?? "#0f172a";
+  const isDark = data.theme?.previewTheme === "dark";
+  const defaultAccentColor = isDark ? "#94a3b8" : "#0f172a";
+  const accentColor = theme?.accentColor ?? defaultAccentColor;
   const sectionBorderColor =
     theme?.professional?.sectionBorderColor ?? `${accentColor}40`;
 

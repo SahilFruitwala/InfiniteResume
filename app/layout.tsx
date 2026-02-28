@@ -12,6 +12,7 @@ import {
   Lato,
 } from "next/font/google";
 import "./globals.css"; // Global styles
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const roboto = Roboto({
@@ -116,9 +117,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} ${roboto.variable} ${merriweather.variable} ${playfair.variable} ${lora.variable} ${openSans.variable} ${montserrat.variable} ${poppins.variable} ${raleway.variable} ${lato.variable}`}
     >
-      <body suppressHydrationWarning>{children}</body>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

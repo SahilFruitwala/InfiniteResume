@@ -10,8 +10,10 @@ export const ModernTemplate = memo(({ data }: { data: ResumeData }) => {
   const itemGap = spacing?.itemGap ?? 16;
   const pageMarginTop = spacing?.pageMarginTop ?? 32;
   const pageMarginBottom = spacing?.pageMarginBottom ?? 32;
+  const isDark = data.theme?.previewTheme === "dark";
+  const defaultAccentColor = isDark ? "#34d399" : "#10b981"; // emerald-400 : emerald-600
   const accentColor =
-    theme?.modern?.accentColor ?? theme?.accentColor ?? "#34d399"; // emerald-400
+    theme?.modern?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
 
   const defaultOrder = [
     "summary",

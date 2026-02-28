@@ -92,6 +92,7 @@ export type TypographySettings = {
 
 export type ThemeSettings = {
   accentColor: string;
+  previewTheme?: 'light' | 'dark';
   professional?: {
     sectionBorderColor?: string;
   };
