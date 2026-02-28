@@ -6,7 +6,7 @@ import { RichTextEditor } from './RichTextEditor';
 
 interface SidebarProps {
   data: ResumeData;
-  onChange: (data: ResumeData) => void;
+  onChange: (data: ResumeData | ((prev: ResumeData) => ResumeData)) => void;
   template: TemplateType;
   undo?: () => void;
   redo?: () => void;
@@ -30,6 +30,316 @@ const AccordionItem = ({ title, children, defaultOpen = false }: { title: string
   );
 };
 
+
+const ExperienceSection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: Experience[], onAdd: () => void, onUpdate: (id: string, field: keyof Experience, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((exp, index) => (
+              <div key={exp.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(exp.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Experience {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Company</label>
+                    <input type="text" value={exp.company} onChange={e => onUpdate(exp.id, 'company', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Acme Corp" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Position</label>
+                    <input type="text" value={exp.position} onChange={e => onUpdate(exp.id, 'position', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Software Engineer" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
+                      <input type="text" value={exp.startDate} onChange={e => onUpdate(exp.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Jan 2020" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
+                      <input type="text" value={exp.endDate} onChange={e => onUpdate(exp.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Present" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
+                    <RichTextEditor 
+                      value={exp.description} 
+                      onChange={val => onUpdate(exp.id, 'description', val)} 
+                      placeholder="Describe your responsibilities and achievements…" 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Experience
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
+const EducationSection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: Education[], onAdd: () => void, onUpdate: (id: string, field: keyof Education, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((edu, index) => (
+              <div key={edu.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(edu.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Education {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Institution</label>
+                    <input type="text" value={edu.institution} onChange={e => onUpdate(edu.id, 'institution', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="University of Technology" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Degree</label>
+                    <input type="text" value={edu.degree} onChange={e => onUpdate(edu.id, 'degree', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="B.S. Computer Science" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
+                      <input type="text" value={edu.startDate} onChange={e => onUpdate(edu.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Aug 2016" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
+                      <input type="text" value={edu.endDate} onChange={e => onUpdate(edu.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="May 2020" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Education
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
+const ProjectSection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: Project[], onAdd: () => void, onUpdate: (id: string, field: keyof Project, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((proj, index) => (
+              <div key={proj.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(proj.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Project {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Project Name</label>
+                    <input type="text" value={proj.name} onChange={e => onUpdate(proj.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="E-commerce Platform" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Link</label>
+                    <input type="text" value={proj.link} onChange={e => onUpdate(proj.id, 'link', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="github.com/johndoe/project" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
+                    <RichTextEditor 
+                      value={proj.description} 
+                      onChange={val => onUpdate(proj.id, 'description', val)} 
+                      placeholder="Describe the project and your role…" 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Project
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
+const SocialLinkSection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: SocialLink[], onAdd: () => void, onUpdate: (id: string, field: keyof SocialLink, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((link, index) => (
+              <div key={link.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(link.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Link {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Platform / Title</label>
+                    <input type="text" value={link.name} onChange={e => onUpdate(link.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="LinkedIn, GitHub, Portfolio…" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">URL</label>
+                    <input type="text" value={link.url} onChange={e => onUpdate(link.id, 'url', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="https://…" />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Link
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
+const LanguageSection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: Language[], onAdd: () => void, onUpdate: (id: string, field: keyof Language, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((lang, index) => (
+              <div key={lang.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(lang.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Language {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Language</label>
+                    <input type="text" value={lang.name} onChange={e => onUpdate(lang.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="English" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Proficiency</label>
+                    <input type="text" value={lang.proficiency} onChange={e => onUpdate(lang.id, 'proficiency', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Native, Fluent, Beginner…" />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Language
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
+const VolunteerSection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: Volunteer[], onAdd: () => void, onUpdate: (id: string, field: keyof Volunteer, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((vol, index) => (
+              <div key={vol.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(vol.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Volunteer {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Organization</label>
+                    <input type="text" value={vol.organization} onChange={e => onUpdate(vol.id, 'organization', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Red Cross" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Position</label>
+                    <input type="text" value={vol.position} onChange={e => onUpdate(vol.id, 'position', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Volunteer Coordinator" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
+                      <input type="text" value={vol.startDate} onChange={e => onUpdate(vol.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Jan 2018" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
+                      <input type="text" value={vol.endDate} onChange={e => onUpdate(vol.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Present" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
+                    <RichTextEditor 
+                      value={vol.description} 
+                      onChange={val => onUpdate(vol.id, 'description', val)} 
+                      placeholder="Describe your volunteer work…" 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Volunteer Work
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
+const InterestSection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: Interest[], onAdd: () => void, onUpdate: (id: string, field: keyof Interest, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((interest, index) => (
+              <div key={interest.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(interest.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Interest Name</label>
+                    <input type="text" value={interest.name} onChange={e => onUpdate(interest.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Photography, Hiking…" />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Interest
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
+const SkillCategorySection = React.memo(({ items, onAdd, onUpdate, onRemove }: { items: SkillCategory[], onAdd: () => void, onUpdate: (id: string, field: keyof SkillCategory, value: string) => void, onRemove: (id: string) => void }) => {
+  return (
+    <>
+
+          <div className="space-y-6">
+            {items.map((category, index) => (
+              <div key={category.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => onRemove(category.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Category {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Category Name</label>
+                    <input type="text" value={category.name} onChange={e => onUpdate(category.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Frontend, Backend, Tools…" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Skills</label>
+                    <RichTextEditor 
+                      value={category.skills} 
+                      onChange={val => onUpdate(category.id, 'skills', val)} 
+                      placeholder="React, Next.js, Node.js…" 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={onAdd} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Skill Category
+            </button>
+          </div>
+        
+    </>
+  );
+});
+
 export const Sidebar = ({ data, onChange, template, undo, redo, canUndo, canRedo }: SidebarProps) => {
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -47,228 +357,228 @@ export const Sidebar = ({ data, onChange, template, undo, redo, canUndo, canRedo
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [undo, redo]);
 
-  const updatePersonalInfo = (field: keyof ResumeData['personalInfo'], value: string) => {
-    onChange({
-      ...data,
-      personalInfo: { ...data.personalInfo, [field]: value }
-    });
-  };
+  const updatePersonalInfo = React.useCallback((field: keyof ResumeData['personalInfo'], value: string) => {
+    onChange(prev => ({
+      ...prev,
+      personalInfo: { ...prev.personalInfo, [field]: value }
+    }));
+  }, [onChange]);
 
-  const addExperience = () => {
-    onChange({
-      ...data,
+  const addExperience = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       experience: [
-        ...data.experience,
+        ...(prev.experience || []),
         { id: crypto.randomUUID(), company: '', position: '', startDate: '', endDate: '', description: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateExperience = (id: string, field: keyof Experience, value: string) => {
-    onChange({
-      ...data,
-      experience: data.experience.map(exp => exp.id === id ? { ...exp, [field]: value } : exp)
-    });
-  };
+  const updateExperience = React.useCallback((id: string, field: keyof Experience, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      experience: (prev.experience || []).map(exp => exp.id === id ? { ...exp, [field]: value } : exp)
+    }));
+  }, [onChange]);
 
-  const removeExperience = (id: string) => {
-    onChange({
-      ...data,
-      experience: data.experience.filter(exp => exp.id !== id)
-    });
-  };
+  const removeExperience = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      experience: (prev.experience || []).filter(exp => exp.id !== id)
+    }));
+  }, [onChange]);
 
-  const addEducation = () => {
-    onChange({
-      ...data,
+  const addEducation = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       education: [
-        ...data.education,
+        ...(prev.education || []),
         { id: crypto.randomUUID(), institution: '', degree: '', startDate: '', endDate: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateEducation = (id: string, field: keyof Education, value: string) => {
-    onChange({
-      ...data,
-      education: data.education.map(edu => edu.id === id ? { ...edu, [field]: value } : edu)
-    });
-  };
+  const updateEducation = React.useCallback((id: string, field: keyof Education, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      education: (prev.education || []).map(edu => edu.id === id ? { ...edu, [field]: value } : edu)
+    }));
+  }, [onChange]);
 
-  const removeEducation = (id: string) => {
-    onChange({
-      ...data,
-      education: data.education.filter(edu => edu.id !== id)
-    });
-  };
+  const removeEducation = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      education: (prev.education || []).filter(edu => edu.id !== id)
+    }));
+  }, [onChange]);
 
-  const addProject = () => {
-    onChange({
-      ...data,
+  const addProject = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       projects: [
-        ...data.projects,
+        ...(prev.projects || []),
         { id: crypto.randomUUID(), name: '', description: '', link: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateProject = (id: string, field: keyof Project, value: string) => {
-    onChange({
-      ...data,
-      projects: data.projects.map(proj => proj.id === id ? { ...proj, [field]: value } : proj)
-    });
-  };
+  const updateProject = React.useCallback((id: string, field: keyof Project, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      projects: (prev.projects || []).map(proj => proj.id === id ? { ...proj, [field]: value } : proj)
+    }));
+  }, [onChange]);
 
-  const removeProject = (id: string) => {
-    onChange({
-      ...data,
-      projects: data.projects.filter(proj => proj.id !== id)
-    });
-  };
+  const removeProject = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      projects: (prev.projects || []).filter(proj => proj.id !== id)
+    }));
+  }, [onChange]);
 
-  const addSocialLink = () => {
-    onChange({
-      ...data,
+  const addSocialLink = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       socialLinks: [
-        ...(data.socialLinks || []),
+        ...(prev.socialLinks || []),
         { id: crypto.randomUUID(), name: '', url: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateSocialLink = (id: string, field: keyof SocialLink, value: string) => {
-    onChange({
-      ...data,
-      socialLinks: (data.socialLinks || []).map(link => link.id === id ? { ...link, [field]: value } : link)
-    });
-  };
+  const updateSocialLink = React.useCallback((id: string, field: keyof SocialLink, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      socialLinks: (prev.socialLinks || []).map(link => link.id === id ? { ...link, [field]: value } : link)
+    }));
+  }, [onChange]);
 
-  const removeSocialLink = (id: string) => {
-    onChange({
-      ...data,
-      socialLinks: (data.socialLinks || []).filter(link => link.id !== id)
-    });
-  };
+  const removeSocialLink = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      socialLinks: (prev.socialLinks || []).filter(link => link.id !== id)
+    }));
+  }, [onChange]);
 
-  const addAward = () => {
-    onChange({
-      ...data,
+  const addAward = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       awards: [
-        ...(data.awards || []),
+        ...(prev.awards || []),
         { id: crypto.randomUUID(), name: '', issuer: '', date: '', description: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateAward = (id: string, field: keyof Award, value: string) => {
-    onChange({
-      ...data,
-      awards: (data.awards || []).map(item => item.id === id ? { ...item, [field]: value } : item)
-    });
-  };
+  const updateAward = React.useCallback((id: string, field: keyof Award, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      awards: (prev.awards || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, [onChange]);
 
-  const removeAward = (id: string) => {
-    onChange({
-      ...data,
-      awards: (data.awards || []).filter(item => item.id !== id)
-    });
-  };
+  const removeAward = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      awards: (prev.awards || []).filter(item => item.id !== id)
+    }));
+  }, [onChange]);
 
-  const addLanguage = () => {
-    onChange({
-      ...data,
+  const addLanguage = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       languages: [
-        ...(data.languages || []),
+        ...(prev.languages || []),
         { id: crypto.randomUUID(), name: '', proficiency: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateLanguage = (id: string, field: keyof Language, value: string) => {
-    onChange({
-      ...data,
-      languages: (data.languages || []).map(item => item.id === id ? { ...item, [field]: value } : item)
-    });
-  };
+  const updateLanguage = React.useCallback((id: string, field: keyof Language, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      languages: (prev.languages || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, [onChange]);
 
-  const removeLanguage = (id: string) => {
-    onChange({
-      ...data,
-      languages: (data.languages || []).filter(item => item.id !== id)
-    });
-  };
+  const removeLanguage = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      languages: (prev.languages || []).filter(item => item.id !== id)
+    }));
+  }, [onChange]);
 
-  const addVolunteer = () => {
-    onChange({
-      ...data,
+  const addVolunteer = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       volunteerWork: [
-        ...(data.volunteerWork || []),
+        ...(prev.volunteerWork || []),
         { id: crypto.randomUUID(), organization: '', position: '', startDate: '', endDate: '', description: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateVolunteer = (id: string, field: keyof Volunteer, value: string) => {
-    onChange({
-      ...data,
-      volunteerWork: (data.volunteerWork || []).map(item => item.id === id ? { ...item, [field]: value } : item)
-    });
-  };
+  const updateVolunteer = React.useCallback((id: string, field: keyof Volunteer, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      volunteerWork: (prev.volunteerWork || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, [onChange]);
 
-  const removeVolunteer = (id: string) => {
-    onChange({
-      ...data,
-      volunteerWork: (data.volunteerWork || []).filter(item => item.id !== id)
-    });
-  };
+  const removeVolunteer = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      volunteerWork: (prev.volunteerWork || []).filter(item => item.id !== id)
+    }));
+  }, [onChange]);
 
-  const addInterest = () => {
-    onChange({
-      ...data,
+  const addInterest = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       interests: [
-        ...(data.interests || []),
+        ...(prev.interests || []),
         { id: crypto.randomUUID(), name: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateInterest = (id: string, field: keyof Interest, value: string) => {
-    onChange({
-      ...data,
-      interests: (data.interests || []).map(item => item.id === id ? { ...item, [field]: value } : item)
-    });
-  };
+  const updateInterest = React.useCallback((id: string, field: keyof Interest, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      interests: (prev.interests || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, [onChange]);
 
-  const removeInterest = (id: string) => {
-    onChange({
-      ...data,
-      interests: (data.interests || []).filter(item => item.id !== id)
-    });
-  };
+  const removeInterest = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      interests: (prev.interests || []).filter(item => item.id !== id)
+    }));
+  }, [onChange]);
 
-  const addSkillCategory = () => {
-    onChange({
-      ...data,
+  const addSkillCategory = React.useCallback(() => {
+    onChange(prev => ({
+      ...prev,
       skills: [
-        ...(data.skills || []),
+        ...(prev.skills || []),
         { id: crypto.randomUUID(), name: '', skills: '' }
       ]
-    });
-  };
+    }));
+  }, [onChange]);
 
-  const updateSkillCategory = (id: string, field: keyof SkillCategory, value: string) => {
-    onChange({
-      ...data,
-      skills: (data.skills || []).map(item => item.id === id ? { ...item, [field]: value } : item)
-    });
-  };
+  const updateSkillCategory = React.useCallback((id: string, field: keyof SkillCategory, value: string) => {
+    onChange(prev => ({
+      ...prev,
+      skills: (prev.skills || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, [onChange]);
 
-  const removeSkillCategory = (id: string) => {
-    onChange({
-      ...data,
-      skills: (data.skills || []).filter(item => item.id !== id)
-    });
-  };
+  const removeSkillCategory = React.useCallback((id: string) => {
+    onChange(prev => ({
+      ...prev,
+      skills: (prev.skills || []).filter(item => item.id !== id)
+    }));
+  }, [onChange]);
 
 
   return (
@@ -634,175 +944,71 @@ export const Sidebar = ({ data, onChange, template, undo, redo, canUndo, canRedo
             </div>
             <div>
               <label className="block text-xs font-medium text-slate-700 mb-1">Full Name</label>
-              <input type="text" value={data.personalInfo.fullName} onChange={e => updatePersonalInfo('fullName', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="John Doe" />
+              <input type="text" name="fullName" autoComplete="name" value={data.personalInfo.fullName} onChange={e => updatePersonalInfo('fullName', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="John Doe" />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-slate-700 mb-1">Email</label>
-                <input type="email" value={data.personalInfo.email} onChange={e => updatePersonalInfo('email', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="john@example.com" />
+                <input type="email" name="email" autoComplete="email" value={data.personalInfo.email} onChange={e => updatePersonalInfo('email', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="john@example.com" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-700 mb-1">Phone</label>
-                <input type="text" value={data.personalInfo.phone} onChange={e => updatePersonalInfo('phone', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="+1 234 567 890" />
+                <input type="tel" name="phone" autoComplete="tel" value={data.personalInfo.phone} onChange={e => updatePersonalInfo('phone', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="+1 234 567 890" />
               </div>
             </div>
             <div>
               <label className="block text-xs font-medium text-slate-700 mb-1">Location</label>
-              <input type="text" value={data.personalInfo.location} onChange={e => updatePersonalInfo('location', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="New York, NY" />
+              <input type="text" name="location" autoComplete="address-level2" value={data.personalInfo.location} onChange={e => updatePersonalInfo('location', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="New York, NY" />
             </div>
             <div>
               <label className="block text-xs font-medium text-slate-700 mb-1">Website (Optional)</label>
-              <input type="text" value={data.personalInfo.website} onChange={e => updatePersonalInfo('website', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="johndoe.com" />
+              <input type="url" name="website" autoComplete="url" value={data.personalInfo.website} onChange={e => updatePersonalInfo('website', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="johndoe.com" />
             </div>
             <div>
               <label className="block text-xs font-medium text-slate-700 mb-1">Professional Summary</label>
               <RichTextEditor 
                 value={data.personalInfo.summary} 
                 onChange={val => updatePersonalInfo('summary', val)} 
-                placeholder="A brief summary of your professional background..." 
+                placeholder="A brief summary of your professional background…" 
               />
             </div>
           </div>
         </AccordionItem>
 
         <AccordionItem title="Social Links">
-          <div className="space-y-6">
-            {(data.socialLinks || []).map((link, index) => (
-              <div key={link.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeSocialLink(link.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Link {index + 1}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Platform / Title</label>
-                    <input type="text" value={link.name} onChange={e => updateSocialLink(link.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="LinkedIn, GitHub, Portfolio..." />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">URL</label>
-                    <input type="text" value={link.url} onChange={e => updateSocialLink(link.id, 'url', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="https://..." />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addSocialLink} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Link
-            </button>
-          </div>
+          <SocialLinkSection 
+            items={(data.socialLinks || [])}
+            onAdd={addSocialLink}
+            onUpdate={updateSocialLink}
+            onRemove={removeSocialLink}
+          />
         </AccordionItem>
 
         <AccordionItem title="Experience">
-          <div className="space-y-6">
-            {data.experience.map((exp, index) => (
-              <div key={exp.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeExperience(exp.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Experience {index + 1}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Company</label>
-                    <input type="text" value={exp.company} onChange={e => updateExperience(exp.id, 'company', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Acme Corp" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Position</label>
-                    <input type="text" value={exp.position} onChange={e => updateExperience(exp.id, 'position', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Software Engineer" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
-                      <input type="text" value={exp.startDate} onChange={e => updateExperience(exp.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Jan 2020" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
-                      <input type="text" value={exp.endDate} onChange={e => updateExperience(exp.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Present" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
-                    <RichTextEditor 
-                      value={exp.description} 
-                      onChange={val => updateExperience(exp.id, 'description', val)} 
-                      placeholder="Describe your responsibilities and achievements..." 
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addExperience} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Experience
-            </button>
-          </div>
+          <ExperienceSection 
+            items={data.experience}
+            onAdd={addExperience}
+            onUpdate={updateExperience}
+            onRemove={removeExperience}
+          />
         </AccordionItem>
 
         <AccordionItem title="Education">
-          <div className="space-y-6">
-            {data.education.map((edu, index) => (
-              <div key={edu.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeEducation(edu.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Education {index + 1}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Institution</label>
-                    <input type="text" value={edu.institution} onChange={e => updateEducation(edu.id, 'institution', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="University of Technology" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Degree</label>
-                    <input type="text" value={edu.degree} onChange={e => updateEducation(edu.id, 'degree', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="B.S. Computer Science" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
-                      <input type="text" value={edu.startDate} onChange={e => updateEducation(edu.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Aug 2016" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
-                      <input type="text" value={edu.endDate} onChange={e => updateEducation(edu.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="May 2020" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addEducation} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Education
-            </button>
-          </div>
+          <EducationSection 
+            items={data.education}
+            onAdd={addEducation}
+            onUpdate={updateEducation}
+            onRemove={removeEducation}
+          />
         </AccordionItem>
 
         <AccordionItem title="Projects">
-          <div className="space-y-6">
-            {data.projects.map((proj, index) => (
-              <div key={proj.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeProject(proj.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Project {index + 1}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Project Name</label>
-                    <input type="text" value={proj.name} onChange={e => updateProject(proj.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="E-commerce Platform" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Link</label>
-                    <input type="text" value={proj.link} onChange={e => updateProject(proj.id, 'link', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="github.com/johndoe/project" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
-                    <RichTextEditor 
-                      value={proj.description} 
-                      onChange={val => updateProject(proj.id, 'description', val)} 
-                      placeholder="Describe the project and your role..." 
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addProject} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Project
-            </button>
-          </div>
+          <ProjectSection 
+            items={data.projects}
+            onAdd={addProject}
+            onUpdate={updateProject}
+            onRemove={removeProject}
+          />
         </AccordionItem>
 
         <AccordionItem title="Awards & Certifications">
@@ -831,7 +1037,7 @@ export const Sidebar = ({ data, onChange, template, undo, redo, canUndo, canRedo
                     <RichTextEditor 
                       value={award.description} 
                       onChange={val => updateAward(award.id, 'description', val)} 
-                      placeholder="Recognized for outstanding contributions..." 
+                      placeholder="Recognized for outstanding contributions…" 
                     />
                   </div>
                 </div>
@@ -844,124 +1050,39 @@ export const Sidebar = ({ data, onChange, template, undo, redo, canUndo, canRedo
         </AccordionItem>
 
         <AccordionItem title="Languages">
-          <div className="space-y-6">
-            {(data.languages || []).map((lang, index) => (
-              <div key={lang.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeLanguage(lang.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Language {index + 1}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Language</label>
-                    <input type="text" value={lang.name} onChange={e => updateLanguage(lang.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="English" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Proficiency</label>
-                    <input type="text" value={lang.proficiency} onChange={e => updateLanguage(lang.id, 'proficiency', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Native, Fluent, Beginner..." />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addLanguage} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Language
-            </button>
-          </div>
+          <LanguageSection 
+            items={(data.languages || [])}
+            onAdd={addLanguage}
+            onUpdate={updateLanguage}
+            onRemove={removeLanguage}
+          />
         </AccordionItem>
 
         <AccordionItem title="Volunteer Work">
-          <div className="space-y-6">
-            {(data.volunteerWork || []).map((vol, index) => (
-              <div key={vol.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeVolunteer(vol.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Volunteer {index + 1}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Organization</label>
-                    <input type="text" value={vol.organization} onChange={e => updateVolunteer(vol.id, 'organization', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Red Cross" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Position</label>
-                    <input type="text" value={vol.position} onChange={e => updateVolunteer(vol.id, 'position', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Volunteer Coordinator" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
-                      <input type="text" value={vol.startDate} onChange={e => updateVolunteer(vol.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Jan 2018" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
-                      <input type="text" value={vol.endDate} onChange={e => updateVolunteer(vol.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Present" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
-                    <RichTextEditor 
-                      value={vol.description} 
-                      onChange={val => updateVolunteer(vol.id, 'description', val)} 
-                      placeholder="Describe your volunteer work..." 
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addVolunteer} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Volunteer Work
-            </button>
-          </div>
+          <VolunteerSection 
+            items={(data.volunteerWork || [])}
+            onAdd={addVolunteer}
+            onUpdate={updateVolunteer}
+            onRemove={removeVolunteer}
+          />
         </AccordionItem>
 
         <AccordionItem title="Interests">
-          <div className="space-y-6">
-            {(data.interests || []).map((interest, index) => (
-              <div key={interest.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeInterest(interest.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Interest Name</label>
-                    <input type="text" value={interest.name} onChange={e => updateInterest(interest.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Photography, Hiking..." />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addInterest} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Interest
-            </button>
-          </div>
+          <InterestSection 
+            items={(data.interests || [])}
+            onAdd={addInterest}
+            onUpdate={updateInterest}
+            onRemove={removeInterest}
+          />
         </AccordionItem>
 
         <AccordionItem title="Skills">
-          <div className="space-y-6">
-            {(data.skills || []).map((category, index) => (
-              <div key={category.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
-                <button onClick={() => removeSkillCategory(category.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Category {index + 1}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Category Name</label>
-                    <input type="text" value={category.name} onChange={e => updateSkillCategory(category.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Frontend, Backend, Tools..." />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">Skills</label>
-                    <RichTextEditor 
-                      value={category.skills} 
-                      onChange={val => updateSkillCategory(category.id, 'skills', val)} 
-                      placeholder="React, Next.js, Node.js..." 
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button onClick={addSkillCategory} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
-              <Plus className="w-4 h-4" /> Add Skill Category
-            </button>
-          </div>
+          <SkillCategorySection 
+            items={(data.skills || [])}
+            onAdd={addSkillCategory}
+            onUpdate={updateSkillCategory}
+            onRemove={removeSkillCategory}
+          />
         </AccordionItem>
       </div>
     </div>

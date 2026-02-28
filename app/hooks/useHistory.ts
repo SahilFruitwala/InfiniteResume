@@ -1,10 +1,10 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from "react";
 
 export function useHistory<T>(key: string, initialValue: T, delay = 1000) {
   const [past, setPast] = useState<T[]>([]);
-  
+
   const [present, setPresentState] = useState<T>(() => {
-    if (typeof window === 'undefined') return initialValue;
+    if (typeof window === "undefined") return initialValue;
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -19,7 +19,7 @@ export function useHistory<T>(key: string, initialValue: T, delay = 1000) {
 
   // Autosave to localStorage
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     if (timerRef.current) clearTimeout(timerRef.current);
 
@@ -36,11 +36,18 @@ export function useHistory<T>(key: string, initialValue: T, delay = 1000) {
     };
   }, [key, present, delay]);
 
-  const setPresent = useCallback((newState: T) => {
-    setPast((prev) => [...prev, present]);
-    setPresentState(newState);
-    setFuture([]);
-  }, [present]);
+  const setPresent = useCallback((newState: T | ((prev: T) => T)) => {
+    setPresentState((current) => {
+      const resolvedState =
+        typeof newState === "function"
+          ? (newState as Function)(current)
+          : newState;
+      if (current === resolvedState) return current;
+      setPast((prev) => [...prev, current]);
+      setFuture([]);
+      return resolvedState;
+    });
+  }, []);
 
   const undo = useCallback(() => {
     if (past.length === 0) return;
@@ -64,6 +71,6 @@ export function useHistory<T>(key: string, initialValue: T, delay = 1000) {
     undo,
     redo,
     canUndo: past.length > 0,
-    canRedo: future.length > 0
+    canRedo: future.length > 0,
   };
 }
