@@ -33,6 +33,7 @@ export const ModernTemplate = memo(({ data }: { data: ResumeData }) => {
     "projects",
     "volunteerWork",
     "awards",
+    ...currentOrder.filter((id) => id.startsWith("custom-")),
   ];
 
   const sortedLeftSections = [...leftSectionsList].sort((a, b) => {
@@ -457,6 +458,82 @@ export const ModernTemplate = memo(({ data }: { data: ResumeData }) => {
           </section>
         ) : null;
       default:
+        if (sectionId.startsWith("custom-")) {
+          const customId = sectionId.replace("custom-", "");
+          const section = data.customSections?.find((s) => s.id === customId);
+          if (section && section.items.length > 0) {
+            return (
+              <section
+                key={sectionId}
+                style={{ marginBottom: `${sectionGap}px` }}
+              >
+                <h2
+                  className="font-bold uppercase tracking-wider text-slate-800 flex items-center gap-3"
+                  style={{
+                    fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+                    marginBottom: `${sectionTitleGap}px`,
+                  }}
+                >
+                  <span className="w-8 h-px bg-slate-300"></span>
+                  {section.title}
+                </h2>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: `${itemGap}px`,
+                  }}
+                >
+                  {section.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="relative pl-4 border-l-2 border-slate-200"
+                    >
+                      <div
+                        className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 border-2 border-white"
+                        style={{ backgroundColor: accentColor }}
+                      ></div>
+                      <div className="flex justify-between items-baseline mb-1">
+                        <h3
+                          className="font-bold text-slate-800"
+                          style={{
+                            fontSize: `${typography?.fontSizeItemHeading ?? 16}px`,
+                          }}
+                        >
+                          {item.title}
+                        </h3>
+                        {item.startDate && (
+                          <span
+                            className="text-[0.85em] font-medium px-2 py-1 rounded-full"
+                            style={{
+                              color: accentColor,
+                              backgroundColor: `${accentColor}15`,
+                            }}
+                          >
+                            {item.startDate} - {item.endDate || "Present"}
+                          </span>
+                        )}
+                      </div>
+                      {(item.subtitle || item.location) && (
+                        <div className="font-semibold text-slate-500 mb-2 uppercase tracking-wide text-[0.95em]">
+                          {item.subtitle}
+                          {item.subtitle && item.location ? ", " : ""}
+                          {item.location}
+                        </div>
+                      )}
+                      {item.description && (
+                        <div
+                          className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                          dangerouslySetInnerHTML={{ __html: item.description }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+          }
+        }
         return null;
     }
   };

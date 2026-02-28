@@ -66,6 +66,22 @@ export type Interest = {
   name: string;
 };
 
+export type CustomSectionItem = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  startDate?: string;
+  endDate?: string;
+  description?: string;
+  location?: string;
+};
+
+export type CustomSection = {
+  id: string;
+  title: string;
+  items: CustomSectionItem[];
+};
+
 export type TypographySettings = {
   fontFamily: string;
   fontSizeBody: number;
@@ -101,6 +117,7 @@ export type SpacingSettings = {
   pageMarginBottom: number;
   bulletItemGap?: number;
   bulletListMargin?: number;
+  pageSize?: 'A4' | 'LETTER';
 };
 
 export type SkillCategory = {
@@ -120,6 +137,7 @@ export type ResumeData = {
   volunteerWork: Volunteer[];
   interests: Interest[];
   socialLinks: SocialLink[];
+  customSections?: CustomSection[];
   typography: TypographySettings;
   spacing: SpacingSettings;
   theme: ThemeSettings;

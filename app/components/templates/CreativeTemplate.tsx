@@ -422,6 +422,82 @@ export const CreativeTemplate = memo(({ data }: { data: ResumeData }) => {
           </section>
         ) : null;
       default:
+        if (sectionId.startsWith("custom-")) {
+          const customId = sectionId.replace("custom-", "");
+          const section = data.customSections?.find((s) => s.id === customId);
+          if (section && section.items.length > 0) {
+            return (
+              <section
+                key={sectionId}
+                style={{ marginBottom: `${sectionGap}px` }}
+              >
+                <h2
+                  className="font-black uppercase tracking-widest text-gray-900 border-l-4 pl-3"
+                  style={{
+                    fontSize: `${typography?.fontSizeSectionHeading || 20}px`,
+                    marginBottom: `${sectionTitleGap}px`,
+                    borderColor: accentColor,
+                  }}
+                >
+                  {section.title}
+                </h2>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: `${itemGap}px`,
+                  }}
+                >
+                  {section.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="relative z-10 pl-6 border-l-2 border-gray-100 pb-2"
+                    >
+                      <div
+                        className="absolute w-4 h-4 rounded-full -left-[9px] top-1 border-4 border-white"
+                        style={{ backgroundColor: accentColor }}
+                      ></div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                        <h3
+                          className="font-extrabold text-gray-900"
+                          style={{
+                            fontSize: `${typography?.fontSizeItemHeading ?? 18}px`,
+                          }}
+                        >
+                          {item.title}
+                        </h3>
+                        {item.startDate && (
+                          <span
+                            className="text-[0.85em] font-bold px-3 py-1 rounded-sm uppercase tracking-wider mt-1 sm:mt-0"
+                            style={{
+                              color: accentColor,
+                              backgroundColor: `${accentColor}15`,
+                            }}
+                          >
+                            {item.startDate} – {item.endDate || "Present"}
+                          </span>
+                        )}
+                      </div>
+                      {(item.subtitle || item.location) && (
+                        <div className="text-[1.05em] font-medium text-gray-800 mb-2">
+                          {item.subtitle}
+                          {item.subtitle && item.location ? ", " : ""}
+                          {item.location}
+                        </div>
+                      )}
+                      {item.description && (
+                        <div
+                          className="leading-relaxed text-gray-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                          dangerouslySetInnerHTML={{ __html: item.description }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+          }
+        }
         return null;
     }
   };

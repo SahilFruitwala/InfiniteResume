@@ -12,6 +12,8 @@ import {
   Interest,
   TemplateType,
   SkillCategory,
+  CustomSection,
+  CustomSectionItem,
 } from "../types";
 import {
   Plus,
@@ -786,6 +788,174 @@ VolunteerSection.displayName = "VolunteerSection";
 InterestSection.displayName = "InterestSection";
 SkillCategorySection.displayName = "SkillCategorySection";
 
+const CustomSectionEditor = React.memo(
+  ({
+    section,
+    onUpdateTitle,
+    onAddItem,
+    onUpdateItem,
+    onRemoveItem,
+    onRemoveSection,
+  }: {
+    section: CustomSection;
+    onUpdateTitle: (title: string) => void;
+    onAddItem: () => void;
+    onUpdateItem: (
+      id: string,
+      field: keyof CustomSectionItem,
+      value: string,
+    ) => void;
+    onRemoveItem: (id: string) => void;
+    onRemoveSection: () => void;
+  }) => {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="flex-1">
+            <Label className="block text-xs font-medium text-slate-700 mb-1">
+              Section Title
+            </Label>
+            <Input
+              type="text"
+              value={section.title}
+              onChange={(e) => onUpdateTitle(e.target.value)}
+              className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+              placeholder="e.g. Publications, Research, Military Service"
+            />
+          </div>
+          <Button
+            onClick={onRemoveSection}
+            variant="ghost"
+            size="icon"
+            className="mt-5 h-10 w-10 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+            title="Remove entire section"
+          >
+            <Trash2 className="w-5 h-5" />
+          </Button>
+        </div>
+
+        <div className="space-y-6 pl-4 border-l-2 border-slate-200">
+          {section.items.map((item, index) => (
+            <div
+              key={item.id}
+              className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm"
+            >
+              <Button
+                onClick={() => onRemoveItem(item.id)}
+                variant="ghost"
+                size="icon"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+                Item {index + 1}
+              </h4>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      Title
+                    </Label>
+                    <Input
+                      type="text"
+                      value={item.title}
+                      onChange={(e) =>
+                        onUpdateItem(item.id, "title", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      placeholder="e.g. Research Assistant"
+                    />
+                  </div>
+                  <div>
+                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      Subtitle / Org
+                    </Label>
+                    <Input
+                      type="text"
+                      value={item.subtitle || ""}
+                      onChange={(e) =>
+                        onUpdateItem(item.id, "subtitle", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      placeholder="e.g. Stanford University"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      Start Date
+                    </Label>
+                    <Input
+                      type="text"
+                      value={item.startDate || ""}
+                      onChange={(e) =>
+                        onUpdateItem(item.id, "startDate", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      placeholder="e.g. Jan 2022"
+                    />
+                  </div>
+                  <div>
+                    <Label className="block text-xs font-medium text-slate-700 mb-1">
+                      End Date
+                    </Label>
+                    <Input
+                      type="text"
+                      value={item.endDate || ""}
+                      onChange={(e) =>
+                        onUpdateItem(item.id, "endDate", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      placeholder="e.g. Present"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    Location
+                  </Label>
+                  <Input
+                    type="text"
+                    value={item.location || ""}
+                    onChange={(e) =>
+                      onUpdateItem(item.id, "location", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    placeholder="e.g. Palo Alto, CA"
+                  />
+                </div>
+                <div>
+                  <Label className="block text-xs font-medium text-slate-700 mb-1">
+                    Description
+                  </Label>
+                  <RichTextEditor
+                    value={item.description || ""}
+                    onChange={(val) =>
+                      onUpdateItem(item.id, "description", val)
+                    }
+                    placeholder="Describe your work or achievement…"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+          <Button
+            onClick={onAddItem}
+            variant="outline"
+            className="w-full border-2 border-dashed border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2"
+          >
+            <Plus className="w-4 h-4" /> Add Item
+          </Button>
+        </div>
+      </div>
+    );
+  },
+);
+
+CustomSectionEditor.displayName = "CustomSectionEditor";
+
 const EMPTY_ARRAY: any[] = [];
 
 export const LeftSidebar = ({
@@ -1472,6 +1642,124 @@ export const LeftSidebar = ({
               onRemove={removeSkillCategory}
             />
           </AccordionItem>
+
+          {data.customSections?.map((section) => (
+            <AccordionItem
+              key={section.id}
+              title={section.title || "Custom Section"}
+              value={`custom-${section.id}`}
+            >
+              <CustomSectionEditor
+                section={section}
+                onUpdateTitle={(title) => {
+                  onChange((prev) => ({
+                    ...prev,
+                    customSections: (prev.customSections || []).map((s) =>
+                      s.id === section.id ? { ...s, title } : s,
+                    ),
+                  }));
+                }}
+                onAddItem={() => {
+                  onChange((prev) => ({
+                    ...prev,
+                    customSections: (prev.customSections || []).map((s) =>
+                      s.id === section.id
+                        ? {
+                            ...s,
+                            items: [
+                              ...s.items,
+                              { id: crypto.randomUUID(), title: "" },
+                            ],
+                          }
+                        : s,
+                    ),
+                  }));
+                }}
+                onUpdateItem={(itemId, field, value) => {
+                  onChange((prev) => ({
+                    ...prev,
+                    customSections: (prev.customSections || []).map((s) =>
+                      s.id === section.id
+                        ? {
+                            ...s,
+                            items: s.items.map((item) =>
+                              item.id === itemId
+                                ? { ...item, [field]: value }
+                                : item,
+                            ),
+                          }
+                        : s,
+                    ),
+                  }));
+                }}
+                onRemoveItem={(itemId) => {
+                  onChange((prev) => ({
+                    ...prev,
+                    customSections: (prev.customSections || []).map((s) =>
+                      s.id === section.id
+                        ? {
+                            ...s,
+                            items: s.items.filter((item) => item.id !== itemId),
+                          }
+                        : s,
+                    ),
+                  }));
+                }}
+                onRemoveSection={() => {
+                  onChange((prev) => ({
+                    ...prev,
+                    customSections: (prev.customSections || [])
+                      .map((s) =>
+                        s.id === section.id ? { ...s, title: "DELETED" } : s,
+                      )
+                      .filter((s) => s.title !== "DELETED"),
+                    layout: {
+                      ...prev.layout,
+                      sectionOrder: (prev.layout?.sectionOrder || []).filter(
+                        (id) => id !== `custom-${section.id}`,
+                      ),
+                    },
+                  }));
+                }}
+              />
+            </AccordionItem>
+          ))}
+
+          <div className="px-6 py-4">
+            <Button
+              onClick={() => {
+                const newId = crypto.randomUUID();
+                onChange((prev) => ({
+                  ...prev,
+                  customSections: [
+                    ...(prev.customSections || []),
+                    { id: newId, title: "New Section", items: [] },
+                  ],
+                  layout: {
+                    ...prev.layout,
+                    sectionOrder: [
+                      ...(prev.layout?.sectionOrder || [
+                        "summary",
+                        "experience",
+                        "education",
+                        "projects",
+                        "volunteerWork",
+                        "awards",
+                        "skills",
+                        "languages",
+                        "interests",
+                      ]),
+                      `custom-${newId}`,
+                    ],
+                  },
+                }));
+              }}
+              variant="outline"
+              className="w-full border-2 border-slate-300 text-slate-600 hover:border-slate-800 hover:text-slate-800 flex items-center justify-center gap-2 font-semibold"
+            >
+              <Plus className="w-4 h-4" /> Add Custom Section
+            </Button>
+          </div>
         </Accordion>
       </div>
     </div>

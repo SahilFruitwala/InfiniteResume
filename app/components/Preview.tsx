@@ -48,7 +48,8 @@ export const Preview = ({
     return () => observer.disconnect();
   }, [data, template]);
 
-  const PAGE_HEIGHT = 1056;
+  const pageSize = data.spacing?.pageSize || "LETTER";
+  const PAGE_HEIGHT = pageSize === "A4" ? 1123 : 1056; // 96 DPI: A4 is 1123px, Letter is 1056px
   const isOverOnePage = contentHeight > PAGE_HEIGHT;
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -128,7 +129,15 @@ export const Preview = ({
 
       {/* Preview Area */}
       <div className="flex-1 overflow-y-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
-        <div className="bg-white shadow-xl max-w-4xl w-full min-h-[1056px] print:shadow-none print:m-0 print:max-w-none print:w-full relative">
+        <div
+          className="bg-white shadow-xl max-w-4xl w-full print:shadow-none print:m-0 print:max-w-none print:w-full relative"
+          style={{ minHeight: `${PAGE_HEIGHT}px` }}
+        >
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@media print { @page { size: ${pageSize === "A4" ? "A4" : "letter"}; } }`,
+            }}
+          />
           <div ref={contentRef} className="w-full">
             <AnimatePresence mode="wait">
               <motion.div

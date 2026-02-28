@@ -366,6 +366,70 @@ export const ProfessionalTemplate = memo(({ data }: { data: ResumeData }) => {
           </section>
         ) : null;
       default:
+        if (sectionId.startsWith("custom-")) {
+          const customId = sectionId.replace("custom-", "");
+          const section = data.customSections?.find((s) => s.id === customId);
+          if (section && section.items.length > 0) {
+            return (
+              <section
+                key={sectionId}
+                style={{ marginBottom: `${sectionGap}px` }}
+              >
+                <h2
+                  className="font-bold uppercase tracking-widest text-center border-b pb-2"
+                  style={{
+                    fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+                    marginBottom: `${sectionTitleGap}px`,
+                    color: accentColor,
+                    borderColor: sectionBorderColor,
+                  }}
+                >
+                  {section.title}
+                </h2>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: `${itemGap}px`,
+                  }}
+                >
+                  {section.items.map((item) => (
+                    <div key={item.id}>
+                      <div className="flex justify-between items-baseline mb-1">
+                        <h3
+                          className="font-bold text-gray-900"
+                          style={{
+                            fontSize: `${typography?.fontSizeItemHeading ?? 16}px`,
+                          }}
+                        >
+                          {item.title}
+                        </h3>
+                        {item.startDate && (
+                          <span className="text-[0.9em] italic text-gray-600">
+                            {item.startDate} - {item.endDate || "Present"}
+                          </span>
+                        )}
+                      </div>
+                      {(item.subtitle || item.location) && (
+                        <div className="text-[0.95em] text-gray-700 mb-2 font-medium">
+                          {item.subtitle}
+                          {item.subtitle && item.location ? ", " : ""}
+                          {item.location}
+                        </div>
+                      )}
+                      {item.description && (
+                        <div
+                          className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                          dangerouslySetInnerHTML={{ __html: item.description }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+          }
+        }
         return null;
     }
   };

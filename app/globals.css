@@ -11,11 +11,11 @@
   }
   @page {
     margin: 0;
-    size: A4;
   }
 }
 
-button, a {
+button,
+a {
   cursor: pointer;
 }
 

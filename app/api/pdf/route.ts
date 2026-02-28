@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
 
     const pdfBuffer = await page.pdf({
-      format: 'Letter',
+      format: (data.spacing?.pageSize as any) === 'A4' ? 'A4' : 'Letter',
       printBackground: true,
       margin: {
         top: '0px',

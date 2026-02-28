@@ -3,7 +3,24 @@ import { ResumeData, TemplateType } from "../types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown, LayoutTemplate } from "lucide-react";
+import { ArrowUp, ArrowDown, LayoutTemplate, GripVertical } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   Select,
   SelectContent,
@@ -52,12 +69,144 @@ const AccordionItem = ({
   );
 };
 
+const SortableSectionItem = ({
+  id,
+  name,
+  onMoveUp,
+  onMoveDown,
+  isFirst,
+  isLast,
+}: {
+  id: string;
+  name: string;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  isFirst: boolean;
+  isLast: boolean;
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 20 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`flex justify-between items-center bg-white border border-slate-200 p-3 rounded-md shadow-sm mb-2 ${
+        isDragging ? "opacity-50 border-slate-400 ring-2 ring-slate-200" : ""
+      }`}
+    >
+      <div className="flex items-center gap-2">
+        <button
+          className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 p-1"
+          {...attributes}
+          {...listeners}
+          type="button"
+        >
+          <GripVertical className="w-4 h-4" />
+        </button>
+        <span className="text-sm font-medium text-slate-700">{name}</span>
+      </div>
+      <div className="flex gap-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7 bg-slate-50 text-slate-400 hover:text-slate-800"
+          onClick={(e) => {
+            e.stopPropagation();
+            onMoveUp();
+          }}
+          disabled={isFirst}
+        >
+          <ArrowUp className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7 bg-slate-50 text-slate-400 hover:text-slate-800"
+          onClick={(e) => {
+            e.stopPropagation();
+            onMoveDown();
+          }}
+          disabled={isLast}
+        >
+          <ArrowDown className="w-4 h-4" />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 export const RightSidebar = ({
   data,
   onChange,
   template,
   onTemplateChange,
 }: RightSidebarProps) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = (data.layout?.sectionOrder || []).indexOf(
+        active.id as string,
+      );
+      const newIndex = (data.layout?.sectionOrder || []).indexOf(
+        over.id as string,
+      );
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newOrder = arrayMove(
+          data.layout?.sectionOrder || [],
+          oldIndex,
+          newIndex,
+        );
+        onChange({
+          ...data,
+          layout: { ...data.layout, sectionOrder: newOrder },
+        });
+      }
+    }
+  };
+
+  const sectionNames: Record<string, string> = {
+    summary: "Professional Summary",
+    experience: "Experience",
+    education: "Education",
+    projects: "Projects",
+    volunteerWork: "Volunteer Work",
+    awards: "Awards & Certifications",
+    skills: "Skills",
+    languages: "Languages",
+    interests: "Interests",
+  };
+
+  const getSectionName = (id: string) => {
+    if (sectionNames[id]) return sectionNames[id];
+    if (id.startsWith("custom-")) {
+      const customId = id.replace("custom-", "");
+      const section = data.customSections?.find((s) => s.id === customId);
+      return section?.title || "Custom Section";
+    }
+    return id;
+  };
   return (
     <div className="w-80 bg-white border-l border-slate-200 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0">
       <div className="p-6 border-b border-slate-200 bg-slate-800 text-white flex justify-between items-start shrink-0">
@@ -590,92 +739,100 @@ export const RightSidebar = ({
                   />
                 </div>
               </div>
+              <div className="pt-4 border-t border-slate-200 mt-4">
+                <Label className="block text-xs font-medium text-slate-700 mb-2">
+                  Page Size
+                </Label>
+                <Select
+                  value={data.spacing?.pageSize || "LETTER"}
+                  onValueChange={(value) =>
+                    onChange({
+                      ...data,
+                      spacing: {
+                        ...data.spacing,
+                        pageSize: value as "A4" | "LETTER",
+                      },
+                    })
+                  }
+                >
+                  <SelectTrigger className="w-full bg-white">
+                    <SelectValue placeholder="Select Page Size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="LETTER">
+                      US Letter (8.5" x 11")
+                    </SelectItem>
+                    <SelectItem value="A4">A4 (210mm x 297mm)</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-slate-500 mt-2">
+                  Adjusts the preview dimensions and PDF generation format.
+                </p>
+              </div>
             </div>
           </AccordionItem>
 
           <AccordionItem title="Layout & Structure">
             <div className="space-y-2">
               <p className="text-xs text-slate-500 mb-3">
-                Drag or use arrows to reorder resume sections.
+                Drag handles or use arrows to reorder resume sections.
               </p>
-              {(
-                data.layout?.sectionOrder || [
-                  "summary",
-                  "experience",
-                  "education",
-                  "projects",
-                  "volunteerWork",
-                  "awards",
-                  "skills",
-                  "languages",
-                  "interests",
-                ]
-              ).map((sectionId, index, array) => {
-                const sectionNames: Record<string, string> = {
-                  summary: "Professional Summary",
-                  experience: "Experience",
-                  education: "Education",
-                  projects: "Projects",
-                  volunteerWork: "Volunteer Work",
-                  awards: "Awards & Certifications",
-                  skills: "Skills",
-                  languages: "Languages",
-                  interests: "Interests",
-                };
-
-                return (
-                  <div
-                    key={sectionId}
-                    className="flex justify-between items-center bg-white border border-slate-200 p-3 rounded-md shadow-sm"
-                  >
-                    <span className="text-sm font-medium text-slate-700">
-                      {sectionNames[sectionId] || sectionId}
-                    </span>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 bg-slate-50 text-slate-400 hover:text-slate-800"
-                        onClick={() => {
-                          if (index === 0) return;
-                          const newOrder = [...array];
-                          [newOrder[index - 1], newOrder[index]] = [
-                            newOrder[index],
-                            newOrder[index - 1],
-                          ];
-                          onChange({
-                            ...data,
-                            layout: { ...data.layout, sectionOrder: newOrder },
-                          });
-                        }}
-                        disabled={index === 0}
-                      >
-                        <ArrowUp className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 bg-slate-50 text-slate-400 hover:text-slate-800"
-                        onClick={() => {
-                          if (index === array.length - 1) return;
-                          const newOrder = [...array];
-                          [newOrder[index + 1], newOrder[index]] = [
-                            newOrder[index],
-                            newOrder[index + 1],
-                          ];
-                          onChange({
-                            ...data,
-                            layout: { ...data.layout, sectionOrder: newOrder },
-                          });
-                        }}
-                        disabled={index === array.length - 1}
-                      >
-                        <ArrowDown className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={data.layout?.sectionOrder || []}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {(
+                    data.layout?.sectionOrder || [
+                      "summary",
+                      "experience",
+                      "education",
+                      "projects",
+                      "volunteerWork",
+                      "awards",
+                      "skills",
+                      "languages",
+                      "interests",
+                    ]
+                  ).map((sectionId, index, array) => (
+                    <SortableSectionItem
+                      key={sectionId}
+                      id={sectionId}
+                      name={getSectionName(sectionId)}
+                      isFirst={index === 0}
+                      isLast={index === array.length - 1}
+                      onMoveUp={() => {
+                        if (index === 0) return;
+                        const newOrder = [...array];
+                        [newOrder[index - 1], newOrder[index]] = [
+                          newOrder[index],
+                          newOrder[index - 1],
+                        ];
+                        onChange({
+                          ...data,
+                          layout: { ...data.layout, sectionOrder: newOrder },
+                        });
+                      }}
+                      onMoveDown={() => {
+                        if (index === array.length - 1) return;
+                        const newOrder = [...array];
+                        [newOrder[index + 1], newOrder[index]] = [
+                          newOrder[index],
+                          newOrder[index + 1],
+                        ];
+                        onChange({
+                          ...data,
+                          layout: { ...data.layout, sectionOrder: newOrder },
+                        });
+                      }}
+                    />
+                  ))}
+                </SortableContext>
+              </DndContext>
             </div>
           </AccordionItem>
         </Accordion>
