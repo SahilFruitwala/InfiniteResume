@@ -11,10 +11,9 @@ import { motion, AnimatePresence } from "framer-motion";
 interface PreviewProps {
   data: ResumeData;
   template: TemplateType;
-  onTemplateChange: (template: TemplateType) => void;
 }
 
-export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
+export const Preview = ({ data, template }: PreviewProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
 
@@ -63,22 +62,6 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
       {/* Toolbar */}
       <div className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0 shadow-sm z-10 print:hidden">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
-            <LayoutTemplate className="w-4 h-4" />
-            Template:
-          </div>
-          <select
-            value={template}
-            onChange={(e) => onTemplateChange(e.target.value as TemplateType)}
-            className="px-3 py-1.5 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none bg-white min-w-[140px]"
-          >
-            <option value="minimal">Minimal</option>
-            <option value="professional">Professional</option>
-            <option value="modern">Modern</option>
-            <option value="academic">Academic</option>
-            <option value="creative">Creative</option>
-          </select>
-
           {isOverOnePage && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-md text-sm font-medium border border-amber-200">
               <AlertTriangle className="w-4 h-4" />
