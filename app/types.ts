@@ -42,6 +42,7 @@ export type TypographySettings = {
   fontSizeBody: number;
   fontSizeHeading: number;
   fontSizeSectionHeading: number;
+  fontSizeItemHeading?: number;
 };
 
 export type ThemeSettings = {

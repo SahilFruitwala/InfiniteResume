@@ -246,7 +246,7 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
               </select>
             </div>
             
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-slate-700 mb-1">Body (px)</label>
                 <input 
@@ -277,6 +277,17 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
                   max="32" 
                   value={data.typography.fontSizeSectionHeading} 
                   onChange={e => onChange({ ...data, typography: { ...data.typography, fontSizeSectionHeading: parseInt(e.target.value) || 18 } })}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" 
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-700 mb-1">Item Title (px)</label>
+                <input 
+                  type="number" 
+                  min="10" 
+                  max="32" 
+                  value={data.typography.fontSizeItemHeading ?? 16} 
+                  onChange={e => onChange({ ...data, typography: { ...data.typography, fontSizeItemHeading: parseInt(e.target.value) || 16 } })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" 
                 />
               </div>

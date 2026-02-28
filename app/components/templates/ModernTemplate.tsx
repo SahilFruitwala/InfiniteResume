@@ -88,7 +88,7 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
               {data.education.map((edu) => (
                 <div key={edu.id}>
-                  <h3 className="font-semibold text-white">{edu.degree}</h3>
+                  <h3 className="font-semibold text-white" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{edu.degree}</h3>
                   <div className="text-[0.95em] text-slate-400 mb-1">{edu.institution}</div>
                   <span className="text-[0.85em] text-slate-500">
                     {edu.startDate} - {edu.endDate}
@@ -157,7 +157,7 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
                 <div key={exp.id} className="relative pl-4 border-l-2 border-slate-200">
                   <div className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 border-2 border-white" style={{ backgroundColor: accentColor }}></div>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-slate-800 text-[1.25em]">{exp.position}</h3>
+                    <h3 className="font-bold text-slate-800" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{exp.position}</h3>
                     <span 
                       className="text-[0.85em] font-medium px-2 py-1 rounded-full"
                       style={{ color: accentColor, backgroundColor: `${accentColor}15` }}
@@ -193,7 +193,7 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
                 <div key={proj.id} className="relative pl-4 border-l-2 border-slate-200">
                   <div className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 border-2 border-white" style={{ backgroundColor: accentColor }}></div>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-slate-800 text-[1.25em]">{proj.name}</h3>
+                    <h3 className="font-bold text-slate-800" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{proj.name}</h3>
                     {proj.link && (
                       <a 
                         href={proj.link} 

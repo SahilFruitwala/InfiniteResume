@@ -88,7 +88,7 @@ export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
             {data.experience.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="font-bold text-gray-900 text-[1.15em]">{exp.position}</h3>
+                  <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{exp.position}</h3>
                   <span className="text-[0.9em] italic text-gray-600">
                     {exp.startDate} - {exp.endDate}
                   </span>
@@ -121,7 +121,7 @@ export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
             {data.education.map((edu) => (
               <div key={edu.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="font-bold text-gray-900 text-[1.15em]">{edu.degree}</h3>
+                  <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{edu.degree}</h3>
                   <span className="text-[0.9em] italic text-gray-600">
                     {edu.startDate} - {edu.endDate}
                   </span>
@@ -150,7 +150,7 @@ export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
             {data.projects.map((proj) => (
               <div key={proj.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="font-bold text-gray-900 text-[1.15em]">{proj.name}</h3>
+                  <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{proj.name}</h3>
                   {proj.link && (
                     <a href={proj.link} target="_blank" rel="noreferrer" className="text-[0.9em] italic text-gray-600 hover:underline">
                       {proj.link}
