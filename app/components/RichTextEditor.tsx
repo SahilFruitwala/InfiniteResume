@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Bold, Italic, Underline, List } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface RichTextEditorProps {
   value: string;
@@ -26,40 +27,48 @@ export const RichTextEditor = ({ value, onChange, placeholder }: RichTextEditorP
 
   return (
     <div className="border border-slate-300 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-slate-800 focus-within:border-slate-800 transition-all bg-white">
-      <div className="bg-slate-50 border-b border-slate-300 px-2 py-1 flex gap-1">
-        <button
+      <div className="bg-slate-50 border-b border-slate-300 px-2 py-1 flex gap-1 items-center">
+        <Button
+          variant="ghost"
+          size="icon"
           type="button"
           onMouseDown={(e) => { e.preventDefault(); execCommand('bold'); }}
-          className="p-1.5 text-slate-600 hover:bg-slate-200 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 hover:bg-slate-200 rounded transition-colors"
           title="Bold"
         >
           <Bold className="w-4 h-4" />
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
           type="button"
           onMouseDown={(e) => { e.preventDefault(); execCommand('italic'); }}
-          className="p-1.5 text-slate-600 hover:bg-slate-200 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 hover:bg-slate-200 rounded transition-colors"
           title="Italic"
         >
           <Italic className="w-4 h-4" />
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
           type="button"
           onMouseDown={(e) => { e.preventDefault(); execCommand('underline'); }}
-          className="p-1.5 text-slate-600 hover:bg-slate-200 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 hover:bg-slate-200 rounded transition-colors"
           title="Underline"
         >
           <Underline className="w-4 h-4" />
-        </button>
-        <div className="w-px h-6 bg-slate-300 mx-1 self-center"></div>
-        <button
+        </Button>
+        <div className="w-px h-6 bg-slate-300 mx-1"></div>
+        <Button
+          variant="ghost"
+          size="icon"
           type="button"
           onMouseDown={(e) => { e.preventDefault(); execCommand('insertUnorderedList'); }}
-          className="p-1.5 text-slate-600 hover:bg-slate-200 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 hover:bg-slate-200 rounded transition-colors"
           title="Bullet List"
         >
           <List className="w-4 h-4" />
-        </button>
+        </Button>
       </div>
       <div
         ref={editorRef}
