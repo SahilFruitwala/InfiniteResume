@@ -129,6 +129,9 @@ const initialData: ResumeData = {
     minimal: {
       accentColor: '#0f172a',
     }
+  },
+  layout: {
+    sectionOrder: ['summary', 'experience', 'education', 'projects', 'volunteerWork', 'awards', 'skills', 'languages', 'interests']
   }
 };
 

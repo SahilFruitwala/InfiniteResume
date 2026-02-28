@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // Sidebar component for editing resume data
 import { ResumeData, Experience, Education, Project, SocialLink, Award, Language, Volunteer, Interest, TemplateType } from '../types';
-import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, Trash2, ChevronDown, ChevronUp, ArrowUp, ArrowDown } from 'lucide-react';
 import { RichTextEditor } from './RichTextEditor';
 
 interface SidebarProps {
@@ -340,6 +340,10 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
                 <option value="var(--font-merriweather)">Merriweather (Serif)</option>
                 <option value="var(--font-playfair)">Playfair Display (Serif)</option>
                 <option value="var(--font-lora)">Lora (Serif)</option>
+                <option value="var(--font-montserrat)">Montserrat (Sans-serif)</option>
+                <option value="var(--font-poppins)">Poppins (Sans-serif)</option>
+                <option value="var(--font-raleway)">Raleway (Sans-serif)</option>
+                <option value="var(--font-lato)">Lato (Sans-serif)</option>
               </select>
             </div>
             
@@ -480,8 +484,90 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
           </div>
         </AccordionItem>
 
+        <AccordionItem title="Layout & Structure">
+          <div className="space-y-2">
+             <p className="text-xs text-slate-500 mb-3">Drag or use arrows to reorder resume sections.</p>
+             {(data.layout?.sectionOrder || ['summary', 'experience', 'education', 'projects', 'volunteerWork', 'awards', 'skills', 'languages', 'interests']).map((sectionId, index, array) => {
+               const sectionNames: Record<string, string> = {
+                 summary: 'Professional Summary',
+                 experience: 'Experience',
+                 education: 'Education',
+                 projects: 'Projects',
+                 volunteerWork: 'Volunteer Work',
+                 awards: 'Awards & Certifications',
+                 skills: 'Skills',
+                 languages: 'Languages',
+                 interests: 'Interests',
+               };
+               
+               return (
+                 <div key={sectionId} className="flex justify-between items-center bg-white border border-slate-200 p-3 rounded-md shadow-sm">
+                   <span className="text-sm font-medium text-slate-700">{sectionNames[sectionId] || sectionId}</span>
+                   <div className="flex gap-1">
+                     <button 
+                       onClick={() => {
+                         if (index === 0) return;
+                         const newOrder = [...array];
+                         [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
+                         onChange({ ...data, layout: { ...data.layout, sectionOrder: newOrder }});
+                       }}
+                       disabled={index === 0}
+                       className="p-1.5 text-slate-400 hover:text-slate-800 disabled:opacity-30 transition-colors bg-slate-50 rounded"
+                     >
+                       <ArrowUp className="w-4 h-4" />
+                     </button>
+                     <button 
+                       onClick={() => {
+                         if (index === array.length - 1) return;
+                         const newOrder = [...array];
+                         [newOrder[index + 1], newOrder[index]] = [newOrder[index], newOrder[index + 1]];
+                         onChange({ ...data, layout: { ...data.layout, sectionOrder: newOrder }});
+                       }}
+                       disabled={index === array.length - 1}
+                       className="p-1.5 text-slate-400 hover:text-slate-800 disabled:opacity-30 transition-colors bg-slate-50 rounded"
+                     >
+                       <ArrowDown className="w-4 h-4" />
+                     </button>
+                   </div>
+                 </div>
+               );
+             })}
+          </div>
+        </AccordionItem>
+
         <AccordionItem title="Personal Information" defaultOpen>
           <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-medium text-slate-700 mb-1">Profile Picture (Optional)</label>
+              <div className="flex items-center gap-4">
+                {data.personalInfo.profilePicture && (
+                  <img src={data.personalInfo.profilePicture} alt="Profile" className="w-12 h-12 rounded-full object-cover border border-slate-200" />
+                )}
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        updatePersonalInfo('profilePicture', reader.result as string);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }} 
+                  className="flex-1 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-50 file:text-slate-700 hover:file:bg-slate-100 transition-all cursor-pointer" 
+                />
+                {data.personalInfo.profilePicture && (
+                  <button 
+                    onClick={() => updatePersonalInfo('profilePicture', '')}
+                    className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
             <div>
               <label className="block text-xs font-medium text-slate-700 mb-1">Full Name</label>
               <input type="text" value={data.personalInfo.fullName} onChange={e => updatePersonalInfo('fullName', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="John Doe" />

@@ -3,6 +3,8 @@ import { ResumeData, TemplateType } from '../types';
 import { MinimalTemplate } from './templates/MinimalTemplate';
 import { ProfessionalTemplate } from './templates/ProfessionalTemplate';
 import { ModernTemplate } from './templates/ModernTemplate';
+import { AcademicTemplate } from './templates/AcademicTemplate';
+import { CreativeTemplate } from './templates/CreativeTemplate';
 import { Download, LayoutTemplate, AlertTriangle } from 'lucide-react';
 
 interface PreviewProps {
@@ -43,6 +45,10 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
         return <ProfessionalTemplate data={data} />;
       case 'modern':
         return <ModernTemplate data={data} />;
+      case 'academic':
+        return <AcademicTemplate data={data} />;
+      case 'creative':
+        return <CreativeTemplate data={data} />;
       default:
         return <MinimalTemplate data={data} />;
     }
@@ -65,6 +71,8 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
             <option value="minimal">Minimal</option>
             <option value="professional">Professional</option>
             <option value="modern">Modern</option>
+            <option value="academic">Academic</option>
+            <option value="creative">Creative</option>
           </select>
 
           {isOverOnePage && (

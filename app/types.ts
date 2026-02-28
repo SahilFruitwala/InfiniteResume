@@ -5,6 +5,7 @@ export type PersonalInfo = {
   location: string;
   website: string;
   summary: string;
+  profilePicture?: string;
 };
 
 export type Experience = {
@@ -84,6 +85,12 @@ export type ThemeSettings = {
   minimal?: {
     accentColor?: string;
   };
+  academic?: {
+    accentColor?: string;
+  };
+  creative?: {
+    accentColor?: string;
+  };
 };
 
 export type SpacingSettings = {
@@ -110,6 +117,9 @@ export type ResumeData = {
   typography: TypographySettings;
   spacing: SpacingSettings;
   theme: ThemeSettings;
+  layout?: {
+    sectionOrder: string[];
+  };
 };
 
-export type TemplateType = 'minimal' | 'professional' | 'modern';
+export type TemplateType = 'minimal' | 'professional' | 'modern' | 'academic' | 'creative';
