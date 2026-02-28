@@ -558,6 +558,7 @@ export const ModernTemplate = memo(({ data }: { data: ResumeData }) => {
     >
       {/* Left Column */}
       <div
+        data-print-wrapper
         className="w-1/3 bg-slate-800 text-white px-8 flex flex-col gap-8"
         style={{
           paddingTop: `${pageMarginTop}px`,
@@ -675,6 +676,7 @@ export const ModernTemplate = memo(({ data }: { data: ResumeData }) => {
 
       {/* Right Column */}
       <div
+        data-print-wrapper
         className="w-2/3 px-8 bg-slate-50"
         style={{
           paddingTop: `${pageMarginTop}px`,

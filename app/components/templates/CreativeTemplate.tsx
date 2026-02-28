@@ -541,6 +541,7 @@ export const CreativeTemplate = memo(({ data }: { data: ResumeData }) => {
       ></div>
 
       <div
+        data-print-wrapper
         style={{
           paddingTop: `${pageMarginTop}px`,
           paddingBottom: `${pageMarginBottom}px`,

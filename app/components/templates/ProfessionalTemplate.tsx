@@ -455,6 +455,7 @@ export const ProfessionalTemplate = memo(({ data }: { data: ResumeData }) => {
 
   return (
     <div
+      data-print-wrapper
       className="px-10 bg-white text-gray-800 max-w-4xl mx-auto w-full min-h-[1056px]"
       style={
         {

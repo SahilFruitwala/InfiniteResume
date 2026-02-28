@@ -183,9 +183,11 @@ export const Preview = ({
                   size: ${pageSize === "A4" ? "A4" : "letter"}; 
                   margin-top: ${margins.top}px;
                   margin-bottom: ${margins.bottom}px;
+                  margin-left: 0;
+                  margin-right: 0;
                 } 
                 /* Override inline padding-top and padding-bottom from templates */
-                #resume-preview-content > div {
+                #resume-preview-content [data-print-wrapper] {
                   padding-top: 0 !important;
                   padding-bottom: 0 !important;
                 }

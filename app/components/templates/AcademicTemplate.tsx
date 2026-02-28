@@ -526,6 +526,7 @@ export const AcademicTemplate = memo(({ data }: { data: ResumeData }) => {
 
   return (
     <div
+      data-print-wrapper
       className="px-12 bg-white text-gray-900 dark:bg-slate-950 dark:text-slate-100 max-w-4xl mx-auto w-full min-h-[1056px]"
       style={
         {
