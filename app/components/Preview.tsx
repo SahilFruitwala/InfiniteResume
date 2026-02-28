@@ -35,29 +35,10 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
   const isOverOnePage = contentHeight > PAGE_HEIGHT;
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const handlePrint = async () => {
-    try {
-      setIsGenerating(true);
-      const res = await fetch("/api/pdf", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data, template }),
-      });
-      if (!res.ok) throw new Error("Failed to generate PDF");
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
-
-      // Note: We don't revoke the ObjectURL immediately so the new tab has time to load it.
-      // A more robust solution might involve returning a temporary link from the server.
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
-    } catch (error) {
-      console.error(error);
-      alert("There was an error generating the PDF.");
-    } finally {
-      setIsGenerating(false);
-    }
+  const handlePrint = () => {
+    // The browser's native print dialog takes care of PDF generation instantaneously
+    // and correctly honors all the `print:` Tailwind classes in our templates.
+    window.print();
   };
 
   const renderTemplate = () => {
@@ -108,20 +89,12 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
 
         <button
           onClick={handlePrint}
-          disabled={isGenerating}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-700 transition-colors shadow-sm"
         >
-          {isGenerating ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              Generating…
-            </>
-          ) : (
-            <>
-              <Download className="w-4 h-4" />
-              Preview / Download PDF
-            </>
-          )}
+          <>
+            <Download className="w-4 h-4" />
+            Save as PDF
+          </>
         </button>
       </div>
 
