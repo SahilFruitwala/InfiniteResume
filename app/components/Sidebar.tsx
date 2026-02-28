@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // Sidebar component for editing resume data
-import { ResumeData, Experience, Education, Project, SocialLink, TemplateType } from '../types';
+import { ResumeData, Experience, Education, Project, SocialLink, Award, Language, Volunteer, Interest, TemplateType } from '../types';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import { RichTextEditor } from './RichTextEditor';
 
@@ -129,6 +129,103 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
       socialLinks: (data.socialLinks || []).filter(link => link.id !== id)
     });
   };
+
+  const addAward = () => {
+    onChange({
+      ...data,
+      awards: [
+        ...(data.awards || []),
+        { id: crypto.randomUUID(), name: '', issuer: '', date: '', description: '' }
+      ]
+    });
+  };
+
+  const updateAward = (id: string, field: keyof Award, value: string) => {
+    onChange({
+      ...data,
+      awards: (data.awards || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    });
+  };
+
+  const removeAward = (id: string) => {
+    onChange({
+      ...data,
+      awards: (data.awards || []).filter(item => item.id !== id)
+    });
+  };
+
+  const addLanguage = () => {
+    onChange({
+      ...data,
+      languages: [
+        ...(data.languages || []),
+        { id: crypto.randomUUID(), name: '', proficiency: '' }
+      ]
+    });
+  };
+
+  const updateLanguage = (id: string, field: keyof Language, value: string) => {
+    onChange({
+      ...data,
+      languages: (data.languages || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    });
+  };
+
+  const removeLanguage = (id: string) => {
+    onChange({
+      ...data,
+      languages: (data.languages || []).filter(item => item.id !== id)
+    });
+  };
+
+  const addVolunteer = () => {
+    onChange({
+      ...data,
+      volunteerWork: [
+        ...(data.volunteerWork || []),
+        { id: crypto.randomUUID(), organization: '', position: '', startDate: '', endDate: '', description: '' }
+      ]
+    });
+  };
+
+  const updateVolunteer = (id: string, field: keyof Volunteer, value: string) => {
+    onChange({
+      ...data,
+      volunteerWork: (data.volunteerWork || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    });
+  };
+
+  const removeVolunteer = (id: string) => {
+    onChange({
+      ...data,
+      volunteerWork: (data.volunteerWork || []).filter(item => item.id !== id)
+    });
+  };
+
+  const addInterest = () => {
+    onChange({
+      ...data,
+      interests: [
+        ...(data.interests || []),
+        { id: crypto.randomUUID(), name: '' }
+      ]
+    });
+  };
+
+  const updateInterest = (id: string, field: keyof Interest, value: string) => {
+    onChange({
+      ...data,
+      interests: (data.interests || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    });
+  };
+
+  const removeInterest = (id: string) => {
+    onChange({
+      ...data,
+      interests: (data.interests || []).filter(item => item.id !== id)
+    });
+  };
+
 
   return (
     <div className="w-full max-w-md bg-white border-r border-slate-200 h-screen overflow-y-auto flex flex-col shadow-sm z-10 print:hidden">
@@ -558,10 +655,143 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
           </div>
         </AccordionItem>
 
+        <AccordionItem title="Awards & Certifications">
+          <div className="space-y-6">
+            {(data.awards || []).map((award, index) => (
+              <div key={award.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => removeAward(award.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Award {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Award Name</label>
+                    <input type="text" value={award.name} onChange={e => updateAward(award.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Employee of the Year" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Issuer</label>
+                    <input type="text" value={award.issuer} onChange={e => updateAward(award.id, 'issuer', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Tech Innovators Inc." />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Date</label>
+                    <input type="text" value={award.date} onChange={e => updateAward(award.id, 'date', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Dec 2022" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
+                    <RichTextEditor 
+                      value={award.description} 
+                      onChange={val => updateAward(award.id, 'description', val)} 
+                      placeholder="Recognized for outstanding contributions..." 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={addAward} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Award
+            </button>
+          </div>
+        </AccordionItem>
+
+        <AccordionItem title="Languages">
+          <div className="space-y-6">
+            {(data.languages || []).map((lang, index) => (
+              <div key={lang.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => removeLanguage(lang.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Language {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Language</label>
+                    <input type="text" value={lang.name} onChange={e => updateLanguage(lang.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="English" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Proficiency</label>
+                    <input type="text" value={lang.proficiency} onChange={e => updateLanguage(lang.id, 'proficiency', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Native, Fluent, Beginner..." />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={addLanguage} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Language
+            </button>
+          </div>
+        </AccordionItem>
+
+        <AccordionItem title="Volunteer Work">
+          <div className="space-y-6">
+            {(data.volunteerWork || []).map((vol, index) => (
+              <div key={vol.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => removeVolunteer(vol.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Volunteer {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Organization</label>
+                    <input type="text" value={vol.organization} onChange={e => updateVolunteer(vol.id, 'organization', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Red Cross" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Position</label>
+                    <input type="text" value={vol.position} onChange={e => updateVolunteer(vol.id, 'position', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Volunteer Coordinator" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">Start Date</label>
+                      <input type="text" value={vol.startDate} onChange={e => updateVolunteer(vol.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Jan 2018" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">End Date</label>
+                      <input type="text" value={vol.endDate} onChange={e => updateVolunteer(vol.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Present" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Description</label>
+                    <RichTextEditor 
+                      value={vol.description} 
+                      onChange={val => updateVolunteer(vol.id, 'description', val)} 
+                      placeholder="Describe your volunteer work..." 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={addVolunteer} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Volunteer Work
+            </button>
+          </div>
+        </AccordionItem>
+
+        <AccordionItem title="Interests">
+          <div className="space-y-6">
+            {(data.interests || []).map((interest, index) => (
+              <div key={interest.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => removeInterest(interest.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Interest Name</label>
+                    <input type="text" value={interest.name} onChange={e => updateInterest(interest.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Photography, Hiking..." />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={addInterest} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Interest
+            </button>
+          </div>
+        </AccordionItem>
+
         <AccordionItem title="Skills">
           <div>
-            <label className="block text-xs font-medium text-slate-700 mb-1">Skills (comma separated or bullet points)</label>
-            <textarea value={data.skills} onChange={e => onChange({ ...data, skills: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all min-h-[120px]" placeholder="JavaScript, React, Node.js, TypeScript..." />
+            <label className="block text-xs font-medium text-slate-700 mb-1">Skills</label>
+            <RichTextEditor 
+              value={data.skills} 
+              onChange={val => onChange({ ...data, skills: val })} 
+              placeholder="List your skills..." 
+            />
           </div>
         </AccordionItem>
       </div>

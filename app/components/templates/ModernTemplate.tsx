@@ -111,7 +111,55 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
             >
               Skills
             </h2>
-            <p className="text-slate-300 leading-relaxed whitespace-pre-line">{data.skills}</p>
+            <div 
+              className="text-slate-300 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+              dangerouslySetInnerHTML={{ __html: data.skills }}
+            />
+          </section>
+        )}
+
+        {data.languages && data.languages.length > 0 && (
+          <section style={{ marginBottom: `${sectionGap}px` }}>
+            <h2 
+              className="font-bold uppercase tracking-wider"
+              style={{ 
+                fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+                marginBottom: `${sectionTitleGap}px`,
+                color: accentColor
+              }}
+            >
+              Languages
+            </h2>
+            <div className="flex flex-col gap-2 text-[0.95em] text-slate-300">
+              {data.languages.map(lang => (
+                <div key={lang.id} className="flex justify-between items-center">
+                  <span className="font-medium text-white">{lang.name}</span>
+                  {lang.proficiency && <span className="text-[0.85em] text-slate-400">{lang.proficiency}</span>}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {data.interests && data.interests.length > 0 && (
+          <section style={{ marginBottom: `${sectionGap}px` }}>
+            <h2 
+              className="font-bold uppercase tracking-wider"
+              style={{ 
+                fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+                marginBottom: `${sectionTitleGap}px`,
+                color: accentColor
+              }}
+            >
+              Interests
+            </h2>
+            <div className="flex flex-wrap gap-2 text-[0.9em] text-slate-300">
+              {data.interests.map(i => (
+                <span key={i.id} className="bg-slate-700/50 px-3 py-1 rounded-full">
+                  {i.name}
+                </span>
+              ))}
+            </div>
           </section>
         )}
       </div>
@@ -209,6 +257,78 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
                   <div 
                     className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
                     dangerouslySetInnerHTML={{ __html: proj.description }}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {data.volunteerWork && data.volunteerWork.length > 0 && (
+          <section style={{ marginBottom: `${sectionGap}px` }}>
+            <h2 
+              className="font-bold uppercase tracking-wider text-slate-800 flex items-center gap-3"
+              style={{ 
+                fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+                marginBottom: `${sectionTitleGap}px`
+              }}
+            >
+              <span className="w-8 h-px bg-slate-300"></span>
+              Volunteer
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+              {data.volunteerWork.map((vol) => (
+                <div key={vol.id} className="relative pl-4 border-l-2 border-slate-200">
+                  <div className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 border-2 border-white" style={{ backgroundColor: accentColor }}></div>
+                  <div className="flex justify-between items-baseline mb-1">
+                    <h3 className="font-bold text-slate-800" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{vol.position}</h3>
+                    <span 
+                      className="text-[0.85em] font-medium px-2 py-1 rounded-full"
+                      style={{ color: accentColor, backgroundColor: `${accentColor}15` }}
+                    >
+                      {vol.startDate} - {vol.endDate}
+                    </span>
+                  </div>
+                  <div className="font-semibold text-slate-500 mb-2 uppercase tracking-wide text-[0.95em]">{vol.organization}</div>
+                  <div 
+                    className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                    dangerouslySetInnerHTML={{ __html: vol.description }}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {data.awards && data.awards.length > 0 && (
+          <section style={{ marginBottom: `${sectionGap}px` }}>
+            <h2 
+              className="font-bold uppercase tracking-wider text-slate-800 flex items-center gap-3"
+              style={{ 
+                fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+                marginBottom: `${sectionTitleGap}px`
+              }}
+            >
+              <span className="w-8 h-px bg-slate-300"></span>
+              Awards
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+              {data.awards.map((award) => (
+                <div key={award.id} className="relative pl-4 border-l-2 border-slate-200">
+                  <div className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 border-2 border-white" style={{ backgroundColor: accentColor }}></div>
+                  <div className="flex justify-between items-baseline mb-1">
+                    <h3 className="font-bold text-slate-800" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{award.name}</h3>
+                    <span 
+                      className="text-[0.85em] font-medium px-2 py-1 rounded-full"
+                      style={{ color: accentColor, backgroundColor: `${accentColor}15` }}
+                    >
+                      {award.date}
+                    </span>
+                  </div>
+                  <div className="font-semibold text-slate-500 mb-1 tracking-wide text-[0.95em]">{award.issuer}</div>
+                  <div 
+                    className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                    dangerouslySetInnerHTML={{ __html: award.description }}
                   />
                 </div>
               ))}

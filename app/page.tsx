@@ -49,7 +49,48 @@ const initialData: ResumeData = {
       link: 'github.com/janedoe/ecommerce-dashboard',
     }
   ],
-  skills: 'Languages: JavaScript, TypeScript, Python, HTML/CSS\nFrameworks: React, Next.js, Node.js, Express\nTools: Git, Docker, AWS, Webpack, Figma',
+  awards: [
+    {
+      id: '1',
+      name: 'Employee of the Year',
+      issuer: 'Tech Innovators Inc.',
+      date: 'Dec 2022',
+      description: 'Recognized for outstanding contributions to the core product.',
+    }
+  ],
+  languages: [
+    {
+      id: '1',
+      name: 'English',
+      proficiency: 'Native',
+    },
+    {
+      id: '2',
+      name: 'Spanish',
+      proficiency: 'Fluent',
+    }
+  ],
+  volunteerWork: [
+    {
+      id: '1',
+      organization: 'Code for America',
+      position: 'Volunteer Developer',
+      startDate: 'Jan 2019',
+      endDate: 'Dec 2019',
+      description: 'Mentored local youth in web development basics.',
+    }
+  ],
+  interests: [
+    {
+      id: '1',
+      name: 'Photography',
+    },
+    {
+      id: '2',
+      name: 'Hiking',
+    }
+  ],
+  skills: '<p><b>Languages:</b> JavaScript, TypeScript, Python, HTML/CSS<br><b>Frameworks:</b> React, Next.js, Node.js, Express<br><b>Tools:</b> Git, Docker, AWS, Webpack, Figma</p>',
   socialLinks: [
     {
       id: '1',

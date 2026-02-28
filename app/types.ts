@@ -37,6 +37,34 @@ export type SocialLink = {
   url: string;
 };
 
+export type Award = {
+  id: string;
+  name: string;
+  issuer: string;
+  date: string;
+  description: string;
+};
+
+export type Language = {
+  id: string;
+  name: string;
+  proficiency: string;
+};
+
+export type Volunteer = {
+  id: string;
+  organization: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+};
+
+export type Interest = {
+  id: string;
+  name: string;
+};
+
 export type TypographySettings = {
   fontFamily: string;
   fontSizeBody: number;
@@ -74,6 +102,10 @@ export type ResumeData = {
   education: Education[];
   skills: string;
   projects: Project[];
+  awards: Award[];
+  languages: Language[];
+  volunteerWork: Volunteer[];
+  interests: Interest[];
   socialLinks: SocialLink[];
   typography: TypographySettings;
   spacing: SpacingSettings;

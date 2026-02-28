@@ -167,6 +167,113 @@ export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
         </section>
       )}
 
+      {data.volunteerWork && data.volunteerWork.length > 0 && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Volunteer Experience
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            {data.volunteerWork.map((vol) => (
+              <div key={vol.id}>
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{vol.position}</h3>
+                  <span className="text-[0.9em] italic text-gray-600">
+                    {vol.startDate} - {vol.endDate}
+                  </span>
+                </div>
+                <div className="text-[0.95em] font-semibold text-gray-700 mb-2 uppercase tracking-wide">{vol.organization}</div>
+                <div 
+                  className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                  dangerouslySetInnerHTML={{ __html: vol.description }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.awards && data.awards.length > 0 && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Awards & Certifications
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            {data.awards.map((award) => (
+              <div key={award.id}>
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{award.name}</h3>
+                  <span className="text-[0.9em] italic text-gray-600">{award.date}</span>
+                </div>
+                <div className="text-[0.95em] font-semibold text-gray-700 mb-1 tracking-wide">{award.issuer}</div>
+                <div 
+                  className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                  dangerouslySetInnerHTML={{ __html: award.description }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.languages && data.languages.length > 0 && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Languages
+          </h2>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[0.95em] text-gray-700 leading-relaxed">
+            {data.languages.map(lang => (
+              <div key={lang.id}>
+                <span className="font-bold text-gray-900">{lang.name}</span>
+                {lang.proficiency && <span className="text-gray-500 italic"> - {lang.proficiency}</span>}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.interests && data.interests.length > 0 && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Interests
+          </h2>
+          <p className="leading-relaxed text-center text-[0.95em] text-gray-700">
+            {data.interests.map(i => i.name).join(', ')}
+          </p>
+        </section>
+      )}
+
       {data.skills && (
         <section style={{ marginBottom: `${sectionGap}px` }}>
           <h2 
@@ -180,7 +287,10 @@ export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
           >
             Skills
           </h2>
-          <p className="leading-relaxed text-center">{data.skills}</p>
+          <div 
+            className="leading-relaxed text-center whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] [&_ul]:inline-block [&_ul]:text-left"
+            dangerouslySetInnerHTML={{ __html: data.skills }}
+          />
         </section>
       )}
     </div>
