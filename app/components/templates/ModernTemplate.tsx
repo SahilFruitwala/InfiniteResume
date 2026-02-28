@@ -35,28 +35,28 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
           </h1>
           <div className="w-12 h-1 mb-6" style={{ backgroundColor: accentColor }}></div>
           
-          <div className="flex flex-col gap-3 text-sm text-slate-300">
+          <div className="flex flex-col gap-3 text-[0.95em] text-slate-300">
             {data.personalInfo.email && (
               <div>
-                <span className="block text-xs uppercase tracking-wider text-slate-500 mb-1">Email</span>
+                <span className="block text-[0.85em] uppercase tracking-wider text-slate-500 mb-1">Email</span>
                 {data.personalInfo.email}
               </div>
             )}
             {data.personalInfo.phone && (
               <div>
-                <span className="block text-xs uppercase tracking-wider text-slate-500 mb-1">Phone</span>
+                <span className="block text-[0.85em] uppercase tracking-wider text-slate-500 mb-1">Phone</span>
                 {data.personalInfo.phone}
               </div>
             )}
             {data.personalInfo.location && (
               <div>
-                <span className="block text-xs uppercase tracking-wider text-slate-500 mb-1">Location</span>
+                <span className="block text-[0.85em] uppercase tracking-wider text-slate-500 mb-1">Location</span>
                 {data.personalInfo.location}
               </div>
             )}
             {data.personalInfo.website && (
               <div>
-                <span className="block text-xs uppercase tracking-wider text-slate-500 mb-1">Website</span>
+                <span className="block text-[0.85em] uppercase tracking-wider text-slate-500 mb-1">Website</span>
                 <a href={data.personalInfo.website.startsWith('http') ? data.personalInfo.website : `https://${data.personalInfo.website}`} target="_blank" rel="noreferrer" className="hover:text-white hover:underline break-all">
                   {data.personalInfo.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
                 </a>
@@ -64,7 +64,7 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
             )}
             {data.socialLinks && data.socialLinks.length > 0 && data.socialLinks.map(link => (
               <div key={link.id}>
-                <span className="block text-xs uppercase tracking-wider text-slate-500 mb-1">{link.name}</span>
+                <span className="block text-[0.85em] uppercase tracking-wider text-slate-500 mb-1">{link.name}</span>
                 <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noreferrer" className="hover:text-white hover:underline break-all">
                   {link.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
                 </a>
@@ -89,8 +89,8 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
               {data.education.map((edu) => (
                 <div key={edu.id}>
                   <h3 className="font-semibold text-white">{edu.degree}</h3>
-                  <div className="text-sm text-slate-400 mb-1">{edu.institution}</div>
-                  <span className="text-xs text-slate-500">
+                  <div className="text-[0.95em] text-slate-400 mb-1">{edu.institution}</div>
+                  <span className="text-[0.85em] text-slate-500">
                     {edu.startDate} - {edu.endDate}
                   </span>
                 </div>
@@ -111,7 +111,7 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
             >
               Skills
             </h2>
-            <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{data.skills}</p>
+            <p className="text-slate-300 leading-relaxed whitespace-pre-line">{data.skills}</p>
           </section>
         )}
       </div>
@@ -134,7 +134,7 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
               Profile
             </h2>
             <div 
-              className="text-sm leading-relaxed text-slate-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+              className="leading-relaxed text-slate-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
               dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
             />
           </section>
@@ -157,17 +157,17 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
                 <div key={exp.id} className="relative pl-4 border-l-2 border-slate-200">
                   <div className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 border-2 border-white" style={{ backgroundColor: accentColor }}></div>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-slate-800 text-lg">{exp.position}</h3>
+                    <h3 className="font-bold text-slate-800 text-[1.25em]">{exp.position}</h3>
                     <span 
-                      className="text-xs font-medium px-2 py-1 rounded-full"
+                      className="text-[0.85em] font-medium px-2 py-1 rounded-full"
                       style={{ color: accentColor, backgroundColor: `${accentColor}15` }}
                     >
                       {exp.startDate} - {exp.endDate}
                     </span>
                   </div>
-                  <div className="text-sm font-semibold text-slate-500 mb-2 uppercase tracking-wide">{exp.company}</div>
+                  <div className="font-semibold text-slate-500 mb-2 uppercase tracking-wide text-[0.95em]">{exp.company}</div>
                   <div 
-                    className="text-sm text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                    className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
                     dangerouslySetInnerHTML={{ __html: exp.description }}
                   />
                 </div>
@@ -193,13 +193,13 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
                 <div key={proj.id} className="relative pl-4 border-l-2 border-slate-200">
                   <div className="absolute w-3 h-3 rounded-full -left-[7px] top-1.5 border-2 border-white" style={{ backgroundColor: accentColor }}></div>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-slate-800 text-lg">{proj.name}</h3>
+                    <h3 className="font-bold text-slate-800 text-[1.25em]">{proj.name}</h3>
                     {proj.link && (
                       <a 
                         href={proj.link} 
                         target="_blank" 
                         rel="noreferrer" 
-                        className="text-xs font-medium hover:underline"
+                        className="text-[0.85em] font-medium hover:underline"
                         style={{ color: accentColor }}
                       >
                         {proj.link}
@@ -207,7 +207,7 @@ export const ModernTemplate = ({ data }: { data: ResumeData }) => {
                     )}
                   </div>
                   <div 
-                    className="text-sm text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                    className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
                     dangerouslySetInnerHTML={{ __html: proj.description }}
                   />
                 </div>

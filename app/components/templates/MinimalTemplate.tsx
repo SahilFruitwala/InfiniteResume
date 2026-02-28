@@ -30,7 +30,7 @@ export const MinimalTemplate = ({ data }: { data: ResumeData }) => {
         >
           {data.personalInfo.fullName || 'Your Name'}
         </h1>
-        <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+        <div className="flex flex-wrap gap-4 text-[0.95em] text-gray-600">
           {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
           {data.personalInfo.phone && <span>{data.personalInfo.phone}</span>}
           {data.personalInfo.location && <span>{data.personalInfo.location}</span>}
@@ -50,7 +50,7 @@ export const MinimalTemplate = ({ data }: { data: ResumeData }) => {
       {data.personalInfo.summary && (
         <section style={{ marginBottom: `${sectionGap}px` }}>
           <div 
-            className="text-sm leading-relaxed text-gray-700 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+            className="leading-relaxed text-gray-700 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
             dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
           />
         </section>
@@ -73,14 +73,14 @@ export const MinimalTemplate = ({ data }: { data: ResumeData }) => {
             {data.experience.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="font-semibold text-gray-900">{exp.position}</h3>
-                  <span className="text-sm text-gray-500">
+                  <h3 className="font-semibold text-gray-900 text-[1.15em]">{exp.position}</h3>
+                  <span className="text-[0.9em] text-gray-500">
                     {exp.startDate} - {exp.endDate}
                   </span>
                 </div>
-                <div className="text-sm font-medium text-gray-700 mb-2">{exp.company}</div>
+                <div className="font-medium text-gray-700 mb-2 text-[0.95em]">{exp.company}</div>
                 <div 
-                  className="text-sm text-gray-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                  className="text-gray-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
                   dangerouslySetInnerHTML={{ __html: exp.description }}
                 />
               </div>
@@ -106,12 +106,12 @@ export const MinimalTemplate = ({ data }: { data: ResumeData }) => {
             {data.education.map((edu) => (
               <div key={edu.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="font-semibold text-gray-900">{edu.degree}</h3>
-                  <span className="text-sm text-gray-500">
+                  <h3 className="font-semibold text-gray-900 text-[1.15em]">{edu.degree}</h3>
+                  <span className="text-[0.9em] text-gray-500">
                     {edu.startDate} - {edu.endDate}
                   </span>
                 </div>
-                <div className="text-sm text-gray-700">{edu.institution}</div>
+                <div className="text-[0.95em] text-gray-700">{edu.institution}</div>
               </div>
             ))}
           </div>
@@ -135,15 +135,15 @@ export const MinimalTemplate = ({ data }: { data: ResumeData }) => {
             {data.projects.map((proj) => (
               <div key={proj.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="font-semibold text-gray-900">{proj.name}</h3>
+                  <h3 className="font-semibold text-gray-900 text-[1.15em]">{proj.name}</h3>
                   {proj.link && (
-                    <a href={proj.link} target="_blank" rel="noreferrer" className="text-sm text-blue-600 hover:underline">
+                    <a href={proj.link} target="_blank" rel="noreferrer" className="text-[0.9em] text-blue-600 hover:underline">
                       {proj.link}
                     </a>
                   )}
                 </div>
                 <div 
-                  className="text-sm text-gray-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                  className="text-gray-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
                   dangerouslySetInnerHTML={{ __html: proj.description }}
                 />
               </div>
@@ -165,7 +165,7 @@ export const MinimalTemplate = ({ data }: { data: ResumeData }) => {
           >
             Skills
           </h2>
-          <p className="text-sm text-gray-700 leading-relaxed">{data.skills}</p>
+          <p className="text-gray-700 leading-relaxed">{data.skills}</p>
         </section>
       )}
     </div>
