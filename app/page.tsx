@@ -5,6 +5,7 @@ import { LeftSidebar } from "./components/LeftSidebar";
 import { RightSidebar } from "./components/RightSidebar";
 import { Preview } from "./components/Preview";
 import { ResumeData, TemplateType } from "./types";
+import { AnimatePresence, motion } from "framer-motion";
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -180,6 +181,8 @@ export default function Home() {
     canRedo,
   } = useHistory<ResumeData>("infinite-resume-data", initialData);
   const [template, setTemplate] = useState<TemplateType>("minimal");
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
 
   React.useEffect(() => {
     setMounted(true);
@@ -195,21 +198,52 @@ export default function Home() {
 
   return (
     <div className="flex h-screen w-full bg-slate-100 overflow-hidden font-sans print:h-auto print:overflow-visible print:block">
-      <LeftSidebar
+      <AnimatePresence initial={false}>
+        {leftSidebarOpen && (
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "auto", opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50"
+          >
+            <LeftSidebar
+              data={resumeData}
+              onChange={setResumeData}
+              undo={undo}
+              redo={redo}
+              canUndo={canUndo}
+              canRedo={canRedo}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <Preview
         data={resumeData}
-        onChange={setResumeData}
-        undo={undo}
-        redo={redo}
-        canUndo={canUndo}
-        canRedo={canRedo}
-      />
-      <Preview data={resumeData} template={template} />
-      <RightSidebar
-        data={resumeData}
-        onChange={setResumeData}
         template={template}
-        onTemplateChange={setTemplate}
+        leftSidebarOpen={leftSidebarOpen}
+        rightSidebarOpen={rightSidebarOpen}
+        onToggleLeftSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)}
+        onToggleRightSidebar={() => setRightSidebarOpen(!rightSidebarOpen)}
       />
+      <AnimatePresence initial={false}>
+        {rightSidebarOpen && (
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "auto", opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="shrink-0 overflow-hidden h-full z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)]"
+          >
+            <RightSidebar
+              data={resumeData}
+              onChange={setResumeData}
+              template={template}
+              onTemplateChange={setTemplate}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1136,7 +1136,7 @@ export const LeftSidebar = ({
   );
 
   return (
-    <div className="w-full max-w-md bg-white border-r border-slate-200 h-screen overflow-y-auto flex flex-col shadow-sm z-10 print:hidden">
+    <div className="w-[400px] bg-white border-r border-slate-200 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0">
       <div className="p-6 border-b border-slate-200 bg-slate-800 text-white sticky top-0 z-20 flex justify-between items-start">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>

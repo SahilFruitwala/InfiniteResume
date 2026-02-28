@@ -5,15 +5,33 @@ import { ProfessionalTemplate } from "./templates/ProfessionalTemplate";
 import { ModernTemplate } from "./templates/ModernTemplate";
 import { AcademicTemplate } from "./templates/AcademicTemplate";
 import { CreativeTemplate } from "./templates/CreativeTemplate";
-import { Download, LayoutTemplate, AlertTriangle } from "lucide-react";
+import {
+  Download,
+  AlertTriangle,
+  PanelLeftClose,
+  PanelRightClose,
+  PanelLeft,
+  PanelRight,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface PreviewProps {
   data: ResumeData;
   template: TemplateType;
+  leftSidebarOpen: boolean;
+  rightSidebarOpen: boolean;
+  onToggleLeftSidebar: () => void;
+  onToggleRightSidebar: () => void;
 }
 
-export const Preview = ({ data, template }: PreviewProps) => {
+export const Preview = ({
+  data,
+  template,
+  leftSidebarOpen,
+  rightSidebarOpen,
+  onToggleLeftSidebar,
+  onToggleRightSidebar,
+}: PreviewProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
 
@@ -60,25 +78,52 @@ export const Preview = ({ data, template }: PreviewProps) => {
   return (
     <div className="flex-1 flex flex-col h-screen bg-slate-100 overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block">
       {/* Toolbar */}
-      <div className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0 shadow-sm z-10 print:hidden">
-        <div className="flex items-center gap-4">
+      <div className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0 shadow-sm z-10 print:hidden">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onToggleLeftSidebar}
+            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors"
+            title={leftSidebarOpen ? "Hide Data Entry" : "Show Data Entry"}
+          >
+            {leftSidebarOpen ? (
+              <PanelLeftClose className="w-5 h-5" />
+            ) : (
+              <PanelLeft className="w-5 h-5" />
+            )}
+          </button>
           {isOverOnePage && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-md text-sm font-medium border border-amber-200">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-md text-sm font-medium border border-amber-200 ml-2">
               <AlertTriangle className="w-4 h-4" />
               Content exceeds 1 page
             </div>
           )}
         </div>
 
-        <button
-          onClick={handlePrint}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-700 transition-colors shadow-sm"
-        >
-          <>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-700 transition-colors shadow-sm"
+          >
             <Download className="w-4 h-4" />
             Save as PDF
-          </>
-        </button>
+          </button>
+
+          <div className="w-px h-6 bg-slate-200 mx-1"></div>
+
+          <button
+            onClick={onToggleRightSidebar}
+            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors"
+            title={
+              rightSidebarOpen ? "Hide Design Settings" : "Show Design Settings"
+            }
+          >
+            {rightSidebarOpen ? (
+              <PanelRightClose className="w-5 h-5" />
+            ) : (
+              <PanelRight className="w-5 h-5" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Preview Area */}
