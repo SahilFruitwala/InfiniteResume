@@ -1312,10 +1312,10 @@ export const LeftSidebar = ({
 
   return (
     <div className="w-80 md:w-96 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
-      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-800 dark:bg-slate-950 text-white flex justify-between items-center shrink-0">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Fill in your details to generate your resume.
           </p>
         </div>
@@ -1325,20 +1325,20 @@ export const LeftSidebar = ({
             size="icon"
             onClick={undo}
             disabled={!canUndo}
-            className="text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30"
+            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition-colors"
             title="Undo (Cmd+Z)"
           >
-            <Undo2 className="w-4 h-4" />
+            <Undo2 className="w-5 h-5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={redo}
             disabled={!canRedo}
-            className="text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30"
+            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition-colors"
             title="Redo (Cmd+Shift+Z)"
           >
-            <Redo2 className="w-4 h-4" />
+            <Redo2 className="w-5 h-5" />
           </Button>
         </div>
       </div>

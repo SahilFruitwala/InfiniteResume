@@ -225,10 +225,10 @@ export const RightSidebar = ({
 
   return (
     <div className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">
-      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-800 dark:bg-slate-950 text-white flex justify-between items-center shrink-0">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Design Settings</h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Customize the look and feel.
           </p>
         </div>
