@@ -14,7 +14,7 @@ import {
   PanelLeft,
   PanelRight,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { ThemeToggle } from "./ThemeToggle";
 
 interface PreviewProps {
@@ -83,7 +83,7 @@ export const Preview = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-slate-100 dark:bg-slate-950 overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors duration-300">
+    <div className="flex-1 flex flex-col h-screen bg-slate-100 dark:bg-slate-950 overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
       {/* Toolbar */}
       <div className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shrink-0 shadow-sm z-10 print:hidden transition-colors">
         <div className="flex items-center gap-2">
@@ -138,7 +138,7 @@ export const Preview = ({
       {/* Preview Area */}
       <div className="flex-1 overflow-y-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
         <div
-          className="bg-white shadow-xl max-w-4xl w-full print:shadow-none print:m-0 print:max-w-none print:w-full relative transition-colors duration-300"
+          className="bg-white shadow-xl max-w-4xl w-full print:shadow-none print:m-0 print:max-w-none print:w-full relative transition-colors"
           style={{ minHeight: `${PAGE_HEIGHT}px` }}
           data-resume-theme={isDark ? "dark" : "light"}
         >
@@ -148,18 +148,7 @@ export const Preview = ({
             }}
           />
           <div ref={contentRef} className="w-full">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={template}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="w-full"
-              >
-                {renderTemplate()}
-              </motion.div>
-            </AnimatePresence>
+            {renderTemplate()}
           </div>
 
           {/* Page breaks */}
