@@ -671,6 +671,9 @@ const InterestSection = React.memo(
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
+              <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">
+                Interest {index + 1}
+              </h4>
               <div className="space-y-4">
                 <div>
                   <Label className="block text-xs font-medium text-slate-700 mb-1">
