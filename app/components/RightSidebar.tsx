@@ -240,49 +240,6 @@ export const RightSidebar = ({
           className="w-full"
           defaultValue={["template", "theme-modes"]}
         >
-          <AccordionItem title="Theme & Appearance" value="theme-modes">
-            <div className="space-y-6">
-              {/* Unified Theme Control */}
-              <div>
-                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider">
-                  Application Theme
-                </Label>
-                <div className="grid grid-cols-3 gap-2">
-                  <Button
-                    variant={appTheme === "light" ? "secondary" : "outline"}
-                    size="sm"
-                    className={`flex flex-col gap-1 h-auto py-3 ${appTheme === "light" ? "ring-2 ring-slate-800 dark:ring-slate-400" : "bg-white dark:bg-slate-900"}`}
-                    onClick={() => setAppTheme("light")}
-                  >
-                    <Sun className="w-4 h-4" />
-                    <span className="text-[10px]">Light</span>
-                  </Button>
-                  <Button
-                    variant={appTheme === "dark" ? "secondary" : "outline"}
-                    size="sm"
-                    className={`flex flex-col gap-1 h-auto py-3 ${appTheme === "dark" ? "ring-2 ring-slate-800 dark:ring-slate-400" : "bg-white dark:bg-slate-900"}`}
-                    onClick={() => setAppTheme("dark")}
-                  >
-                    <Moon className="w-4 h-4" />
-                    <span className="text-[10px]">Dark</span>
-                  </Button>
-                  <Button
-                    variant={appTheme === "system" ? "secondary" : "outline"}
-                    size="sm"
-                    className={`flex flex-col gap-1 h-auto py-3 ${appTheme === "system" ? "ring-2 ring-slate-800 dark:ring-slate-400" : "bg-white dark:bg-slate-900"}`}
-                    onClick={() => setAppTheme("system")}
-                  >
-                    <Laptop className="w-4 h-4" />
-                    <span className="text-[10px]">System</span>
-                  </Button>
-                </div>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-3 leading-tight">
-                  <Palette className="w-3 h-3 inline mr-1 mb-0.5" />
-                  Controls the entire app interface and resume preview.
-                </p>
-              </div>
-            </div>
-          </AccordionItem>
           <AccordionItem title="Template Selection" value="template">
             <div className="space-y-4">
               <div>

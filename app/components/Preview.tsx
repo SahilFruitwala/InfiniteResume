@@ -15,6 +15,7 @@ import {
   PanelRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface PreviewProps {
   data: ResumeData;
@@ -113,6 +114,8 @@ export const Preview = ({
             <Download className="w-4 h-4" />
             Save as PDF
           </button>
+
+          <ThemeToggle />
 
           <div className="w-px h-6 bg-slate-200 mx-1"></div>
 
