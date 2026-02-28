@@ -59,8 +59,8 @@ export const RightSidebar = ({
   onTemplateChange,
 }: RightSidebarProps) => {
   return (
-    <div className="w-80 bg-white border-l border-slate-200 h-screen overflow-y-auto flex flex-col shadow-sm z-10 print:hidden shrink-0">
-      <div className="p-6 border-b border-slate-200 bg-slate-800 text-white sticky top-0 z-20 flex justify-between items-start">
+    <div className="w-80 bg-white border-l border-slate-200 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0">
+      <div className="p-6 border-b border-slate-200 bg-slate-800 text-white flex justify-between items-start shrink-0">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Design Settings</h2>
           <p className="text-sm text-slate-400 mt-1">
@@ -69,7 +69,7 @@ export const RightSidebar = ({
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto pb-10">
         <Accordion
           type="multiple"
           className="w-full"
