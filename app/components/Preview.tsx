@@ -55,8 +55,42 @@ export const Preview = ({
   }, [data, template]);
 
   const pageSize = data.spacing?.pageSize || "LETTER";
-  const PAGE_HEIGHT = pageSize === "A4" ? 1123 : 1056; // 96 DPI: A4 is 1123px, Letter is 1056px
+  const PAGE_WIDTH = pageSize === "A4" ? 794 : 816; // 96 DPI: A4 is ~794px, Letter is 816px (8.5in)
+  const PAGE_HEIGHT = pageSize === "A4" ? 1123 : 1056; // 96 DPI: A4 is 1123px, Letter is 1056px (11in)
+
+  const getTemplateMargins = () => {
+    switch (template) {
+      case "minimal":
+      case "modern":
+        return {
+          top: data.spacing?.pageMarginTop ?? 32,
+          bottom: data.spacing?.pageMarginBottom ?? 32,
+        };
+      case "academic":
+        return {
+          top: data.spacing?.pageMarginTop ?? 48,
+          bottom: data.spacing?.pageMarginBottom ?? 48,
+        };
+      case "professional":
+      case "creative":
+      default:
+        return {
+          top: data.spacing?.pageMarginTop ?? 40,
+          bottom: data.spacing?.pageMarginBottom ?? 40,
+        };
+    }
+  };
+
+  const margins = getTemplateMargins();
+  const pdfPrintableHeight = PAGE_HEIGHT - margins.top - margins.bottom;
   const isOverOnePage = contentHeight > PAGE_HEIGHT;
+  // Calculate how many page break lines to draw based on printable content height
+  const innerContentHeight = contentHeight - margins.top - margins.bottom;
+  const pageBreakCount = Math.max(
+    0,
+    Math.floor((innerContentHeight - 1) / pdfPrintableHeight),
+  );
+
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handlePrint = () => {
@@ -136,30 +170,41 @@ export const Preview = ({
       </div>
 
       {/* Preview Area */}
-      <div className="flex-1 overflow-y-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
+      <div className="flex-1 overflow-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
         <div
-          className="bg-white shadow-xl max-w-4xl w-full print:shadow-none print:m-0 print:max-w-none print:w-full relative transition-colors"
-          style={{ minHeight: `${PAGE_HEIGHT}px` }}
+          className="bg-white shadow-xl shrink-0 print:shadow-none print:m-0 relative transition-colors"
+          style={{ width: `${PAGE_WIDTH}px`, minHeight: `${PAGE_HEIGHT}px` }}
           data-resume-theme={isDark ? "dark" : "light"}
         >
           <style
             dangerouslySetInnerHTML={{
-              __html: `@media print { @page { size: ${pageSize === "A4" ? "A4" : "letter"}; } }`,
+              __html: `@media print { 
+                @page { 
+                  size: ${pageSize === "A4" ? "A4" : "letter"}; 
+                  margin-top: ${margins.top}px;
+                  margin-bottom: ${margins.bottom}px;
+                } 
+                /* Override inline padding-top and padding-bottom from templates */
+                #resume-preview-content > div {
+                  padding-top: 0 !important;
+                  padding-bottom: 0 !important;
+                }
+              }`,
             }}
           />
-          <div ref={contentRef} className="w-full">
+          <div id="resume-preview-content" ref={contentRef} className="w-full">
             {renderTemplate()}
           </div>
 
           {/* Page breaks */}
           {isOverOnePage &&
-            Array.from({
-              length: Math.floor((contentHeight - 1) / PAGE_HEIGHT),
-            }).map((_, i) => (
+            Array.from({ length: pageBreakCount }).map((_, i) => (
               <div
                 key={i}
                 className="absolute left-0 right-0 border-b-2 border-dashed border-amber-400 z-10 print:hidden pointer-events-none"
-                style={{ top: `${(i + 1) * PAGE_HEIGHT}px` }}
+                style={{
+                  top: `${margins.top + (i + 1) * pdfPrintableHeight}px`,
+                }}
               >
                 <span className="absolute right-4 -top-6 text-xs text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded-t-md border border-b-0 border-amber-400 shadow-sm">
                   Page {i + 1} Break

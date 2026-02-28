@@ -11,9 +11,6 @@
     background-color: white !important;
     color: black !important;
   }
-  @page {
-    margin: 0;
-  }
 
   /* ===== Force light mode for all resume content during print ===== */
 
