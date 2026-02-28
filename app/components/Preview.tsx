@@ -47,13 +47,11 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
 
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${data.personalInfo.fullName ? data.personalInfo.fullName.replace(/\s+/g, "_") : "Resume"}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      window.open(url, "_blank");
+
+      // Note: We don't revoke the ObjectURL immediately so the new tab has time to load it.
+      // A more robust solution might involve returning a temporary link from the server.
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
     } catch (error) {
       console.error(error);
       alert("There was an error generating the PDF.");
@@ -121,7 +119,7 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
           ) : (
             <>
               <Download className="w-4 h-4" />
-              Download PDF
+              Preview / Download PDF
             </>
           )}
         </button>
