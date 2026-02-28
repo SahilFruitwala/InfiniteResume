@@ -238,7 +238,7 @@ export const CreativeTemplate = ({ data }: { data: ResumeData }) => {
           </section>
         ) : null;
       case 'skills':
-        return data.skills ? (
+        return data.skills && data.skills.length > 0 ? (
           <section key="skills" style={{ marginBottom: `${sectionGap}px` }}>
             <h2 
               className="font-black uppercase tracking-widest text-gray-900 border-l-4 pl-3"
@@ -250,10 +250,17 @@ export const CreativeTemplate = ({ data }: { data: ResumeData }) => {
             >
               Skills
             </h2>
-            <div 
-              className="leading-relaxed text-gray-700 whitespace-pre-line bg-gray-50 p-6 rounded-xl border border-gray-100 [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-              dangerouslySetInnerHTML={{ __html: data.skills }}
-            />
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 flex flex-col gap-4">
+              {data.skills.map((category) => (
+                <div key={category.id}>
+                  <h3 className="font-extrabold text-gray-900 mb-1" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 18}px` }}>{category.name}</h3>
+                  <div 
+                    className="leading-relaxed text-gray-700 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                    dangerouslySetInnerHTML={{ __html: category.skills }}
+                  />
+                </div>
+              ))}
+            </div>
           </section>
         ) : null;
       default:

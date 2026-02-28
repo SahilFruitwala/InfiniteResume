@@ -10,3 +10,8 @@
     size: A4;
   }
 }
+
+
+button, a {
+  cursor: pointer;
+}

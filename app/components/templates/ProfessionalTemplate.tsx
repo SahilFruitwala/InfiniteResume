@@ -237,7 +237,7 @@ export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
           </section>
         ) : null;
       case 'skills':
-        return data.skills ? (
+        return data.skills && data.skills.length > 0 ? (
           <section key="skills" style={{ marginBottom: `${sectionGap}px` }}>
             <h2 
               className="font-bold uppercase tracking-widest text-center border-b pb-2"
@@ -250,10 +250,17 @@ export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
             >
               Skills
             </h2>
-            <div 
-              className="leading-relaxed text-center whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] [&_ul]:inline-block [&_ul]:text-left"
-              dangerouslySetInnerHTML={{ __html: data.skills }}
-            />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+              {data.skills.map((category) => (
+                <div key={category.id}>
+                  <h3 className="font-bold text-center text-gray-900 mb-1" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 16}px` }}>{category.name}</h3>
+                  <div 
+                    className="leading-relaxed text-center whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] [&_ul]:inline-block [&_ul]:text-left"
+                    dangerouslySetInnerHTML={{ __html: category.skills }}
+                  />
+                </div>
+              ))}
+            </div>
           </section>
         ) : null;
       default:

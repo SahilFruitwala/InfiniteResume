@@ -90,7 +90,23 @@ const initialData: ResumeData = {
       name: 'Hiking',
     }
   ],
-  skills: '<p><b>Languages:</b> JavaScript, TypeScript, Python, HTML/CSS<br><b>Frameworks:</b> React, Next.js, Node.js, Express<br><b>Tools:</b> Git, Docker, AWS, Webpack, Figma</p>',
+  skills: [
+    {
+      id: '1',
+      name: 'Languages',
+      skills: 'JavaScript, TypeScript, Python, HTML/CSS'
+    },
+    {
+      id: '2',
+      name: 'Frameworks',
+      skills: 'React, Next.js, Node.js, Express'
+    },
+    {
+      id: '3',
+      name: 'Tools',
+      skills: 'Git, Docker, AWS, Webpack, Figma'
+    }
+  ],
   socialLinks: [
     {
       id: '1',
@@ -135,13 +151,32 @@ const initialData: ResumeData = {
   }
 };
 
+import { useHistory } from './hooks/useHistory';
+
 export default function Home() {
-  const [resumeData, setResumeData] = useState<ResumeData>(initialData);
+  const [mounted, setMounted] = useState(false);
+  const { state: resumeData, set: setResumeData, undo, redo, canUndo, canRedo } = useHistory<ResumeData>('infinite-resume-data', initialData);
   const [template, setTemplate] = useState<TemplateType>('minimal');
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="flex h-screen w-full bg-slate-100 justify-center items-center">Loading resume builder...</div>;
+  }
 
   return (
     <div className="flex h-screen w-full bg-slate-100 overflow-hidden font-sans print:h-auto print:overflow-visible print:block">
-      <Sidebar data={resumeData} onChange={setResumeData} template={template} />
+      <Sidebar 
+        data={resumeData} 
+        onChange={setResumeData} 
+        template={template} 
+        undo={undo}
+        redo={redo}
+        canUndo={canUndo}
+        canRedo={canRedo}
+      />
       <Preview data={resumeData} template={template} onTemplateChange={setTemplate} />
     </div>
   );

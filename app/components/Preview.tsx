@@ -32,9 +32,33 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
 
   const PAGE_HEIGHT = 1056;
   const isOverOnePage = contentHeight > PAGE_HEIGHT;
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const handlePrint = () => {
-    window.print();
+  const handlePrint = async () => {
+    try {
+      setIsGenerating(true);
+      const res = await fetch('/api/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data, template })
+      });
+      if (!res.ok) throw new Error('Failed to generate PDF');
+      
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${data.personalInfo.fullName ? data.personalInfo.fullName.replace(/\s+/g, '_') : 'Resume'}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+      alert('There was an error generating the PDF.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const renderTemplate = () => {
@@ -85,10 +109,20 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
 
         <button
           onClick={handlePrint}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-700 transition-colors shadow-sm"
+          disabled={isGenerating}
+          className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
         >
-          <Download className="w-4 h-4" />
-          Download PDF
+          {isGenerating ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              Generating...
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" />
+              Download PDF
+            </>
+          )}
         </button>
       </div>
 

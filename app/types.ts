@@ -103,11 +103,17 @@ export type SpacingSettings = {
   bulletListMargin?: number;
 };
 
+export type SkillCategory = {
+  id: string;
+  name: string;
+  skills: string;
+};
+
 export type ResumeData = {
   personalInfo: PersonalInfo;
   experience: Experience[];
   education: Education[];
-  skills: string;
+  skills: SkillCategory[];
   projects: Project[];
   awards: Award[];
   languages: Language[];

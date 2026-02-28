@@ -242,7 +242,7 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
           </section>
         ) : null;
       case 'skills':
-        return data.skills ? (
+        return data.skills && data.skills.length > 0 ? (
           <section key="skills" style={{ marginBottom: `${sectionGap}px` }}>
             <h2 
               className="font-bold uppercase tracking-wider border-b-2"
@@ -255,11 +255,18 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
             >
               Technical Skills
             </h2>
-            <div 
-              className="leading-relaxed text-[0.95em] text-gray-800 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-              style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
-              dangerouslySetInnerHTML={{ __html: data.skills }}
-            />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+              {data.skills.map((category) => (
+                <div key={category.id}>
+                  <h3 className="font-bold text-gray-900 mb-1" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 15}px`, fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{category.name}</h3>
+                  <div 
+                    className="leading-relaxed text-[0.95em] text-gray-800 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                    style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
+                    dangerouslySetInnerHTML={{ __html: category.skills }}
+                  />
+                </div>
+              ))}
+            </div>
           </section>
         ) : null;
       default:

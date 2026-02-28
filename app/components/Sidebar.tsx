@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 // Sidebar component for editing resume data
-import { ResumeData, Experience, Education, Project, SocialLink, Award, Language, Volunteer, Interest, TemplateType } from '../types';
-import { Plus, Trash2, ChevronDown, ChevronUp, ArrowUp, ArrowDown } from 'lucide-react';
+import { ResumeData, Experience, Education, Project, SocialLink, Award, Language, Volunteer, Interest, TemplateType, SkillCategory } from '../types';
+import { Plus, Trash2, ChevronDown, ChevronUp, ArrowUp, ArrowDown, Undo2, Redo2 } from 'lucide-react';
 import { RichTextEditor } from './RichTextEditor';
 
 interface SidebarProps {
   data: ResumeData;
   onChange: (data: ResumeData) => void;
   template: TemplateType;
+  undo?: () => void;
+  redo?: () => void;
+  canUndo?: boolean;
+  canRedo?: boolean;
 }
 
 const AccordionItem = ({ title, children, defaultOpen = false }: { title: string, children: React.ReactNode, defaultOpen?: boolean }) => {
@@ -26,7 +30,23 @@ const AccordionItem = ({ title, children, defaultOpen = false }: { title: string
   );
 };
 
-export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
+export const Sidebar = ({ data, onChange, template, undo, redo, canUndo, canRedo }: SidebarProps) => {
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+        if (e.shiftKey) {
+          e.preventDefault();
+          redo?.();
+        } else {
+          e.preventDefault();
+          undo?.();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [undo, redo]);
+
   const updatePersonalInfo = (field: keyof ResumeData['personalInfo'], value: string) => {
     onChange({
       ...data,
@@ -226,12 +246,56 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
     });
   };
 
+  const addSkillCategory = () => {
+    onChange({
+      ...data,
+      skills: [
+        ...(data.skills || []),
+        { id: crypto.randomUUID(), name: '', skills: '' }
+      ]
+    });
+  };
+
+  const updateSkillCategory = (id: string, field: keyof SkillCategory, value: string) => {
+    onChange({
+      ...data,
+      skills: (data.skills || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    });
+  };
+
+  const removeSkillCategory = (id: string) => {
+    onChange({
+      ...data,
+      skills: (data.skills || []).filter(item => item.id !== id)
+    });
+  };
+
 
   return (
     <div className="w-full max-w-md bg-white border-r border-slate-200 h-screen overflow-y-auto flex flex-col shadow-sm z-10 print:hidden">
-      <div className="p-6 border-b border-slate-200 bg-slate-800 text-white sticky top-0 z-20">
-        <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>
-        <p className="text-sm text-slate-400 mt-1">Fill in your details to generate your resume.</p>
+      <div className="p-6 border-b border-slate-200 bg-slate-800 text-white sticky top-0 z-20 flex justify-between items-start">
+        <div>
+          <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>
+          <p className="text-sm text-slate-400 mt-1">Fill in your details to generate your resume.</p>
+        </div>
+        <div className="flex gap-2">
+          <button 
+            onClick={undo}
+            disabled={!canUndo}
+            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30 disabled:hover:bg-transparent rounded transition-colors"
+            title="Undo (Cmd+Z)"
+          >
+            <Undo2 className="w-4 h-4" />
+          </button>
+          <button 
+            onClick={redo}
+            disabled={!canRedo}
+            className="p-2 text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-30 disabled:hover:bg-transparent rounded transition-colors"
+            title="Redo (Cmd+Shift+Z)"
+          >
+            <Redo2 className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       <div className="flex-1">
@@ -871,13 +935,32 @@ export const Sidebar = ({ data, onChange, template }: SidebarProps) => {
         </AccordionItem>
 
         <AccordionItem title="Skills">
-          <div>
-            <label className="block text-xs font-medium text-slate-700 mb-1">Skills</label>
-            <RichTextEditor 
-              value={data.skills} 
-              onChange={val => onChange({ ...data, skills: val })} 
-              placeholder="List your skills..." 
-            />
+          <div className="space-y-6">
+            {(data.skills || []).map((category, index) => (
+              <div key={category.id} className="relative p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+                <button onClick={() => removeSkillCategory(category.id)} className="absolute top-3 right-3 text-slate-400 hover:text-red-500 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <h4 className="text-sm font-semibold text-slate-800 mb-3 pr-8">Category {index + 1}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Category Name</label>
+                    <input type="text" value={category.name} onChange={e => updateSkillCategory(category.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all" placeholder="Frontend, Backend, Tools..." />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">Skills</label>
+                    <RichTextEditor 
+                      value={category.skills} 
+                      onChange={val => updateSkillCategory(category.id, 'skills', val)} 
+                      placeholder="React, Next.js, Node.js..." 
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <button onClick={addSkillCategory} className="w-full py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-slate-800 hover:text-slate-800 transition-all flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" /> Add Skill Category
+            </button>
           </div>
         </AccordionItem>
       </div>
