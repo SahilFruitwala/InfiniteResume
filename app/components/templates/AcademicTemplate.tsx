@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import Image from "next/image";
 import { ResumeData } from "../../types";
+import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
 
 export const AcademicTemplate = memo(({ data }: { data: ResumeData }) => {
   const { typography, spacing, theme } = data;
@@ -13,16 +14,9 @@ export const AcademicTemplate = memo(({ data }: { data: ResumeData }) => {
   const isDark = data.theme?.previewTheme === "dark";
   const defaultAccentColor = isDark ? "#60a5fa" : "#1e3a8a"; // blue-400 : deep blue
 
-  // If in dark mode, we check if the provided accent color is too dark.
-  // We check for common dark defaults from other templates too.
   let accentColor =
     theme?.academic?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
-  const darkColors = ["#1e3a8a", "#0f172a", "#111827", "#000000"];
-  if (
-    isDark &&
-    (darkColors.includes(accentColor.toLowerCase()) ||
-      (!theme?.academic?.accentColor && !theme?.accentColor))
-  ) {
+  if (isDark && isColorTooDarkForDarkBg(accentColor)) {
     accentColor = defaultAccentColor;
   }
 

@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import Image from "next/image";
 import { ResumeData } from "../../types";
+import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
 
 export const ModernTemplate = memo(({ data }: { data: ResumeData }) => {
   const { typography, spacing, theme } = data;
@@ -12,8 +13,11 @@ export const ModernTemplate = memo(({ data }: { data: ResumeData }) => {
   const pageMarginBottom = spacing?.pageMarginBottom ?? 32;
   const isDark = data.theme?.previewTheme === "dark";
   const defaultAccentColor = isDark ? "#34d399" : "#10b981"; // emerald-400 : emerald-600
-  const accentColor =
+  let accentColor =
     theme?.modern?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
+  if (isDark && isColorTooDarkForDarkBg(accentColor)) {
+    accentColor = defaultAccentColor;
+  }
 
   const defaultOrder = [
     "summary",

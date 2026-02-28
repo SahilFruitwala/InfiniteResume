@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { ResumeData } from "../../types";
+import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
 
 export const MinimalTemplate = memo(({ data }: { data: ResumeData }) => {
   const { typography, spacing, theme } = data;
@@ -14,12 +15,7 @@ export const MinimalTemplate = memo(({ data }: { data: ResumeData }) => {
 
   let accentColor =
     theme?.minimal?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
-  const darkColors = ["#0f172a", "#1e3a8a", "#111827", "#000000"];
-  if (
-    isDark &&
-    (darkColors.includes(accentColor.toLowerCase()) ||
-      (!theme?.minimal?.accentColor && !theme?.accentColor))
-  ) {
+  if (isDark && isColorTooDarkForDarkBg(accentColor)) {
     accentColor = defaultAccentColor;
   }
 

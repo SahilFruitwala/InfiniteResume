@@ -14,15 +14,104 @@
   @page {
     margin: 0;
   }
-  /* Enforce light mode for resume content during print */
-  .resume-content {
-    background-color: white !important;
-    color: black !important;
-  }
-  /* Ensure all templates reset to light mode on print */
+
+  /* ===== Force light mode for all resume content during print ===== */
+
+  /* Root container reset */
   [data-resume-theme="dark"] {
     background-color: white !important;
-    color: black !important;
+    color: #111827 !important; /* gray-900 */
+  }
+
+  /* Background resets */
+  [data-resume-theme="dark"] .bg-white,
+  [data-resume-theme="dark"] .bg-slate-950,
+  [data-resume-theme="dark"] .dark\:bg-slate-950 {
+    background-color: white !important;
+  }
+
+  [data-resume-theme="dark"] .bg-slate-100,
+  [data-resume-theme="dark"] .bg-slate-50,
+  [data-resume-theme="dark"] .bg-gray-100,
+  [data-resume-theme="dark"] .bg-gray-50 {
+    background-color: #f9fafb !important; /* gray-50 */
+  }
+
+  [data-resume-theme="dark"] .bg-slate-700\/50 {
+    background-color: rgba(241, 245, 249, 0.5) !important; /* slate-100/50 */
+  }
+
+  /* Text color resets — dark text for print */
+  [data-resume-theme="dark"] .text-slate-950,
+  [data-resume-theme="dark"] .text-slate-900,
+  [data-resume-theme="dark"] .text-slate-800,
+  [data-resume-theme="dark"] .text-gray-950,
+  [data-resume-theme="dark"] .text-gray-900,
+  [data-resume-theme="dark"] .text-gray-800,
+  [data-resume-theme="dark"] .text-black,
+  [data-resume-theme="dark"] .dark\:text-slate-100 {
+    color: #111827 !important; /* gray-900 */
+  }
+
+  [data-resume-theme="dark"] .text-slate-700,
+  [data-resume-theme="dark"] .text-slate-600,
+  [data-resume-theme="dark"] .text-gray-700,
+  [data-resume-theme="dark"] .text-gray-600 {
+    color: #4b5563 !important; /* gray-600 */
+  }
+
+  [data-resume-theme="dark"] .text-slate-500,
+  [data-resume-theme="dark"] .text-gray-500,
+  [data-resume-theme="dark"] .text-slate-400,
+  [data-resume-theme="dark"] .text-gray-400,
+  [data-resume-theme="dark"] .text-slate-300,
+  [data-resume-theme="dark"] .text-gray-300,
+  [data-resume-theme="dark"] .dark\:text-slate-400 {
+    color: #6b7280 !important; /* gray-500 */
+  }
+
+  [data-resume-theme="dark"] .text-blue-900,
+  [data-resume-theme="dark"] .text-blue-800,
+  [data-resume-theme="dark"] .text-blue-700,
+  [data-resume-theme="dark"] .text-blue-600 {
+    color: #1e40af !important; /* blue-800 */
+  }
+
+  /* Border resets */
+  [data-resume-theme="dark"] .border-slate-300,
+  [data-resume-theme="dark"] .border-slate-200,
+  [data-resume-theme="dark"] .border-slate-100,
+  [data-resume-theme="dark"] .border-gray-300,
+  [data-resume-theme="dark"] .border-gray-200,
+  [data-resume-theme="dark"] .border-gray-100,
+  [data-resume-theme="dark"] .border-white,
+  [data-resume-theme="dark"] .border-black {
+    border-color: #e5e7eb !important; /* gray-200 */
+  }
+
+  /* Inline heading style overrides — only reset known-dark inline colors */
+  [data-resume-theme="dark"] h1[style*="color: rgb(15, 23, 42)"],
+  [data-resume-theme="dark"] h1[style*="color: #0f172a"],
+  [data-resume-theme="dark"] h2[style*="color: rgb(15, 23, 42)"],
+  [data-resume-theme="dark"] h2[style*="color: #0f172a"] {
+    color: #111827 !important; /* gray-900 */
+  }
+  [data-resume-theme="dark"] h1[style*="color: rgb(30, 58, 138)"],
+  [data-resume-theme="dark"] h1[style*="color: #1e3a8a"],
+  [data-resume-theme="dark"] h2[style*="color: rgb(30, 58, 138)"],
+  [data-resume-theme="dark"] h2[style*="color: #1e3a8a"] {
+    color: #1e40af !important; /* blue-800 */
+  }
+
+  /* Reset any inverted text (e.g. white text on accent backgrounds) */
+  [data-resume-theme="dark"] .text-white {
+    color: white !important;
+  }
+
+  /* Catch-all: reset all elements inside dark theme to inherit proper colors */
+  [data-resume-theme="dark"] * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 
@@ -219,6 +308,93 @@ a {
   [data-resume-theme="dark"] h2[style*="color: rgb(30, 58, 138)"],
   [data-resume-theme="dark"] h2[style*="color: #1e3a8a"] {
     color: #60a5fa !important;
+  }
+
+  /* ===== Print: force light mode within @layer base ===== */
+  @media print {
+    [data-resume-theme="dark"] {
+      background-color: white !important;
+      color: #111827 !important;
+    }
+
+    [data-resume-theme="dark"] .bg-white,
+    [data-resume-theme="dark"] .bg-slate-950 {
+      background-color: white !important;
+    }
+
+    [data-resume-theme="dark"] .bg-slate-100,
+    [data-resume-theme="dark"] .bg-slate-50,
+    [data-resume-theme="dark"] .bg-gray-100,
+    [data-resume-theme="dark"] .bg-gray-50 {
+      background-color: #f9fafb !important;
+    }
+
+    [data-resume-theme="dark"] .bg-slate-700\/50 {
+      background-color: rgba(241, 245, 249, 0.5) !important;
+    }
+
+    [data-resume-theme="dark"] .text-slate-950,
+    [data-resume-theme="dark"] .text-slate-900,
+    [data-resume-theme="dark"] .text-slate-800,
+    [data-resume-theme="dark"] .text-gray-950,
+    [data-resume-theme="dark"] .text-gray-900,
+    [data-resume-theme="dark"] .text-gray-800,
+    [data-resume-theme="dark"] .text-black {
+      color: #111827 !important;
+    }
+
+    [data-resume-theme="dark"] .text-slate-700,
+    [data-resume-theme="dark"] .text-slate-600,
+    [data-resume-theme="dark"] .text-gray-700,
+    [data-resume-theme="dark"] .text-gray-600 {
+      color: #4b5563 !important;
+    }
+
+    [data-resume-theme="dark"] .text-slate-500,
+    [data-resume-theme="dark"] .text-gray-500,
+    [data-resume-theme="dark"] .text-slate-400,
+    [data-resume-theme="dark"] .text-gray-400,
+    [data-resume-theme="dark"] .text-slate-300,
+    [data-resume-theme="dark"] .text-gray-300 {
+      color: #6b7280 !important;
+    }
+
+    [data-resume-theme="dark"] .text-blue-900,
+    [data-resume-theme="dark"] .text-blue-800,
+    [data-resume-theme="dark"] .text-blue-700,
+    [data-resume-theme="dark"] .text-blue-600 {
+      color: #1e40af !important;
+    }
+
+    [data-resume-theme="dark"] .border-slate-300,
+    [data-resume-theme="dark"] .border-slate-200,
+    [data-resume-theme="dark"] .border-slate-100,
+    [data-resume-theme="dark"] .border-gray-300,
+    [data-resume-theme="dark"] .border-gray-200,
+    [data-resume-theme="dark"] .border-gray-100,
+    [data-resume-theme="dark"] .border-white,
+    [data-resume-theme="dark"] .border-black {
+      border-color: #e5e7eb !important;
+    }
+
+    [data-resume-theme="dark"] h1[style*="color: rgb(15, 23, 42)"],
+    [data-resume-theme="dark"] h1[style*="color: #0f172a"],
+    [data-resume-theme="dark"] h2[style*="color: rgb(15, 23, 42)"],
+    [data-resume-theme="dark"] h2[style*="color: #0f172a"] {
+      color: #111827 !important;
+    }
+
+    [data-resume-theme="dark"] h1[style*="color: rgb(30, 58, 138)"],
+    [data-resume-theme="dark"] h1[style*="color: #1e3a8a"],
+    [data-resume-theme="dark"] h2[style*="color: rgb(30, 58, 138)"],
+    [data-resume-theme="dark"] h2[style*="color: #1e3a8a"] {
+      color: #1e40af !important;
+    }
+
+    /* Keep white text white (e.g. on accent backgrounds) */
+    [data-resume-theme="dark"] .text-white {
+      color: white !important;
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { ResumeData } from "../../types";
+import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
 
 export const ProfessionalTemplate = memo(({ data }: { data: ResumeData }) => {
   const { typography, spacing, theme } = data;
@@ -11,7 +12,10 @@ export const ProfessionalTemplate = memo(({ data }: { data: ResumeData }) => {
   const pageMarginBottom = spacing?.pageMarginBottom ?? 40;
   const isDark = data.theme?.previewTheme === "dark";
   const defaultAccentColor = isDark ? "#94a3b8" : "#0f172a";
-  const accentColor = theme?.accentColor ?? defaultAccentColor;
+  let accentColor = theme?.accentColor ?? defaultAccentColor;
+  if (isDark && isColorTooDarkForDarkBg(accentColor)) {
+    accentColor = defaultAccentColor;
+  }
   const sectionBorderColor =
     theme?.professional?.sectionBorderColor ?? `${accentColor}40`;
 
