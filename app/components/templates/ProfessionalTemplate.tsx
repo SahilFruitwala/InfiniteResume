@@ -1,0 +1,188 @@
+import React from 'react';
+import { ResumeData } from '../../types';
+
+export const ProfessionalTemplate = ({ data }: { data: ResumeData }) => {
+  const { typography, spacing, theme } = data;
+  
+  const sectionGap = spacing?.sectionGap ?? 24;
+  const sectionTitleGap = spacing?.sectionTitleGap ?? 16;
+  const itemGap = spacing?.itemGap ?? 16;
+  const pageMarginTop = spacing?.pageMarginTop ?? 40;
+  const pageMarginBottom = spacing?.pageMarginBottom ?? 40;
+  const accentColor = theme?.accentColor ?? '#0f172a';
+  const sectionBorderColor = theme?.professional?.sectionBorderColor ?? `${accentColor}40`;
+  
+  return (
+    <div 
+      className="px-10 bg-white text-gray-800 max-w-4xl mx-auto w-full min-h-[1056px]"
+      style={{
+        paddingTop: `${pageMarginTop}px`,
+        paddingBottom: `${pageMarginBottom}px`,
+        fontFamily: typography?.fontFamily || 'var(--font-merriweather)',
+        fontSize: `${typography?.fontSizeBody || 14}px`,
+        '--bullet-gap': `${spacing?.bulletItemGap ?? 4}px`,
+        '--list-margin': `${spacing?.bulletListMargin ?? 4}px`,
+      } as React.CSSProperties}
+    >
+      <header className="text-center border-b-2 pb-6" style={{ marginBottom: `${sectionGap}px`, borderColor: accentColor }}>
+        <h1 
+          className="font-bold uppercase tracking-widest mb-3"
+          style={{ fontSize: `${typography?.fontSizeHeading || 36}px`, color: accentColor }}
+        >
+          {data.personalInfo.fullName || 'Your Name'}
+        </h1>
+        <div className="flex flex-wrap justify-center items-center gap-4 text-sm font-sans">
+          {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
+          {data.personalInfo.phone && <span>• {data.personalInfo.phone}</span>}
+          {data.personalInfo.location && <span>• {data.personalInfo.location}</span>}
+          {data.personalInfo.website && (
+            <span>
+              • <a href={data.personalInfo.website.startsWith('http') ? data.personalInfo.website : `https://${data.personalInfo.website}`} target="_blank" rel="noreferrer" className="hover:text-blue-600 hover:underline">
+                {data.personalInfo.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+              </a>
+            </span>
+          )}
+          {data.socialLinks && data.socialLinks.length > 0 && data.socialLinks.map(link => (
+            <span key={link.id}>
+              • <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noreferrer" className="hover:text-blue-600 hover:underline">
+                {link.name}
+              </a>
+            </span>
+          ))}
+        </div>
+      </header>
+
+      {data.personalInfo.summary && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor
+            }}
+          >
+            Professional Summary
+          </h2>
+          <div 
+            className="text-sm leading-relaxed text-justify whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+            dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
+          />
+        </section>
+      )}
+
+      {data.experience.length > 0 && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Experience
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            {data.experience.map((exp) => (
+              <div key={exp.id}>
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="font-bold text-gray-900 text-base">{exp.position}</h3>
+                  <span className="text-sm italic text-gray-600">
+                    {exp.startDate} - {exp.endDate}
+                  </span>
+                </div>
+                <div className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">{exp.company}</div>
+                <div 
+                  className="text-sm leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                  dangerouslySetInnerHTML={{ __html: exp.description }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.education.length > 0 && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Education
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            {data.education.map((edu) => (
+              <div key={edu.id}>
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="font-bold text-gray-900 text-base">{edu.degree}</h3>
+                  <span className="text-sm italic text-gray-600">
+                    {edu.startDate} - {edu.endDate}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-700">{edu.institution}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.projects.length > 0 && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Projects
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            {data.projects.map((proj) => (
+              <div key={proj.id}>
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="font-bold text-gray-900 text-base">{proj.name}</h3>
+                  {proj.link && (
+                    <a href={proj.link} target="_blank" rel="noreferrer" className="text-sm italic text-gray-600 hover:underline">
+                      {proj.link}
+                    </a>
+                  )}
+                </div>
+                <div 
+                  className="text-sm leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
+                  dangerouslySetInnerHTML={{ __html: proj.description }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.skills && (
+        <section style={{ marginBottom: `${sectionGap}px` }}>
+          <h2 
+            className="font-bold uppercase tracking-widest text-center border-b pb-2"
+            style={{ 
+              fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
+              marginBottom: `${sectionTitleGap}px`,
+              color: accentColor,
+              borderColor: sectionBorderColor
+            }}
+          >
+            Skills
+          </h2>
+          <p className="text-sm leading-relaxed text-center">{data.skills}</p>
+        </section>
+      )}
+    </div>
+  );
+};
