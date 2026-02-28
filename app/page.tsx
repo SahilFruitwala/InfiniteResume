@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useDeferredValue } from "react";
 import { LeftSidebar } from "./components/LeftSidebar";
 import { RightSidebar } from "./components/RightSidebar";
 import { Preview } from "./components/Preview";
@@ -179,6 +179,7 @@ export default function Home() {
     canUndo,
     canRedo,
   } = useHistory<ResumeData>("infinite-resume-data", initialData);
+  const deferredResumeData = useDeferredValue(resumeData);
   const [template, setTemplate] = useState<TemplateType>("minimal");
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
@@ -210,7 +211,7 @@ export default function Home() {
         </div>
       )}
       <Preview
-        data={resumeData}
+        data={deferredResumeData}
         template={template}
         leftSidebarOpen={leftSidebarOpen}
         rightSidebarOpen={rightSidebarOpen}

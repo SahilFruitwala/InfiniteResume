@@ -258,9 +258,10 @@ export const RightSidebar = ({
                   <SelectContent>
                     <SelectItem value="minimal">Minimal</SelectItem>
                     <SelectItem value="professional">Professional</SelectItem>
-                    <SelectItem value="modern">Modern</SelectItem>
                     <SelectItem value="academic">Academic</SelectItem>
-                    <SelectItem value="creative">Creative</SelectItem>
+                    {/* Temporary disabled */}
+                    {/* <SelectItem value="modern">Modern</SelectItem> */}
+                    {/* <SelectItem value="creative">Creative</SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>
@@ -776,7 +777,7 @@ export const RightSidebar = ({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="LETTER">
-                      US Letter (8.5" x 11")
+                      US Letter (8.5&quot; x 11&quot;)
                     </SelectItem>
                     <SelectItem value="A4">A4 (210mm x 297mm)</SelectItem>
                   </SelectContent>
