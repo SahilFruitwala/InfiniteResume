@@ -27,6 +27,7 @@ import { RichTextEditor } from "./RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -1756,9 +1757,12 @@ export const Sidebar = ({
                 </Label>
                 <div className="flex items-center gap-4">
                   {data.personalInfo.profilePicture && (
-                    <img
+                    <Image
                       src={data.personalInfo.profilePicture}
                       alt="Profile"
+                      width={48}
+                      height={48}
+                      unoptimized
                       className="w-12 h-12 rounded-full object-cover border border-slate-200"
                     />
                   )}

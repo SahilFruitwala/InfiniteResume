@@ -1,66 +1,94 @@
-import React from 'react';
-import { ResumeData } from '../../types';
+import React, { memo } from "react";
+import Image from "next/image";
+import { ResumeData } from "../../types";
 
-export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
+export const AcademicTemplate = memo(({ data }: { data: ResumeData }) => {
   const { typography, spacing, theme } = data;
-  
+
   const sectionGap = spacing?.sectionGap ?? 28;
   const sectionTitleGap = spacing?.sectionTitleGap ?? 12;
   const itemGap = spacing?.itemGap ?? 16;
   const pageMarginTop = spacing?.pageMarginTop ?? 48;
   const pageMarginBottom = spacing?.pageMarginBottom ?? 48;
-  const accentColor = theme?.academic?.accentColor ?? theme?.accentColor ?? '#1e3a8a'; // deep blue
-  
+  const accentColor =
+    theme?.academic?.accentColor ?? theme?.accentColor ?? "#1e3a8a"; // deep blue
+
   const renderSection = (sectionId: string) => {
     switch (sectionId) {
-      case 'summary':
+      case "summary":
         return data.personalInfo.summary ? (
           <section key="summary" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Professional Summary
             </h2>
-            <div 
+            <div
               className="leading-relaxed text-justify whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-              style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
+              style={{
+                fontFamily: typography?.fontFamily || "var(--font-lora)",
+              }}
               dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
             />
           </section>
         ) : null;
-      case 'experience':
+      case "experience":
         return data.experience.length > 0 ? (
           <section key="experience" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Experience
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: `${itemGap}px`,
+              }}
+            >
               {data.experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 15}px`, fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{exp.position}</h3>
+                    <h3
+                      className="font-bold text-gray-900"
+                      style={{
+                        fontSize: `${typography?.fontSizeItemHeading ?? 15}px`,
+                        fontFamily:
+                          typography?.fontFamily || "var(--font-lora)",
+                      }}
+                    >
+                      {exp.position}
+                    </h3>
                     <span className="text-[0.9em] text-gray-700 whitespace-nowrap ml-4">
                       {exp.startDate} – {exp.endDate}
                     </span>
                   </div>
-                  <div className="font-semibold text-gray-800 mb-2" style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{exp.company}</div>
-                  <div 
+                  <div
+                    className="font-semibold text-gray-800 mb-2"
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
+                  >
+                    {exp.company}
+                  </div>
+                  <div
                     className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                    style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
                     dangerouslySetInnerHTML={{ __html: exp.description }}
                   />
                 </div>
@@ -68,63 +96,109 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
             </div>
           </section>
         ) : null;
-      case 'education':
+      case "education":
         return data.education.length > 0 ? (
           <section key="education" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Education
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: `${itemGap}px`,
+              }}
+            >
               {data.education.map((edu) => (
                 <div key={edu.id}>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 15}px`, fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{edu.degree}</h3>
+                    <h3
+                      className="font-bold text-gray-900"
+                      style={{
+                        fontSize: `${typography?.fontSizeItemHeading ?? 15}px`,
+                        fontFamily:
+                          typography?.fontFamily || "var(--font-lora)",
+                      }}
+                    >
+                      {edu.degree}
+                    </h3>
                     <span className="text-[0.9em] text-gray-700 whitespace-nowrap ml-4">
                       {edu.startDate} – {edu.endDate}
                     </span>
                   </div>
-                  <div className="text-[0.95em] font-semibold text-gray-800" style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{edu.institution}</div>
+                  <div
+                    className="text-[0.95em] font-semibold text-gray-800"
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
+                  >
+                    {edu.institution}
+                  </div>
                 </div>
               ))}
             </div>
           </section>
         ) : null;
-      case 'projects':
+      case "projects":
         return data.projects.length > 0 ? (
           <section key="projects" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Projects & Research
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: `${itemGap}px`,
+              }}
+            >
               {data.projects.map((proj) => (
                 <div key={proj.id}>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 15}px`, fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{proj.name}</h3>
+                    <h3
+                      className="font-bold text-gray-900"
+                      style={{
+                        fontSize: `${typography?.fontSizeItemHeading ?? 15}px`,
+                        fontFamily:
+                          typography?.fontFamily || "var(--font-lora)",
+                      }}
+                    >
+                      {proj.name}
+                    </h3>
                     {proj.link && (
-                      <a href={proj.link} target="_blank" rel="noreferrer" className="text-[0.9em] text-blue-700 hover:underline ml-4 whitespace-nowrap">
-                        {proj.link.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                      <a
+                        href={proj.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[0.9em] text-blue-700 hover:underline ml-4 whitespace-nowrap"
+                      >
+                        {proj.link
+                          .replace(/^https?:\/\//, "")
+                          .replace(/\/$/, "")}
                       </a>
                     )}
                   </div>
-                  <div 
+                  <div
                     className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                    style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
                     dangerouslySetInnerHTML={{ __html: proj.description }}
                   />
                 </div>
@@ -132,33 +206,60 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
             </div>
           </section>
         ) : null;
-      case 'volunteerWork':
+      case "volunteerWork":
         return data.volunteerWork && data.volunteerWork.length > 0 ? (
-          <section key="volunteerWork" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+          <section
+            key="volunteerWork"
+            style={{ marginBottom: `${sectionGap}px` }}
+          >
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Service & Leadership
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: `${itemGap}px`,
+              }}
+            >
               {data.volunteerWork.map((vol) => (
                 <div key={vol.id}>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 15}px`, fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{vol.position}</h3>
+                    <h3
+                      className="font-bold text-gray-900"
+                      style={{
+                        fontSize: `${typography?.fontSizeItemHeading ?? 15}px`,
+                        fontFamily:
+                          typography?.fontFamily || "var(--font-lora)",
+                      }}
+                    >
+                      {vol.position}
+                    </h3>
                     <span className="text-[0.9em] text-gray-700 whitespace-nowrap ml-4">
                       {vol.startDate} – {vol.endDate}
                     </span>
                   </div>
-                  <div className="font-semibold text-gray-800 mb-2" style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{vol.organization}</div>
-                  <div 
+                  <div
+                    className="font-semibold text-gray-800 mb-2"
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
+                  >
+                    {vol.organization}
+                  </div>
+                  <div
                     className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                    style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
                     dangerouslySetInnerHTML={{ __html: vol.description }}
                   />
                 </div>
@@ -166,31 +267,57 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
             </div>
           </section>
         ) : null;
-      case 'awards':
+      case "awards":
         return data.awards && data.awards.length > 0 ? (
           <section key="awards" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Honors & Awards
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: `${itemGap}px`,
+              }}
+            >
               {data.awards.map((award) => (
                 <div key={award.id}>
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-gray-900" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 15}px`, fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{award.name}</h3>
-                    <span className="text-[0.9em] text-gray-700 whitespace-nowrap ml-4">{award.date}</span>
+                    <h3
+                      className="font-bold text-gray-900"
+                      style={{
+                        fontSize: `${typography?.fontSizeItemHeading ?? 15}px`,
+                        fontFamily:
+                          typography?.fontFamily || "var(--font-lora)",
+                      }}
+                    >
+                      {award.name}
+                    </h3>
+                    <span className="text-[0.9em] text-gray-700 whitespace-nowrap ml-4">
+                      {award.date}
+                    </span>
                   </div>
-                  <div className="font-semibold text-gray-800 mb-1" style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{award.issuer}</div>
-                  <div 
+                  <div
+                    className="font-semibold text-gray-800 mb-1"
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
+                  >
+                    {award.issuer}
+                  </div>
+                  <div
                     className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                    style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
                     dangerouslySetInnerHTML={{ __html: award.description }}
                   />
                 </div>
@@ -198,22 +325,27 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
             </div>
           </section>
         ) : null;
-      case 'languages':
+      case "languages":
         return data.languages && data.languages.length > 0 ? (
           <section key="languages" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Languages
             </h2>
-            <div className="flex flex-wrap gap-x-8 gap-y-2 text-[0.95em] text-gray-800 leading-relaxed" style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>
-              {data.languages.map(lang => (
+            <div
+              className="flex flex-wrap gap-x-8 gap-y-2 text-[0.95em] text-gray-800 leading-relaxed"
+              style={{
+                fontFamily: typography?.fontFamily || "var(--font-lora)",
+              }}
+            >
+              {data.languages.map((lang) => (
                 <div key={lang.id}>
                   <span className="font-bold">{lang.name}</span>
                   {lang.proficiency && <span> ({lang.proficiency})</span>}
@@ -222,46 +354,67 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
             </div>
           </section>
         ) : null;
-      case 'interests':
+      case "interests":
         return data.interests && data.interests.length > 0 ? (
           <section key="interests" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Interests
             </h2>
-            <p className="leading-relaxed text-[0.95em] text-gray-800" style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>
-              {data.interests.map(i => i.name).join(', ')}
+            <p
+              className="leading-relaxed text-[0.95em] text-gray-800"
+              style={{
+                fontFamily: typography?.fontFamily || "var(--font-lora)",
+              }}
+            >
+              {data.interests.map((i) => i.name).join(", ")}
             </p>
           </section>
         ) : null;
-      case 'skills':
+      case "skills":
         return data.skills && data.skills.length > 0 ? (
           <section key="skills" style={{ marginBottom: `${sectionGap}px` }}>
-            <h2 
+            <h2
               className="font-bold uppercase tracking-wider border-b-2"
-              style={{ 
+              style={{
                 fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                 marginBottom: `${sectionTitleGap}px`,
                 color: accentColor,
-                borderColor: accentColor
+                borderColor: accentColor,
               }}
             >
               Technical Skills
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: `${itemGap}px` }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: `${itemGap}px`,
+              }}
+            >
               {data.skills.map((category) => (
                 <div key={category.id}>
-                  <h3 className="font-bold text-gray-900 mb-1" style={{ fontSize: `${typography?.fontSizeItemHeading ?? 15}px`, fontFamily: typography?.fontFamily || 'var(--font-lora)' }}>{category.name}</h3>
-                  <div 
+                  <h3
+                    className="font-bold text-gray-900 mb-1"
+                    style={{
+                      fontSize: `${typography?.fontSizeItemHeading ?? 15}px`,
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
+                  >
+                    {category.name}
+                  </h3>
+                  <div
                     className="leading-relaxed text-[0.95em] text-gray-800 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                    style={{ fontFamily: typography?.fontFamily || 'var(--font-lora)' }}
+                    style={{
+                      fontFamily: typography?.fontFamily || "var(--font-lora)",
+                    }}
                     dangerouslySetInnerHTML={{ __html: category.skills }}
                   />
                 </div>
@@ -274,56 +427,109 @@ export const AcademicTemplate = ({ data }: { data: ResumeData }) => {
     }
   };
 
-  const defaultOrder = ['summary', 'education', 'experience', 'projects', 'volunteerWork', 'awards', 'skills', 'languages', 'interests'];
+  const defaultOrder = [
+    "summary",
+    "education",
+    "experience",
+    "projects",
+    "volunteerWork",
+    "awards",
+    "skills",
+    "languages",
+    "interests",
+  ];
   // Note: Academic places education before experience usually, but respects layout.sectionOrder if set
   const currentOrder = data.layout?.sectionOrder || defaultOrder;
 
   return (
-    <div 
+    <div
       className="px-12 bg-white text-gray-900 max-w-4xl mx-auto w-full min-h-[1056px]"
-      style={{
-        paddingTop: `${pageMarginTop}px`,
-        paddingBottom: `${pageMarginBottom}px`,
-        fontFamily: typography?.fontFamily || 'var(--font-lora)',
-        fontSize: `${typography?.fontSizeBody || 14}px`,
-        '--bullet-gap': `${spacing?.bulletItemGap ?? 4}px`,
-        '--list-margin': `${spacing?.bulletListMargin ?? 4}px`,
-      } as React.CSSProperties}
+      style={
+        {
+          paddingTop: `${pageMarginTop}px`,
+          paddingBottom: `${pageMarginBottom}px`,
+          fontFamily: typography?.fontFamily || "var(--font-lora)",
+          fontSize: `${typography?.fontSizeBody || 14}px`,
+          "--bullet-gap": `${spacing?.bulletItemGap ?? 4}px`,
+          "--list-margin": `${spacing?.bulletListMargin ?? 4}px`,
+        } as React.CSSProperties
+      }
     >
-      <header className="text-center pb-6" style={{ marginBottom: `${sectionGap}px` }}>
+      <header
+        className="text-center pb-6"
+        style={{ marginBottom: `${sectionGap}px` }}
+      >
         {data.personalInfo.profilePicture && (
           <div className="mb-4 rounded-md overflow-hidden w-28 h-28 border border-gray-300 mx-auto group relative inline-block">
-            <img src={data.personalInfo.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+            <Image
+              src={data.personalInfo.profilePicture}
+              alt="Profile"
+              width={112}
+              height={112}
+              unoptimized
+              className="w-full h-full object-cover"
+            />
           </div>
         )}
-        <h1 
+        <h1
           className="font-bold uppercase tracking-wider mb-2"
-          style={{ fontSize: `${typography?.fontSizeHeading || 32}px`, color: accentColor }}
+          style={{
+            fontSize: `${typography?.fontSizeHeading || 32}px`,
+            color: accentColor,
+          }}
         >
-          {data.personalInfo.fullName || 'Your Name'}
+          {data.personalInfo.fullName || "Your Name"}
         </h1>
         <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-[0.9em] text-gray-700">
           {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
           {data.personalInfo.phone && <span>| {data.personalInfo.phone}</span>}
-          {data.personalInfo.location && <span>| {data.personalInfo.location}</span>}
+          {data.personalInfo.location && (
+            <span>| {data.personalInfo.location}</span>
+          )}
           {data.personalInfo.website && (
             <span>
-              | <a href={data.personalInfo.website.startsWith('http') ? data.personalInfo.website : `https://${data.personalInfo.website}`} target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">
-                {data.personalInfo.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+              |{" "}
+              <a
+                href={
+                  data.personalInfo.website.startsWith("http")
+                    ? data.personalInfo.website
+                    : `https://${data.personalInfo.website}`
+                }
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-700 hover:underline"
+              >
+                {data.personalInfo.website
+                  .replace(/^https?:\/\//, "")
+                  .replace(/\/$/, "")}
               </a>
             </span>
           )}
-          {data.socialLinks && data.socialLinks.length > 0 && data.socialLinks.map(link => (
-            <span key={link.id}>
-              | <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">
-                {link.name}
-              </a>
-            </span>
-          ))}
+          {data.socialLinks &&
+            data.socialLinks.length > 0 &&
+            data.socialLinks.map((link) => (
+              <span key={link.id}>
+                |{" "}
+                <a
+                  href={
+                    link.url.startsWith("http")
+                      ? link.url
+                      : `https://${link.url}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-700 hover:underline"
+                >
+                  {link.name}
+                </a>
+              </span>
+            ))}
         </div>
       </header>
 
-      {currentOrder.map(sectionId => renderSection(sectionId))}
+      {currentOrder.map((sectionId) => renderSection(sectionId))}
     </div>
   );
-};
+});
+
+AcademicTemplate.displayName = "AcademicTemplate";

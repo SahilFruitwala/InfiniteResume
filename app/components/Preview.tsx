@@ -1,11 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { ResumeData, TemplateType } from '../types';
-import { MinimalTemplate } from './templates/MinimalTemplate';
-import { ProfessionalTemplate } from './templates/ProfessionalTemplate';
-import { ModernTemplate } from './templates/ModernTemplate';
-import { AcademicTemplate } from './templates/AcademicTemplate';
-import { CreativeTemplate } from './templates/CreativeTemplate';
-import { Download, LayoutTemplate, AlertTriangle } from 'lucide-react';
+import React, { useRef, useEffect, useState } from "react";
+import { ResumeData, TemplateType } from "../types";
+import { MinimalTemplate } from "./templates/MinimalTemplate";
+import { ProfessionalTemplate } from "./templates/ProfessionalTemplate";
+import { ModernTemplate } from "./templates/ModernTemplate";
+import { AcademicTemplate } from "./templates/AcademicTemplate";
+import { CreativeTemplate } from "./templates/CreativeTemplate";
+import { Download, LayoutTemplate, AlertTriangle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface PreviewProps {
   data: ResumeData;
@@ -37,25 +38,25 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
   const handlePrint = async () => {
     try {
       setIsGenerating(true);
-      const res = await fetch('/api/pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data, template })
+      const res = await fetch("/api/pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data, template }),
       });
-      if (!res.ok) throw new Error('Failed to generate PDF');
-      
+      if (!res.ok) throw new Error("Failed to generate PDF");
+
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = `${data.personalInfo.fullName ? data.personalInfo.fullName.replace(/\s+/g, '_') : 'Resume'}.pdf`;
+      a.download = `${data.personalInfo.fullName ? data.personalInfo.fullName.replace(/\s+/g, "_") : "Resume"}.pdf`;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
-      alert('There was an error generating the PDF.');
+      alert("There was an error generating the PDF.");
     } finally {
       setIsGenerating(false);
     }
@@ -63,15 +64,15 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
 
   const renderTemplate = () => {
     switch (template) {
-      case 'minimal':
+      case "minimal":
         return <MinimalTemplate data={data} />;
-      case 'professional':
+      case "professional":
         return <ProfessionalTemplate data={data} />;
-      case 'modern':
+      case "modern":
         return <ModernTemplate data={data} />;
-      case 'academic':
+      case "academic":
         return <AcademicTemplate data={data} />;
-      case 'creative':
+      case "creative":
         return <CreativeTemplate data={data} />;
       default:
         return <MinimalTemplate data={data} />;
@@ -130,21 +131,35 @@ export const Preview = ({ data, template, onTemplateChange }: PreviewProps) => {
       <div className="flex-1 overflow-y-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
         <div className="bg-white shadow-xl max-w-4xl w-full min-h-[1056px] print:shadow-none print:m-0 print:max-w-none print:w-full relative">
           <div ref={contentRef} className="w-full">
-            {renderTemplate()}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={template}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="w-full"
+              >
+                {renderTemplate()}
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Page breaks */}
-          {isOverOnePage && Array.from({ length: Math.floor((contentHeight - 1) / PAGE_HEIGHT) }).map((_, i) => (
-            <div 
-              key={i} 
-              className="absolute left-0 right-0 border-b-2 border-dashed border-amber-400 z-10 print:hidden pointer-events-none" 
-              style={{ top: `${(i + 1) * PAGE_HEIGHT}px` }}
-            >
-              <span className="absolute right-4 -top-6 text-xs text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded-t-md border border-b-0 border-amber-400 shadow-sm">
-                Page {i + 1} Break
-              </span>
-            </div>
-          ))}
+          {isOverOnePage &&
+            Array.from({
+              length: Math.floor((contentHeight - 1) / PAGE_HEIGHT),
+            }).map((_, i) => (
+              <div
+                key={i}
+                className="absolute left-0 right-0 border-b-2 border-dashed border-amber-400 z-10 print:hidden pointer-events-none"
+                style={{ top: `${(i + 1) * PAGE_HEIGHT}px` }}
+              >
+                <span className="absolute right-4 -top-6 text-xs text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded-t-md border border-b-0 border-amber-400 shadow-sm">
+                  Page {i + 1} Break
+                </span>
+              </div>
+            ))}
         </div>
       </div>
     </div>
