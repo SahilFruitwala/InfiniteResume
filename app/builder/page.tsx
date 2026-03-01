@@ -170,27 +170,31 @@ const initialData: ResumeData = {
 import { motion, AnimatePresence } from "motion/react";
 
 export default function Home() {
-  const [mounted, setMounted] = React.useState(false);
   const [resumeData, setResumeData] = React.useState<ResumeData>(initialData);
   const deferredResumeData = useDeferredValue(resumeData);
   const [template, setTemplate] = useState<TemplateType>("minimal");
-  const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
+  const [showLeftSidebar, setShowLeftSidebar] = useState(true);
+  const [showRightSidebar, setShowRightSidebar] = useState(true);
+  const [isMounted, setIsMounted] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
 
   React.useEffect(() => {
-    // Small delay to ensure module system is stabilized
-    const timer = setTimeout(() => {
-      setMounted(true);
-    }, 50);
-    return () => clearTimeout(timer);
+    setIsMounted(true);
   }, []);
 
-  if (!mounted) {
+  const toggleSidebar = React.useCallback(
+    (side: "left" | "right") => {
+      startTransition(() => {
+        if (side === "left") setShowLeftSidebar((prev) => !prev);
+        if (side === "right") setShowRightSidebar((prev) => !prev);
+      });
+    },
+    [startTransition],
+  );
+
+  if (!isMounted) {
     return (
-      <div
-        className="flex h-screen w-full bg-slate-100 dark:bg-background justify-center items-center text-slate-800 dark:text-slate-200"
-        onClick={() => setMounted(true)} /* Manual fallback if needed */
-      >
+      <div className="flex h-screen w-full bg-slate-100 dark:bg-background justify-center items-center text-slate-800 dark:text-slate-200">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
           <p className="font-mono text-sm uppercase tracking-widest animate-pulse">
@@ -204,7 +208,7 @@ export default function Home() {
   return (
     <div className="flex h-screen w-full bg-slate-100 dark:bg-background overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
       <AnimatePresence initial={false}>
-        {leftSidebarOpen && (
+        {showLeftSidebar && (
           <motion.div
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: "auto", opacity: 1 }}
@@ -222,14 +226,14 @@ export default function Home() {
       <Preview
         data={deferredResumeData}
         template={template}
-        leftSidebarOpen={leftSidebarOpen}
-        rightSidebarOpen={rightSidebarOpen}
-        onToggleLeftSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)}
-        onToggleRightSidebar={() => setRightSidebarOpen(!rightSidebarOpen)}
+        leftSidebarOpen={showLeftSidebar}
+        rightSidebarOpen={showRightSidebar}
+        onToggleLeftSidebar={() => toggleSidebar("left")}
+        onToggleRightSidebar={() => toggleSidebar("right")}
       />
 
       <AnimatePresence initial={false}>
-        {rightSidebarOpen && (
+        {showRightSidebar && (
           <motion.div
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: "auto", opacity: 1 }}

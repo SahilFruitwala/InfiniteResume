@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useMemo, useCallback } from "react";
 import { Bold, Italic, Underline, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -20,6 +20,24 @@ export const RichTextEditor = ({
       editorRef.current.innerHTML = value;
     }
   }, [value]);
+
+  // Debounced change handler
+  const debouncedOnChange = useMemo(() => {
+    let timeoutId: NodeJS.Timeout;
+    return (val: string) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        onChange(val);
+      }, 500); // 500ms debounce
+    };
+  }, [onChange]);
+
+  const handleInput = useCallback(
+    (e: React.FormEvent<HTMLDivElement>) => {
+      debouncedOnChange(e.currentTarget.innerHTML);
+    },
+    [debouncedOnChange],
+  );
 
   const execCommand = (command: string) => {
     document.execCommand(command, false, undefined);
@@ -90,7 +108,7 @@ export const RichTextEditor = ({
         ref={editorRef}
         className="p-3 min-h-[80px] max-h-[300px] overflow-y-auto text-sm outline-none dark:text-slate-200 [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 whitespace-pre-wrap"
         contentEditable
-        onInput={(e) => onChange(e.currentTarget.innerHTML)}
+        onInput={handleInput}
         onBlur={(e) => onChange(e.currentTarget.innerHTML)}
         data-placeholder={placeholder}
       />
