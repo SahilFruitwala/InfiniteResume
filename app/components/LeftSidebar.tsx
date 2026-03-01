@@ -22,8 +22,6 @@ import {
   ChevronUp,
   ArrowUp,
   ArrowDown,
-  Undo2,
-  Redo2,
   Moon,
   Sun,
   Laptop,
@@ -51,8 +49,6 @@ interface LeftSidebarProps {
   data: ResumeData;
   onChange: (data: ResumeData | ((prev: ResumeData) => ResumeData)) => void;
 
-  undo?: () => void;
-  redo?: () => void;
   canUndo?: boolean;
   canRedo?: boolean;
 }
@@ -960,30 +956,7 @@ CustomSectionEditor.displayName = "CustomSectionEditor";
 
 const EMPTY_ARRAY: any[] = [];
 
-export const LeftSidebar = ({
-  data,
-  onChange,
-  undo,
-  redo,
-  canUndo,
-  canRedo,
-}: LeftSidebarProps) => {
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "z") {
-        if (e.shiftKey) {
-          e.preventDefault();
-          redo?.();
-        } else {
-          e.preventDefault();
-          undo?.();
-        }
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [undo, redo]);
-
+export const LeftSidebar = ({ data, onChange }: LeftSidebarProps) => {
   const updatePersonalInfo = React.useCallback(
     (field: keyof ResumeData["personalInfo"], value: string) => {
       onChange((prev) => ({
@@ -1318,28 +1291,6 @@ export const LeftSidebar = ({
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Fill in your details to generate your resume.
           </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={undo}
-            disabled={!canUndo}
-            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-card disabled:opacity-30 transition-colors"
-            title="Undo (Cmd+Z)"
-          >
-            <Undo2 className="w-5 h-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={redo}
-            disabled={!canRedo}
-            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-card disabled:opacity-30 transition-colors"
-            title="Redo (Cmd+Shift+Z)"
-          >
-            <Redo2 className="w-5 h-5" />
-          </Button>
         </div>
       </div>
 

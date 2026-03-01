@@ -168,18 +168,10 @@ const initialData: ResumeData = {
 };
 
 import { motion, AnimatePresence } from "motion/react";
-import { useHistory } from "../hooks/useHistory";
 
 export default function Home() {
   const [mounted, setMounted] = React.useState(false);
-  const {
-    state: resumeData,
-    set: setResumeData,
-    undo,
-    redo,
-    canUndo,
-    canRedo,
-  } = useHistory<ResumeData>("infinite-resume-data", initialData);
+  const [resumeData, setResumeData] = React.useState<ResumeData>(initialData);
   const deferredResumeData = useDeferredValue(resumeData);
   const [template, setTemplate] = useState<TemplateType>("minimal");
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
@@ -221,14 +213,7 @@ export default function Home() {
             className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50"
           >
             <div className="w-80 md:w-96">
-              <LeftSidebar
-                data={resumeData}
-                onChange={setResumeData}
-                undo={undo}
-                redo={redo}
-                canUndo={canUndo}
-                canRedo={canRedo}
-              />
+              <LeftSidebar data={resumeData} onChange={setResumeData} />
             </div>
           </motion.div>
         )}
