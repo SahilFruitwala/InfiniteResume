@@ -74,7 +74,6 @@ export const ModernTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                 }}
               >
                 Education
@@ -117,7 +116,6 @@ export const ModernTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                 }}
               >
                 Skills
@@ -159,7 +157,6 @@ export const ModernTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                 }}
               >
                 Languages
@@ -192,7 +189,6 @@ export const ModernTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                 }}
               >
                 Interests
@@ -279,7 +275,6 @@ export const ModernTemplate = memo(
                       <span
                         className="text-[0.85em] font-medium px-2 py-1 rounded-full"
                         style={{
-                          color: accentColor,
                           backgroundColor: `${accentColor}15`,
                         }}
                       >
@@ -342,7 +337,6 @@ export const ModernTemplate = memo(
                           target="_blank"
                           rel="noreferrer"
                           className="text-[0.85em] font-medium hover:underline"
-                          style={{ color: accentColor }}
                         >
                           {proj.link}
                         </a>
@@ -401,7 +395,6 @@ export const ModernTemplate = memo(
                       <span
                         className="text-[0.85em] font-medium px-2 py-1 rounded-full"
                         style={{
-                          color: accentColor,
                           backgroundColor: `${accentColor}15`,
                         }}
                       >
@@ -461,7 +454,6 @@ export const ModernTemplate = memo(
                       <span
                         className="text-[0.85em] font-medium px-2 py-1 rounded-full"
                         style={{
-                          color: accentColor,
                           backgroundColor: `${accentColor}15`,
                         }}
                       >
@@ -529,7 +521,6 @@ export const ModernTemplate = memo(
                             <span
                               className="text-[0.85em] font-medium px-2 py-1 rounded-full"
                               style={{
-                                color: accentColor,
                                 backgroundColor: `${accentColor}15`,
                               }}
                             >

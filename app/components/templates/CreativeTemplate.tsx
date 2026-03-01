@@ -87,7 +87,6 @@ export const CreativeTemplate = memo(
                       <span
                         className="text-[0.85em] font-bold px-3 py-1 rounded-sm uppercase tracking-wider mt-1 sm:mt-0"
                         style={{
-                          color: accentColor,
                           backgroundColor: `${accentColor}15`,
                         }}
                       >
@@ -152,7 +151,6 @@ export const CreativeTemplate = memo(
                       <span
                         className="text-[0.85em] font-bold px-3 py-1 rounded-sm uppercase tracking-wider mt-1 sm:mt-0"
                         style={{
-                          color: accentColor,
                           backgroundColor: `${accentColor}15`,
                         }}
                       >
@@ -213,7 +211,6 @@ export const CreativeTemplate = memo(
                           target="_blank"
                           rel="noreferrer"
                           className="text-[0.9em] font-bold underline mt-1 sm:mt-0"
-                          style={{ color: accentColor }}
                         >
                           {proj.link
                             .replace(/^https?:\/\//, "")
@@ -274,7 +271,6 @@ export const CreativeTemplate = memo(
                       <span
                         className="text-[0.85em] font-bold px-3 py-1 rounded-sm uppercase tracking-wider mt-1 sm:mt-0"
                         style={{
-                          color: accentColor,
                           backgroundColor: `${accentColor}15`,
                         }}
                       >
@@ -336,7 +332,6 @@ export const CreativeTemplate = memo(
                       <span
                         className="text-[0.85em] font-bold px-3 py-1 rounded-sm uppercase tracking-wider mt-1 sm:mt-0"
                         style={{
-                          color: accentColor,
                           backgroundColor: `${accentColor}15`,
                         }}
                       >
@@ -510,7 +505,6 @@ export const CreativeTemplate = memo(
                             <span
                               className="text-[0.85em] font-bold px-3 py-1 rounded-sm uppercase tracking-wider mt-1 sm:mt-0"
                               style={{
-                                color: accentColor,
                                 backgroundColor: `${accentColor}15`,
                               }}
                             >
@@ -657,7 +651,6 @@ export const CreativeTemplate = memo(
                       target="_blank"
                       rel="noreferrer"
                       className="hover:underline"
-                      style={{ color: accentColor }}
                     >
                       {data.personalInfo.website
                         .replace(/^https?:\/\//, "")
@@ -682,7 +675,6 @@ export const CreativeTemplate = memo(
                         target="_blank"
                         rel="noreferrer"
                         className="hover:underline"
-                        style={{ color: accentColor }}
                       >
                         {link.name}
                       </a>
