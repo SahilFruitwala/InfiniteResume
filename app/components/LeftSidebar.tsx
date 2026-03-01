@@ -56,7 +56,7 @@ const AccordionItem = ({
   return (
     <ShadcnAccordionItem
       value={itemValue}
-      className="border-b border-slate-200 dark:border-border last:border-0"
+      className="border-b border-black/10 dark:border-white/10 last:border-0"
     >
       <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-card hover:bg-accent dark:hover:bg-accent hover:text-black transition-colors text-left font-bold uppercase tracking-tight text-black dark:text-white hover:no-underline data-[state=open]:bg-accent data-[state=open]:text-black">
         {title}
@@ -397,7 +397,7 @@ export const LeftSidebar = ({ data, onChange }: LeftSidebarProps) => {
   );
 
   return (
-    <div className="w-80 md:w-96 bg-white dark:bg-card border-r border-slate-200 dark:border-border h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
+    <div className="w-80 md:w-96 bg-white dark:bg-card border-r-2 border-black/10 dark:border-white/10 h-screen flex flex-col shadow-none transition-colors z-10 print:hidden shrink-0">
       <div className="p-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card text-black dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="font-display text-2xl font-black uppercase tracking-tighter">
@@ -611,7 +611,7 @@ export const LeftSidebar = ({ data, onChange }: LeftSidebarProps) => {
                 }));
               }}
               variant="outline"
-              className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 font-semibold transition-colors"
+              className="w-full border-2 border-dashed border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:border-accent hover:text-accent flex items-center justify-center gap-2 font-bold transition-colors rounded-none"
             >
               <Plus className="w-4 h-4" /> Add Custom Section
             </Button>

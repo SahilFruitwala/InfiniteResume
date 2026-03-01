@@ -32,13 +32,13 @@ export const CustomSectionEditor = React.memo(
       <div className="space-y-6">
         <div className="flex items-center gap-4 mb-4">
           <div className="flex-1">
-            <Label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wider">
+            <Label className="block text-xs font-medium text-black/40 dark:text-white/40 mb-1 uppercase tracking-wider">
               Section Title
             </Label>
             <Input
               value={section.title}
               onChange={(e) => onUpdateTitle(e.target.value)}
-              className="text-lg font-bold bg-transparent border-none px-0 focus-visible:ring-0 dark:text-slate-100"
+              className="text-lg font-bold bg-transparent border-none px-0 focus-visible:ring-0 dark:text-white"
               placeholder="e.g., Publications, Projects, etc."
             />
           </div>
@@ -46,14 +46,14 @@ export const CustomSectionEditor = React.memo(
             onClick={onRemoveSection}
             variant="ghost"
             size="icon"
-            className="text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="text-black/40 dark:text-white/40 hover:text-red-500 hover:bg-red-500/10 transition-colors"
             aria-label="Remove Section"
           >
             <Trash2 className="w-5 h-5" />
           </Button>
         </div>
 
-        <div className="space-y-6 pl-4 border-l-2 border-slate-200 dark:border-slate-700">
+        <div className="space-y-6 pl-4 border-l-2 border-black/10 dark:border-white/10">
           {section.items.map((item, index) => (
             <div
               key={item.id}
@@ -68,13 +68,13 @@ export const CustomSectionEditor = React.memo(
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-              <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
+              <h4 className="text-sm font-semibold text-black/80 dark:text-white/80 mb-3 pr-8">
                 Item {index + 1}
               </h4>
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                       Title
                     </Label>
                     <Input
@@ -88,7 +88,7 @@ export const CustomSectionEditor = React.memo(
                     />
                   </div>
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                       Subtitle / Org
                     </Label>
                     <Input
@@ -104,7 +104,7 @@ export const CustomSectionEditor = React.memo(
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                       Start Date
                     </Label>
                     <Input
@@ -118,7 +118,7 @@ export const CustomSectionEditor = React.memo(
                     />
                   </div>
                   <div>
-                    <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                       End Date
                     </Label>
                     <Input
@@ -127,13 +127,13 @@ export const CustomSectionEditor = React.memo(
                       onChange={(e) =>
                         onUpdateItem(item.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+                      className="w-full"
                       placeholder="e.g. Present"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                     Location
                   </Label>
                   <Input
@@ -142,12 +142,12 @@ export const CustomSectionEditor = React.memo(
                     onChange={(e) =>
                       onUpdateItem(item.id, "location", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full"
                     placeholder="e.g. Palo Alto, CA"
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                     Description
                   </Label>
                   <RichTextEditor

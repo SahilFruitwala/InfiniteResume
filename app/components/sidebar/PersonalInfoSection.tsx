@@ -17,7 +17,7 @@ export const PersonalInfoSection = React.memo(
     return (
       <div className="space-y-4">
         <div>
-          <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+          <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
             Profile Picture (Optional)
           </Label>
           <div className="flex items-center gap-4">
@@ -51,7 +51,7 @@ export const PersonalInfoSection = React.memo(
                 variant="ghost"
                 size="icon"
                 onClick={() => onChange("profilePicture", "")}
-                className="h-8 w-8 text-slate-400 hover:text-red-500"
+                className="h-8 w-8 text-black/40 dark:text-white/40 hover:text-red-500"
                 aria-label="Remove profile picture"
               >
                 <Trash2 className="w-4 h-4" />
@@ -60,7 +60,7 @@ export const PersonalInfoSection = React.memo(
           </div>
         </div>
         <div>
-          <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+          <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
             Full Name
           </Label>
           <Input
@@ -75,7 +75,7 @@ export const PersonalInfoSection = React.memo(
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+            <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
               Email
             </Label>
             <Input
@@ -89,7 +89,7 @@ export const PersonalInfoSection = React.memo(
             />
           </div>
           <div>
-            <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+            <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
               Phone
             </Label>
             <Input
@@ -104,7 +104,7 @@ export const PersonalInfoSection = React.memo(
           </div>
         </div>
         <div>
-          <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+          <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
             Location
           </Label>
           <Input
@@ -118,7 +118,7 @@ export const PersonalInfoSection = React.memo(
           />
         </div>
         <div>
-          <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+          <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
             Website (Optional)
           </Label>
           <Input
@@ -132,7 +132,7 @@ export const PersonalInfoSection = React.memo(
           />
         </div>
         <div>
-          <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+          <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
             Professional Summary
           </Label>
           <RichTextEditor

@@ -135,9 +135,14 @@ a {
   cursor: pointer;
 }
 
-/* Hide scrollbar for resume preview area */
-.resume-preview-scroll::-webkit-scrollbar {
+/* Hide scrollbars globally */
+*::-webkit-scrollbar {
   display: none;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 @theme inline {

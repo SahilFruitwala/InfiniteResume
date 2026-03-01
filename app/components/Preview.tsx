@@ -117,13 +117,13 @@ export const Preview = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-slate-100 dark:bg-background overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
+    <div className="flex-1 flex flex-col h-screen bg-slate-50 dark:bg-[#080808] overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
       {/* Toolbar */}
-      <div className="h-16 bg-white dark:bg-card border-b border-slate-200 dark:border-border flex items-center justify-between px-4 shrink-0 shadow-sm z-10 print:hidden transition-colors">
+      <div className="h-16 bg-white dark:bg-card border-b-2 border-black/10 dark:border-white/10 flex items-center justify-between px-4 shrink-0 shadow-none z-10 print:hidden transition-colors">
         <div className="flex items-center gap-2">
           <button
             onClick={onToggleLeftSidebar}
-            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors"
+            className="p-2 text-black/60 dark:text-white/60 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
             title={leftSidebarOpen ? "Hide Data Entry" : "Show Data Entry"}
           >
             {leftSidebarOpen ? (
@@ -133,7 +133,7 @@ export const Preview = ({
             )}
           </button>
           {isOverOnePage && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-md text-sm font-medium border border-amber-200 ml-2">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-none text-sm font-mono uppercase tracking-wider border-2 border-amber-300 dark:border-amber-600 ml-2">
               <AlertTriangle className="w-4 h-4" />
               Content exceeds 1 page
             </div>
@@ -143,7 +143,7 @@ export const Preview = ({
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/90 text-white rounded-md text-sm font-medium transition-all shadow-sm"
+            className="flex items-center gap-2 px-6 py-2 bg-accent hover:bg-accent/90 text-black rounded-none text-sm font-bold uppercase tracking-wider transition-all shadow-none"
           >
             <Download className="w-4 h-4" />
             Save as PDF
@@ -151,11 +151,11 @@ export const Preview = ({
 
           <ThemeToggle />
 
-          <div className="w-px h-6 bg-slate-200 mx-1"></div>
+          <div className="w-px h-6 bg-black/10 dark:bg-white/10 mx-1"></div>
 
           <button
             onClick={onToggleRightSidebar}
-            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-colors"
+            className="p-2 text-black/60 dark:text-white/60 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
             title={
               rightSidebarOpen ? "Hide Design Settings" : "Show Design Settings"
             }

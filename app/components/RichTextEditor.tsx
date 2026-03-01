@@ -106,7 +106,7 @@ export const RichTextEditor = ({
       </div>
       <div
         ref={editorRef}
-        className="p-3 min-h-[80px] max-h-[300px] overflow-y-auto text-sm outline-none dark:text-slate-200 [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 whitespace-pre-wrap"
+        className="p-3 min-h-[80px] max-h-[300px] overflow-y-auto text-sm outline-none dark:text-white [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 whitespace-pre-wrap"
         contentEditable
         onInput={handleInput}
         onBlur={(e) => onChange(e.currentTarget.innerHTML)}

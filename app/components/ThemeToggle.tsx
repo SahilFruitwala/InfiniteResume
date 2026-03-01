@@ -13,7 +13,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="text-slate-500 hover:text-slate-800 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+      className="text-black/60 dark:text-white/60 hover:text-accent hover:bg-accent/10 transition-colors rounded-none"
       title={
         resolvedTheme === "dark"
           ? "Switch to Light Mode"

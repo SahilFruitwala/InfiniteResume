@@ -30,12 +30,12 @@ export const EducationSection = React.memo(
             >
               <Trash2 className="w-4 h-4" />
             </Button>
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 pr-8">
+            <h4 className="text-sm font-semibold text-black/80 dark:text-white/80 mb-3 pr-8">
               Education {index + 1}
             </h4>
             <div className="space-y-4">
               <div>
-                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                   Institution
                 </Label>
                 <Input
@@ -49,7 +49,7 @@ export const EducationSection = React.memo(
                 />
               </div>
               <div>
-                <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                   Degree
                 </Label>
                 <Input
@@ -62,7 +62,7 @@ export const EducationSection = React.memo(
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                     Start Date
                   </Label>
                   <Input
@@ -76,7 +76,7 @@ export const EducationSection = React.memo(
                   />
                 </div>
                 <div>
-                  <Label className="block text-xs font-medium text-slate-700 dark:text-slate-400 mb-1">
+                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
                     End Date
                   </Label>
                   <Input
@@ -85,7 +85,7 @@ export const EducationSection = React.memo(
                     onChange={(e) =>
                       onUpdate(edu.id, "endDate", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full"
                     placeholder="May 2020"
                   />
                 </div>
