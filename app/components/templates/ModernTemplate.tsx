@@ -563,7 +563,7 @@ export const ModernTemplate = memo(
 
     return (
       <div
-        className={`flex max-w-4xl mx-auto w-full min-h-[1056px] shadow-sm print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-800"}`}
+        className={`flex max-w-4xl mx-auto w-full min-h-[1056px] shadow-sm print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#1a1a2e] text-slate-100" : "bg-white text-gray-800"}`}
         style={
           {
             fontFamily: typography?.fontFamily || "var(--font-roboto)",
@@ -694,7 +694,7 @@ export const ModernTemplate = memo(
         {/* Right Column */}
         <div
           data-print-wrapper
-          className={`w-2/3 px-8 transition-colors duration-300 print:!bg-white print:!text-gray-800 ${isDark ? "bg-[#050505] text-slate-100" : "bg-slate-50 text-gray-800"}`}
+          className={`w-2/3 px-8 transition-colors duration-300 print:!bg-white print:!text-gray-800 ${isDark ? "bg-[#1a1a2e] text-slate-100" : "bg-slate-50 text-gray-800"}`}
           style={{
             paddingTop: `${pageMarginTop}px`,
             paddingBottom: `${pageMarginBottom}px`,

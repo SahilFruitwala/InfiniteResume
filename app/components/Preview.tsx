@@ -172,8 +172,14 @@ export const Preview = ({
       {/* Preview Area */}
       <div className="flex-1 overflow-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
         <div
-          className="bg-white shadow-xl shrink-0 print:shadow-none print:m-0 relative transition-colors"
-          style={{ width: `${PAGE_WIDTH}px`, minHeight: `${PAGE_HEIGHT}px` }}
+          className={`shadow-xl shrink-0 print:shadow-none print:m-0 relative transition-colors ${
+            isDark ? "border border-slate-700/60" : "bg-white"
+          }`}
+          style={{
+            width: `${PAGE_WIDTH}px`,
+            minHeight: `${PAGE_HEIGHT}px`,
+            ...(isDark ? { backgroundColor: "#1a1a2e" } : {}),
+          }}
           data-resume-theme={isDark ? "dark" : "light"}
         >
           <style
