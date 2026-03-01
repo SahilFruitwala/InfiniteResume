@@ -1,50 +1,18 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-export function useHistory<T>(key: string, initialValue: T, delay = 1000) {
+export function useHistory<T>(_key: string, initialValue: T, delay = 1000) {
   const [past, setPast] = useState<T[]>([]);
 
-  const [present, setPresentState] = useState<T>(() => {
-    if (typeof window === "undefined") return initialValue;
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      console.warn(`Error reading localStorage key "${key}":`, error);
-      return initialValue;
-    }
-  });
+  const [present, setPresentState] = useState<T>(initialValue);
 
   const [future, setFuture] = useState<T[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const lastSavedState = useRef<T>((() => {
-    if (typeof window === "undefined") return initialValue;
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      return initialValue;
-    }
-  })());
+  const lastSavedState = useRef<T>(initialValue);
 
-  // Autosave to localStorage
+  // Persistence disabled as per user request
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    if (timerRef.current) clearTimeout(timerRef.current);
-
-    timerRef.current = setTimeout(() => {
-      try {
-        window.localStorage.setItem(key, JSON.stringify(present));
-      } catch (error) {
-        console.warn(`Error setting localStorage key "${key}":`, error);
-      }
-    }, delay);
-
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [key, present, delay]);
+    // No-op
+  }, []);
 
   const setPresent = useCallback((newState: T | ((prev: T) => T)) => {
     setPresentState((current) => {
