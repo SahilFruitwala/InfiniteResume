@@ -185,13 +185,25 @@ export default function Home() {
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
 
   React.useEffect(() => {
-    setMounted(true);
+    // Small delay to ensure module system is stabilized
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 50);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) {
     return (
-      <div className="flex h-screen w-full bg-slate-100 dark:bg-background justify-center items-center text-slate-800 dark:text-slate-200">
-        Loading resume builder...
+      <div
+        className="flex h-screen w-full bg-slate-100 dark:bg-background justify-center items-center text-slate-800 dark:text-slate-200"
+        onClick={() => setMounted(true)} /* Manual fallback if needed */
+      >
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+          <p className="font-mono text-sm uppercase tracking-widest animate-pulse">
+            Loading resume builder...
+          </p>
+        </div>
       </div>
     );
   }
