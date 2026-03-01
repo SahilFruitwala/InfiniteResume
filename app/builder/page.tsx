@@ -194,19 +194,27 @@ export default function Home() {
 
   if (!isMounted) {
     return (
-      <div className="flex h-screen w-full bg-slate-100 dark:bg-background justify-center items-center text-slate-800 dark:text-slate-200">
-        <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
-          <p className="font-mono text-sm uppercase tracking-widest animate-pulse">
-            Loading resume builder...
-          </p>
+      <div className="flex h-screen w-full bg-white dark:bg-[#050505] justify-center items-center text-black dark:text-white transition-colors">
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative w-16 h-16">
+            <div className="absolute inset-0 border-4 border-accent/20 rounded-none"></div>
+            <div className="absolute inset-0 border-4 border-accent border-t-transparent animate-spin rounded-none"></div>
+          </div>
+          <div className="text-center">
+            <p className="font-display text-2xl font-black uppercase tracking-tighter animate-pulse">
+              Infinite<span className="text-accent">Resume</span>
+            </p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40 mt-2">
+              Initializing Engine...
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen w-full bg-slate-100 dark:bg-background overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
+    <div className="flex h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
       <AnimatePresence initial={false}>
         {showLeftSidebar && (
           <motion.div

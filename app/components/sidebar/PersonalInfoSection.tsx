@@ -28,7 +28,7 @@ export const PersonalInfoSection = React.memo(
                 width={48}
                 height={48}
                 unoptimized
-                className="w-12 h-12 rounded-full object-cover border border-slate-200"
+                className="w-12 h-12 rounded-none object-cover border-2 border-black/10 dark:border-white/10"
               />
             )}
             <Input
@@ -44,7 +44,7 @@ export const PersonalInfoSection = React.memo(
                   reader.readAsDataURL(file);
                 }
               }}
-              className="flex-1 text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-50 dark:file:bg-slate-800 file:text-slate-700 dark:file:text-slate-300 hover:file:bg-slate-100 dark:hover:file:bg-slate-700 transition-all cursor-pointer"
+              className="flex-1 text-[10px] font-mono uppercase tracking-widest cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-[10px] file:font-bold file:bg-black/5 dark:file:bg-white/5 file:text-black dark:file:text-white hover:file:bg-accent hover:file:text-black transition-all"
             />
             {data.profilePicture && (
               <Button
@@ -69,7 +69,7 @@ export const PersonalInfoSection = React.memo(
             autoComplete="name"
             value={data.fullName}
             onChange={(e) => onChange("fullName", e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+            className="w-full"
             placeholder="John Doe"
           />
         </div>
@@ -84,7 +84,7 @@ export const PersonalInfoSection = React.memo(
               autoComplete="email"
               value={data.email}
               onChange={(e) => onChange("email", e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+              className="w-full"
               placeholder="john@example.com"
             />
           </div>
@@ -98,7 +98,7 @@ export const PersonalInfoSection = React.memo(
               autoComplete="tel"
               value={data.phone}
               onChange={(e) => onChange("phone", e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+              className="w-full"
               placeholder="+1 234 567 890"
             />
           </div>
@@ -113,7 +113,7 @@ export const PersonalInfoSection = React.memo(
             autoComplete="address-level2"
             value={data.location}
             onChange={(e) => onChange("location", e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+            className="w-full"
             placeholder="New York, NY"
           />
         </div>
@@ -127,7 +127,7 @@ export const PersonalInfoSection = React.memo(
             autoComplete="url"
             value={data.website}
             onChange={(e) => onChange("website", e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+            className="w-full"
             placeholder="johndoe.com"
           />
         </div>

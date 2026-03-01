@@ -19,13 +19,13 @@ export const LanguageSection = React.memo(
         {items.map((lang, index) => (
           <div
             key={lang.id}
-            className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
+            className="relative p-4 border-2 border-black/10 dark:border-white/10 rounded-none bg-white dark:bg-[#111111] shadow-none mb-4"
           >
             <Button
               onClick={() => onRemove(lang.id)}
               variant="ghost"
               size="icon"
-              className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
+              className="absolute top-3 right-3 h-8 w-8 text-black/40 dark:text-white/40 hover:text-red-500 hover:bg-red-500/10 rounded-none"
               aria-label={`Remove language ${index + 1}`}
             >
               <Trash2 className="w-4 h-4" />
@@ -66,7 +66,7 @@ export const LanguageSection = React.memo(
         <Button
           onClick={onAdd}
           variant="outline"
-          className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+          className="w-full border-2 border-dashed border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:border-accent hover:text-accent flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <Plus className="w-4 h-4" /> Add Language
         </Button>

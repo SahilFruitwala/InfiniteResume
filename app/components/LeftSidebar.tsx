@@ -58,10 +58,10 @@ const AccordionItem = ({
       value={itemValue}
       className="border-b border-slate-200 dark:border-border last:border-0"
     >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-background hover:bg-slate-50 dark:hover:bg-card transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-card">
+      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-card hover:bg-accent dark:hover:bg-accent hover:text-black transition-colors text-left font-bold uppercase tracking-tight text-black dark:text-white hover:no-underline data-[state=open]:bg-accent data-[state=open]:text-black">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-card/50 px-6">
+      <AccordionContent className="p-6 bg-white dark:bg-[#111111] px-6 border-t-2 border-black/5 dark:border-white/5">
         {children}
       </AccordionContent>
     </ShadcnAccordionItem>
@@ -398,11 +398,13 @@ export const LeftSidebar = ({ data, onChange }: LeftSidebarProps) => {
 
   return (
     <div className="w-80 md:w-96 bg-white dark:bg-card border-r border-slate-200 dark:border-border h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
-      <div className="p-6 border-b border-slate-200 dark:border-border bg-white dark:bg-card text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
+      <div className="p-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card text-black dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
-          <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Fill in your details to generate your resume.
+          <h2 className="font-display text-2xl font-black uppercase tracking-tighter">
+            Resume <span className="text-accent">Editor</span>
+          </h2>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 dark:text-white/40 mt-1">
+            Build your professional identity.
           </p>
         </div>
       </div>

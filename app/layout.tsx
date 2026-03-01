@@ -13,6 +13,7 @@ import {
 } from "next/font/google";
 import "./globals.css"; // Global styles
 import { ThemeProvider } from "./components/ThemeProvider";
+import StructuredData from "./components/StructuredData";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const roboto = Roboto({
@@ -52,14 +53,14 @@ const lato = Lato({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    process.env.NEXT_PUBLIC_APP_URL || "https://infiniteresume.com",
   ),
   title: {
     default: "InfiniteResume | Build Your Professional Resume",
     template: "%s | InfiniteResume",
   },
   description:
-    "Create a stunning, professional resume in minutes with InfiniteResume. Choose from modern, minimal, and professional templates to land your dream job.",
+    "Create a stunning, professional resume in minutes with InfiniteResume. Choose from modern, minimal, and professional templates to land your dream job. No technical skills required.",
   applicationName: "InfiniteResume",
   keywords: [
     "resume builder",
@@ -68,10 +69,21 @@ export const metadata: Metadata = {
     "career",
     "job search",
     "resume templates",
+    "free resume builder",
+    "online CV creator",
+    "ATS friendly resume",
   ],
   authors: [{ name: "InfiniteResume Team" }],
   creator: "InfiniteResume",
   publisher: "InfiniteResume",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "InfiniteResume | Build Your Professional Resume",
     description:
@@ -80,10 +92,10 @@ export const metadata: Metadata = {
     siteName: "InfiniteResume",
     images: [
       {
-        url: "/og-image.png", // Assuming you have or will add an open graph image
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "InfiniteResume Preview",
+        alt: "InfiniteResume - Professional Resume Builder",
       },
     ],
     locale: "en_US",
@@ -95,6 +107,7 @@ export const metadata: Metadata = {
     description:
       "Create a stunning, professional resume in minutes with InfiniteResume. Choose from modern, minimal, and professional templates to land your dream job.",
     images: ["/og-image.png"],
+    creator: "@infiniteresume",
   },
   robots: {
     index: true,
@@ -120,6 +133,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${roboto.variable} ${merriweather.variable} ${playfair.variable} ${lora.variable} ${openSans.variable} ${montserrat.variable} ${poppins.variable} ${raleway.variable} ${lato.variable}`}
     >
+      <head>
+        <StructuredData />
+      </head>
       <body>
         <ThemeProvider
           attribute="class"

@@ -69,10 +69,10 @@ const AccordionItem = ({
       value={itemValue}
       className="border-b border-slate-200 dark:border-slate-800 last:border-0"
     >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-card hover:bg-slate-50 dark:hover:bg-card transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-card">
+      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-card hover:bg-accent dark:hover:bg-accent hover:text-black transition-colors text-left font-bold uppercase tracking-tight text-black dark:text-white hover:no-underline data-[state=open]:bg-accent data-[state=open]:text-black">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-card/50 px-6">
+      <AccordionContent className="p-6 bg-white dark:bg-[#111111] px-6 border-t-2 border-black/5 dark:border-white/5">
         {children}
       </AccordionContent>
     </ShadcnAccordionItem>
@@ -113,9 +113,9 @@ const SortableSectionItem = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex justify-between items-center bg-white dark:bg-card border border-slate-200 dark:border-border p-3 rounded-md shadow-sm mb-2 ${
+      className={`flex justify-between items-center bg-white dark:bg-[#111111] border-2 border-black/10 dark:border-white/10 p-3 rounded-none shadow-none mb-2 ${
         isDragging
-          ? "opacity-50 border-slate-400 dark:border-slate-500 ring-2 ring-slate-200 dark:ring-slate-700"
+          ? "opacity-50 border-accent dark:border-accent ring-2 ring-accent/20"
           : ""
       }`}
     >
@@ -233,11 +233,13 @@ export const RightSidebar = ({
 
   return (
     <div className="w-80 bg-white dark:bg-card border-l border-slate-200 dark:border-border h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">
-      <div className="p-6 border-b border-slate-200 dark:border-border bg-white dark:bg-card text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
+      <div className="p-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card text-black dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
-          <h2 className="text-xl font-bold tracking-tight">Design Settings</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Customize the look and feel.
+          <h2 className="font-display text-2xl font-black uppercase tracking-tighter">
+            Design <span className="text-accent">Settings</span>
+          </h2>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 dark:text-white/40 mt-1">
+            Customize your visual impact.
           </p>
         </div>
       </div>

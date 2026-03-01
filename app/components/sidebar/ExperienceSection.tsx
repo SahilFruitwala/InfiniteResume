@@ -20,13 +20,13 @@ export const ExperienceSection = React.memo(
         {items.map((exp, index) => (
           <div
             key={exp.id}
-            className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-background shadow-sm"
+            className="relative p-4 border-2 border-black/10 dark:border-white/10 rounded-none bg-white dark:bg-[#111111] shadow-none mb-4"
           >
             <Button
               onClick={() => onRemove(exp.id)}
               variant="ghost"
               size="icon"
-              className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
+              className="absolute top-3 right-3 h-8 w-8 text-black/40 dark:text-white/40 hover:text-red-500 hover:bg-red-500/10 rounded-none"
               aria-label={`Remove experience ${index + 1}`}
             >
               <Trash2 className="w-4 h-4" />
@@ -43,7 +43,7 @@ export const ExperienceSection = React.memo(
                   type="text"
                   value={exp.company}
                   onChange={(e) => onUpdate(exp.id, "company", e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+                  className="w-full"
                   placeholder="Acme Corp"
                 />
               </div>
@@ -55,7 +55,7 @@ export const ExperienceSection = React.memo(
                   type="text"
                   value={exp.position}
                   onChange={(e) => onUpdate(exp.id, "position", e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+                  className="w-full"
                   placeholder="Software Engineer"
                 />
               </div>
@@ -70,7 +70,7 @@ export const ExperienceSection = React.memo(
                     onChange={(e) =>
                       onUpdate(exp.id, "startDate", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full"
                     placeholder="Jan 2020"
                   />
                 </div>
@@ -84,7 +84,7 @@ export const ExperienceSection = React.memo(
                     onChange={(e) =>
                       onUpdate(exp.id, "endDate", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full"
                     placeholder="Present"
                   />
                 </div>
@@ -105,7 +105,7 @@ export const ExperienceSection = React.memo(
         <Button
           onClick={onAdd}
           variant="outline"
-          className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+          className="w-full border-2 border-dashed border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:border-accent hover:text-accent flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <Plus className="w-4 h-4" /> Add Experience
         </Button>
