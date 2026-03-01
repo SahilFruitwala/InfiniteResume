@@ -141,15 +141,15 @@ const initialData: ResumeData = {
     bulletListMargin: 4,
   },
   theme: {
-    accentColor: "#0f172a", // slate-900
+    accentColor: "#16A34A", // emerald
     professional: {
-      sectionBorderColor: "#0f172a40",
+      sectionBorderColor: "#16A34A40",
     },
     modern: {
-      accentColor: "#34d399",
+      accentColor: "#16A34A",
     },
     minimal: {
-      accentColor: "#0f172a",
+      accentColor: "#16A34A",
     },
   },
   layout: {
@@ -190,14 +190,14 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <div className="flex h-screen w-full bg-slate-100 dark:bg-slate-950 justify-center items-center text-slate-800 dark:text-slate-200">
+      <div className="flex h-screen w-full bg-slate-100 dark:bg-background justify-center items-center text-slate-800 dark:text-slate-200">
         Loading resume builder...
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen w-full bg-slate-100 dark:bg-slate-950 overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
+    <div className="flex h-screen w-full bg-slate-100 dark:bg-background overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
       {leftSidebarOpen && (
         <div className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50">
           <LeftSidebar

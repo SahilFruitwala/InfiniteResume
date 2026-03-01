@@ -43,7 +43,7 @@ function ThemeToggle() {
 
 function BackgroundGrid() {
   return (
-    <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-white dark:bg-[#050505]">
+    <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-white dark:bg-background">
       <motion.div
         animate={{
           backgroundPosition: ["0px 0px", "64px 64px"],
@@ -137,7 +137,7 @@ function Navbar() {
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="fixed top-0 w-full z-50 border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-md"
+        className="fixed top-0 w-full z-50 border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-background/80 backdrop-blur-md"
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link
@@ -218,7 +218,7 @@ function Navbar() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="fixed inset-0 z-40 bg-white dark:bg-[#050505] pt-28 px-6 flex flex-col md:hidden origin-top"
+            className="fixed inset-0 z-40 bg-white dark:bg-background pt-28 px-6 flex flex-col md:hidden origin-top"
           >
             <motion.div
               variants={containerVars}
@@ -241,8 +241,8 @@ function Navbar() {
               <div className="overflow-hidden">
                 <motion.div variants={linkVars}>
                   <Link
-                    href="#why-matchpoint"
-                    onClick={(e) => handleScroll(e, "#why-matchpoint")}
+                    href="#why-infiniteresume"
+                    onClick={(e) => handleScroll(e, "#why-infiniteresume")}
                     className="hover:text-accent transition-colors block"
                   >
                     Why InfiniteResume
@@ -450,13 +450,13 @@ function Hero() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 blur-[120px] rounded-full -z-10"></div>
 
           {/* Main App Mockup */}
-          <div className="relative w-full max-w-lg aspect-[3/4] bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden group">
-            <div className="absolute top-0 w-full h-12 bg-gray-100 dark:bg-[#1a1a1a] border-b border-black/10 dark:border-white/10 flex items-center px-4 gap-2">
+          <div className="relative w-full max-w-lg aspect-[3/4] bg-white dark:bg-card border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden group">
+            <div className="absolute top-0 w-full h-12 bg-gray-100 dark:bg-card border-b border-black/10 dark:border-white/10 flex items-center px-4 gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
               <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
               <div className="ml-4 text-xs font-mono text-black/30 dark:text-white/30">
-                matchpoint-analysis.exe
+                infiniteresume-analysis.exe
               </div>
             </div>
 
@@ -564,7 +564,7 @@ function Demo() {
   return (
     <section
       id="demo"
-      className="py-32 bg-white/40 dark:bg-black/40 backdrop-blur-md text-black dark:text-[#f5f5f4] border-t border-black/10 dark:border-white/10 relative overflow-hidden"
+      className="py-32 bg-white/40 dark:bg-black/40 backdrop-blur-md text-black dark:text-foreground border-t border-black/10 dark:border-white/10 relative overflow-hidden"
     >
       <div className="max-w-4xl mx-auto px-6">
         <motion.div
@@ -583,7 +583,7 @@ function Demo() {
           </p>
         </motion.div>
 
-        <div className="bg-gray-50 dark:bg-[#0a0a0a] border border-black/10 dark:border-white/10 p-6 md:p-10 shadow-2xl relative overflow-hidden">
+        <div className="bg-gray-50 dark:bg-card border border-black/10 dark:border-white/10 p-6 md:p-10 shadow-2xl relative overflow-hidden">
           {/* Decorative top bar */}
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
 
@@ -766,7 +766,7 @@ function Features() {
     <section
       ref={ref}
       id="features"
-      className="py-24 bg-white dark:bg-[#050505] text-black dark:text-white border-y border-black/10 dark:border-white/10 relative overflow-hidden"
+      className="py-24 bg-white dark:bg-background text-black dark:text-white border-y border-black/10 dark:border-white/10 relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
@@ -854,8 +854,8 @@ const reasons = [
 function WhyInfiniteResume() {
   return (
     <section
-      id="why-matchpoint"
-      className="py-32 bg-white dark:bg-[#050505] text-black dark:text-white border-y border-black/10 dark:border-white/10"
+      id="why-infiniteresume"
+      className="py-32 bg-white dark:bg-background text-black dark:text-white border-y border-black/10 dark:border-white/10"
     >
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
@@ -931,7 +931,7 @@ function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="py-32 bg-transparent text-black dark:text-[#f5f5f4] relative overflow-hidden"
+      className="py-32 bg-transparent text-black dark:text-foreground relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -979,7 +979,7 @@ function HowItWorks() {
                 transition={{ delay: index * 0.2 }}
                 className="relative pl-0 md:pl-20"
               >
-                <div className="hidden md:flex absolute left-0 top-0 w-16 h-16 bg-white dark:bg-[#0a0a0a] border border-black/10 dark:border-white/10 rounded-full items-center justify-center z-10">
+                <div className="hidden md:flex absolute left-0 top-0 w-16 h-16 bg-white dark:bg-card border border-black/10 dark:border-white/10 rounded-full items-center justify-center z-10">
                   <span className="font-display font-black text-xl text-accent">
                     {step.number}
                   </span>
@@ -1040,7 +1040,7 @@ function Pricing() {
   return (
     <section
       id="pricing"
-      className="py-32 bg-white/40 dark:bg-black/40 backdrop-blur-md text-black dark:text-[#f5f5f4] border-t border-black/10 dark:border-white/10"
+      className="py-32 bg-white/40 dark:bg-black/40 backdrop-blur-md text-black dark:text-foreground border-t border-black/10 dark:border-white/10"
     >
       <div className="max-w-7xl mx-auto px-6 text-center">
         <motion.div
@@ -1361,7 +1361,7 @@ function Footer() {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-transparent text-black dark:text-[#f5f5f4] selection:bg-accent selection:text-black">
+    <main className="min-h-screen bg-transparent text-black dark:text-foreground selection:bg-accent selection:text-black">
       <BackgroundGrid />
       <Navbar />
       <Hero />

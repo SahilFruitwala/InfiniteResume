@@ -30,8 +30,8 @@ export const RichTextEditor = ({
   };
 
   return (
-    <div className="border border-slate-300 dark:border-slate-700 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-slate-800 dark:focus-within:ring-slate-400 focus-within:border-slate-800 dark:focus-within:border-slate-400 transition-all bg-white dark:bg-slate-900">
-      <div className="bg-slate-50 dark:bg-slate-800 border-b border-slate-300 dark:border-slate-700 px-2 py-1 flex gap-1 items-center">
+    <div className="border border-slate-300 dark:border-border rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all bg-white dark:bg-background">
+      <div className="bg-slate-50 dark:bg-card border-b border-slate-300 dark:border-border px-2 py-1 flex gap-1 items-center">
         <Button
           variant="ghost"
           size="icon"
@@ -40,7 +40,7 @@ export const RichTextEditor = ({
             e.preventDefault();
             execCommand("bold");
           }}
-          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-muted rounded transition-colors"
           title="Bold"
         >
           <Bold className="w-4 h-4" />
@@ -53,7 +53,7 @@ export const RichTextEditor = ({
             e.preventDefault();
             execCommand("italic");
           }}
-          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-muted rounded transition-colors"
           title="Italic"
         >
           <Italic className="w-4 h-4" />
@@ -66,12 +66,12 @@ export const RichTextEditor = ({
             e.preventDefault();
             execCommand("underline");
           }}
-          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-muted rounded transition-colors"
           title="Underline"
         >
           <Underline className="w-4 h-4" />
         </Button>
-        <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+        <div className="w-px h-6 bg-slate-300 dark:bg-border mx-1"></div>
         <Button
           variant="ghost"
           size="icon"
@@ -80,7 +80,7 @@ export const RichTextEditor = ({
             e.preventDefault();
             execCommand("insertUnorderedList");
           }}
-          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+          className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-muted rounded transition-colors"
           title="Bullet List"
         >
           <List className="w-4 h-4" />

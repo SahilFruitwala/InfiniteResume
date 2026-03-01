@@ -102,24 +102,24 @@ export const Preview = ({
   const renderTemplate = () => {
     switch (template) {
       case "minimal":
-        return <MinimalTemplate data={data} />;
+        return <MinimalTemplate data={data} isDark={isDark} />;
       case "professional":
-        return <ProfessionalTemplate data={data} />;
+        return <ProfessionalTemplate data={data} isDark={isDark} />;
       case "modern":
-        return <ModernTemplate data={data} />;
+        return <ModernTemplate data={data} isDark={isDark} />;
       case "academic":
-        return <AcademicTemplate data={data} />;
+        return <AcademicTemplate data={data} isDark={isDark} />;
       case "creative":
-        return <CreativeTemplate data={data} />;
+        return <CreativeTemplate data={data} isDark={isDark} />;
       default:
-        return <MinimalTemplate data={data} />;
+        return <MinimalTemplate data={data} isDark={isDark} />;
     }
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-slate-100 dark:bg-slate-950 overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
+    <div className="flex-1 flex flex-col h-screen bg-slate-100 dark:bg-background overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
       {/* Toolbar */}
-      <div className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shrink-0 shadow-sm z-10 print:hidden transition-colors">
+      <div className="h-16 bg-white dark:bg-card border-b border-slate-200 dark:border-border flex items-center justify-between px-4 shrink-0 shadow-sm z-10 print:hidden transition-colors">
         <div className="flex items-center gap-2">
           <button
             onClick={onToggleLeftSidebar}
@@ -143,7 +143,7 @@ export const Preview = ({
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/90 text-white rounded-md text-sm font-medium transition-all shadow-sm"
           >
             <Download className="w-4 h-4" />
             Save as PDF

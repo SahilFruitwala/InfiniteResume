@@ -207,11 +207,11 @@ a {
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: #050505;
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: #111111;
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: #111111;
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -219,7 +219,7 @@ a {
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: #00FF00; /* Neon Green */
+  --accent: #16A34A; /* Modern Emerald */
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
@@ -230,11 +230,11 @@ a {
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
+  --sidebar: #050505;
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: #16A34A;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent: #111111;
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
@@ -253,19 +253,19 @@ a {
 
   /* Resume Dark Mode Styles */
   [data-resume-theme="dark"] {
-    background-color: #0f172a !important; /* slate-950 */
+    background-color: #050505 !important;
     color: #f1f5f9 !important; /* slate-100 */
   }
 
   [data-resume-theme="dark"] .bg-white {
-    background-color: #0f172a !important;
+    background-color: #050505 !important;
   }
 
   [data-resume-theme="dark"] .bg-slate-100,
   [data-resume-theme="dark"] .bg-slate-50,
   [data-resume-theme="dark"] .bg-gray-100,
   [data-resume-theme="dark"] .bg-gray-50 {
-    background-color: #1e293b !important; /* slate-800 */
+    background-color: #111111 !important;
   }
 
   [data-resume-theme="dark"] .text-slate-950,
@@ -320,7 +320,7 @@ a {
   [data-resume-theme="dark"] h2[style*="color: #0f172a"],
   [data-resume-theme="dark"] h2[style*="color: rgb(30, 58, 138)"],
   [data-resume-theme="dark"] h2[style*="color: #1e3a8a"] {
-    color: #60a5fa !important;
+    color: #f1f5f9 !important; /* slate-100 */
   }
 
   /* ===== Print: force light mode within @layer base ===== */

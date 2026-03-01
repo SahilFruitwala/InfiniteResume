@@ -72,12 +72,12 @@ const AccordionItem = ({
   return (
     <ShadcnAccordionItem
       value={itemValue}
-      className="border-b border-slate-200 dark:border-slate-800 last:border-0"
+      className="border-b border-slate-200 dark:border-border last:border-0"
     >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-slate-800">
+      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-background hover:bg-slate-50 dark:hover:bg-card transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-card">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-slate-900/50 px-6">
+      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-card/50 px-6">
         {children}
       </AccordionContent>
     </ShadcnAccordionItem>
@@ -102,13 +102,13 @@ const ExperienceSection = React.memo(
           {items.map((exp, index) => (
             <div
               key={exp.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-800 rounded-lg bg-white dark:bg-slate-900 shadow-sm"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-background shadow-sm"
             >
               <Button
                 onClick={() => onRemove(exp.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -126,7 +126,7 @@ const ExperienceSection = React.memo(
                     onChange={(e) =>
                       onUpdate(exp.id, "company", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Acme Corp"
                   />
                 </div>
@@ -140,7 +140,7 @@ const ExperienceSection = React.memo(
                     onChange={(e) =>
                       onUpdate(exp.id, "position", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Software Engineer"
                   />
                 </div>
@@ -155,7 +155,7 @@ const ExperienceSection = React.memo(
                       onChange={(e) =>
                         onUpdate(exp.id, "startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Jan 2020"
                     />
                   </div>
@@ -169,7 +169,7 @@ const ExperienceSection = React.memo(
                       onChange={(e) =>
                         onUpdate(exp.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Present"
                     />
                   </div>
@@ -190,7 +190,7 @@ const ExperienceSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Experience
           </Button>
@@ -218,13 +218,13 @@ const EducationSection = React.memo(
           {items.map((edu, index) => (
             <div
               key={edu.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(edu.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -242,7 +242,7 @@ const EducationSection = React.memo(
                     onChange={(e) =>
                       onUpdate(edu.id, "institution", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="University of Technology"
                   />
                 </div>
@@ -254,7 +254,7 @@ const EducationSection = React.memo(
                     type="text"
                     value={edu.degree}
                     onChange={(e) => onUpdate(edu.id, "degree", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="B.S. Computer Science"
                   />
                 </div>
@@ -269,7 +269,7 @@ const EducationSection = React.memo(
                       onChange={(e) =>
                         onUpdate(edu.id, "startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Aug 2016"
                     />
                   </div>
@@ -283,7 +283,7 @@ const EducationSection = React.memo(
                       onChange={(e) =>
                         onUpdate(edu.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="May 2020"
                     />
                   </div>
@@ -294,7 +294,7 @@ const EducationSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Education
           </Button>
@@ -322,13 +322,13 @@ const ProjectSection = React.memo(
           {items.map((proj, index) => (
             <div
               key={proj.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(proj.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -344,7 +344,7 @@ const ProjectSection = React.memo(
                     type="text"
                     value={proj.name}
                     onChange={(e) => onUpdate(proj.id, "name", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="E-commerce Platform"
                   />
                 </div>
@@ -356,7 +356,7 @@ const ProjectSection = React.memo(
                     type="text"
                     value={proj.link}
                     onChange={(e) => onUpdate(proj.id, "link", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="github.com/johndoe/project"
                   />
                 </div>
@@ -376,7 +376,7 @@ const ProjectSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Project
           </Button>
@@ -404,13 +404,13 @@ const SocialLinkSection = React.memo(
           {items.map((link, index) => (
             <div
               key={link.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(link.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -426,7 +426,7 @@ const SocialLinkSection = React.memo(
                     type="text"
                     value={link.name}
                     onChange={(e) => onUpdate(link.id, "name", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="LinkedIn, GitHub, Portfolio…"
                   />
                 </div>
@@ -438,7 +438,7 @@ const SocialLinkSection = React.memo(
                     type="text"
                     value={link.url}
                     onChange={(e) => onUpdate(link.id, "url", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="https://…"
                   />
                 </div>
@@ -448,7 +448,7 @@ const SocialLinkSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Link
           </Button>
@@ -476,13 +476,13 @@ const LanguageSection = React.memo(
           {items.map((lang, index) => (
             <div
               key={lang.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(lang.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -498,7 +498,7 @@ const LanguageSection = React.memo(
                     type="text"
                     value={lang.name}
                     onChange={(e) => onUpdate(lang.id, "name", e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="English"
                   />
                 </div>
@@ -512,7 +512,7 @@ const LanguageSection = React.memo(
                     onChange={(e) =>
                       onUpdate(lang.id, "proficiency", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Native, Fluent, Beginner…"
                   />
                 </div>
@@ -522,7 +522,7 @@ const LanguageSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Language
           </Button>
@@ -550,13 +550,13 @@ const VolunteerSection = React.memo(
           {items.map((vol, index) => (
             <div
               key={vol.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(vol.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -574,7 +574,7 @@ const VolunteerSection = React.memo(
                     onChange={(e) =>
                       onUpdate(vol.id, "organization", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Red Cross"
                   />
                 </div>
@@ -588,7 +588,7 @@ const VolunteerSection = React.memo(
                     onChange={(e) =>
                       onUpdate(vol.id, "position", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Volunteer Coordinator"
                   />
                 </div>
@@ -603,7 +603,7 @@ const VolunteerSection = React.memo(
                       onChange={(e) =>
                         onUpdate(vol.id, "startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Jan 2018"
                     />
                   </div>
@@ -617,7 +617,7 @@ const VolunteerSection = React.memo(
                       onChange={(e) =>
                         onUpdate(vol.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                       placeholder="Present"
                     />
                   </div>
@@ -638,7 +638,7 @@ const VolunteerSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Volunteer Work
           </Button>
@@ -666,13 +666,13 @@ const InterestSection = React.memo(
           {items.map((interest, index) => (
             <div
               key={interest.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(interest.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -690,7 +690,7 @@ const InterestSection = React.memo(
                     onChange={(e) =>
                       onUpdate(interest.id, "name", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Photography, Hiking…"
                   />
                 </div>
@@ -700,7 +700,7 @@ const InterestSection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Interest
           </Button>
@@ -728,13 +728,13 @@ const SkillCategorySection = React.memo(
           {items.map((category, index) => (
             <div
               key={category.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemove(category.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -752,7 +752,7 @@ const SkillCategorySection = React.memo(
                     onChange={(e) =>
                       onUpdate(category.id, "name", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="Frontend, Backend, Tools…"
                   />
                 </div>
@@ -772,7 +772,7 @@ const SkillCategorySection = React.memo(
           <Button
             onClick={onAdd}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Skill Category
           </Button>
@@ -840,13 +840,13 @@ const CustomSectionEditor = React.memo(
           {section.items.map((item, index) => (
             <div
               key={item.id}
-              className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-sm dark:shadow-lg"
+              className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-card shadow-sm dark:shadow-lg"
             >
               <Button
                 onClick={() => onRemoveItem(item.id)}
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="absolute top-3 right-3 h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-card"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -865,7 +865,7 @@ const CustomSectionEditor = React.memo(
                       onChange={(e) =>
                         onUpdateItem(item.id, "title", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                       placeholder="e.g. Research Assistant"
                     />
                   </div>
@@ -879,7 +879,7 @@ const CustomSectionEditor = React.memo(
                       onChange={(e) =>
                         onUpdateItem(item.id, "subtitle", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                       placeholder="e.g. Stanford University"
                     />
                   </div>
@@ -895,7 +895,7 @@ const CustomSectionEditor = React.memo(
                       onChange={(e) =>
                         onUpdateItem(item.id, "startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                       placeholder="e.g. Jan 2022"
                     />
                   </div>
@@ -909,7 +909,7 @@ const CustomSectionEditor = React.memo(
                       onChange={(e) =>
                         onUpdateItem(item.id, "endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                       placeholder="e.g. Present"
                     />
                   </div>
@@ -924,7 +924,7 @@ const CustomSectionEditor = React.memo(
                     onChange={(e) =>
                       onUpdateItem(item.id, "location", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                     placeholder="e.g. Palo Alto, CA"
                   />
                 </div>
@@ -946,7 +946,7 @@ const CustomSectionEditor = React.memo(
           <Button
             onClick={onAddItem}
             variant="outline"
-            className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+            className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Item
           </Button>
@@ -1311,8 +1311,8 @@ export const LeftSidebar = ({
   );
 
   return (
-    <div className="w-80 md:w-96 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
-      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
+    <div className="w-80 md:w-96 bg-white dark:bg-background border-r border-slate-200 dark:border-border h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
+      <div className="p-6 border-b border-slate-200 dark:border-border bg-white dark:bg-background text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -1325,7 +1325,7 @@ export const LeftSidebar = ({
             size="icon"
             onClick={undo}
             disabled={!canUndo}
-            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition-colors"
+            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-card disabled:opacity-30 transition-colors"
             title="Undo (Cmd+Z)"
           >
             <Undo2 className="w-5 h-5" />
@@ -1335,7 +1335,7 @@ export const LeftSidebar = ({
             size="icon"
             onClick={redo}
             disabled={!canRedo}
-            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 transition-colors"
+            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-card disabled:opacity-30 transition-colors"
             title="Redo (Cmd+Shift+Z)"
           >
             <Redo2 className="w-5 h-5" />
@@ -1404,7 +1404,7 @@ export const LeftSidebar = ({
                   onChange={(e) =>
                     updatePersonalInfo("fullName", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   placeholder="John Doe"
                 />
               </div>
@@ -1421,7 +1421,7 @@ export const LeftSidebar = ({
                     onChange={(e) =>
                       updatePersonalInfo("email", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -1437,7 +1437,7 @@ export const LeftSidebar = ({
                     onChange={(e) =>
                       updatePersonalInfo("phone", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     placeholder="+1 234 567 890"
                   />
                 </div>
@@ -1454,7 +1454,7 @@ export const LeftSidebar = ({
                   onChange={(e) =>
                     updatePersonalInfo("location", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   placeholder="New York, NY"
                 />
               </div>
@@ -1470,7 +1470,7 @@ export const LeftSidebar = ({
                   onChange={(e) =>
                     updatePersonalInfo("website", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   placeholder="johndoe.com"
                 />
               </div>
@@ -1528,7 +1528,7 @@ export const LeftSidebar = ({
               {(data.awards || []).map((award, index) => (
                 <div
                   key={award.id}
-                  className="relative p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 shadow-sm"
+                  className="relative p-4 border border-slate-200 dark:border-border rounded-lg bg-white dark:bg-background shadow-sm"
                 >
                   <Button
                     onClick={() => removeAward(award.id)}
@@ -1552,7 +1552,7 @@ export const LeftSidebar = ({
                         onChange={(e) =>
                           updateAward(award.id, "name", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                         placeholder="Employee of the Year"
                       />
                     </div>
@@ -1566,7 +1566,7 @@ export const LeftSidebar = ({
                         onChange={(e) =>
                           updateAward(award.id, "issuer", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                         placeholder="Tech Innovators Inc."
                       />
                     </div>
@@ -1580,7 +1580,7 @@ export const LeftSidebar = ({
                         onChange={(e) =>
                           updateAward(award.id, "date", e.target.value)
                         }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none transition-all"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all"
                         placeholder="Dec 2022"
                       />
                     </div>
@@ -1602,7 +1602,7 @@ export const LeftSidebar = ({
               <Button
                 onClick={addAward}
                 variant="outline"
-                className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
+                className="w-full border-2 border-dashed border-slate-300 dark:border-border text-slate-600 dark:text-slate-400 hover:border-slate-800 dark:hover:border-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition-colors"
               >
                 <Plus className="w-4 h-4" /> Add Award
               </Button>

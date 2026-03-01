@@ -69,10 +69,10 @@ const AccordionItem = ({
       value={itemValue}
       className="border-b border-slate-200 dark:border-slate-800 last:border-0"
     >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-slate-800">
+      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-background hover:bg-slate-50 dark:hover:bg-card transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-card">
         {title}
       </AccordionTrigger>
-      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-slate-900/50 px-6">
+      <AccordionContent className="p-6 bg-slate-50/50 dark:bg-card/50 px-6">
         {children}
       </AccordionContent>
     </ShadcnAccordionItem>
@@ -113,7 +113,7 @@ const SortableSectionItem = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex justify-between items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-md shadow-sm mb-2 ${
+      className={`flex justify-between items-center bg-white dark:bg-card border border-slate-200 dark:border-border p-3 rounded-md shadow-sm mb-2 ${
         isDragging
           ? "opacity-50 border-slate-400 dark:border-slate-500 ring-2 ring-slate-200 dark:ring-slate-700"
           : ""
@@ -222,10 +222,18 @@ export const RightSidebar = ({
     return id;
   };
   const { theme: appTheme, setTheme: setAppTheme } = useTheme();
+  // We use the app's theme for dark/light mode consistency,
+  // but we don't force the resume's accent color to follow the app's accent color.
+  const isAppDark =
+    appTheme === "dark" ||
+    (appTheme === "system" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const defaultResumeAccent = "#16A34A"; // Standard emerald
+  const defaultProfessionalBorder = "#16A34A40";
 
   return (
-    <div className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">
-      <div className="p-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
+    <div className="w-80 bg-white dark:bg-background border-l border-slate-200 dark:border-border h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">
+      <div className="p-6 border-b border-slate-200 dark:border-border bg-white dark:bg-card text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Design Settings</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -252,7 +260,7 @@ export const RightSidebar = ({
                     onTemplateChange(value as TemplateType)
                   }
                 >
-                  <SelectTrigger className="w-full bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
+                  <SelectTrigger className="w-full bg-white dark:bg-card dark:border-border dark:text-slate-200">
                     <SelectValue placeholder="Select Template" />
                   </SelectTrigger>
                   <SelectContent>
@@ -276,7 +284,7 @@ export const RightSidebar = ({
                 <div className="flex items-center gap-3">
                   <Input
                     type="color"
-                    value={data.theme?.accentColor ?? "#0f172a"}
+                    value={data.theme?.accentColor ?? defaultResumeAccent}
                     onChange={(e) =>
                       onChange({
                         ...data,
@@ -287,14 +295,14 @@ export const RightSidebar = ({
                   />
                   <Input
                     type="text"
-                    value={data.theme?.accentColor ?? "#0f172a"}
+                    value={data.theme?.accentColor ?? defaultResumeAccent}
                     onChange={(e) =>
                       onChange({
                         ...data,
                         theme: { ...data.theme, accentColor: e.target.value },
                       })
                     }
-                    className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="flex-1 px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all font-mono dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
@@ -315,13 +323,13 @@ export const RightSidebar = ({
                         data.theme?.professional?.sectionBorderColor?.slice(
                           0,
                           7,
-                        ) ?? "#0f172a"
+                        ) ?? defaultResumeAccent
                       }
                       onChange={(e) => {
                         // Keep opacity if it was there, or default to 40 (25%)
                         const current =
                           data.theme?.professional?.sectionBorderColor ??
-                          "#0f172a40";
+                          defaultProfessionalBorder;
                         const opacity =
                           current.length === 9 ? current.slice(7) : "40";
                         onChange({
@@ -335,13 +343,13 @@ export const RightSidebar = ({
                           },
                         });
                       }}
-                      className="w-10 h-10 p-1 border border-slate-300 dark:border-slate-700 rounded-md cursor-pointer dark:bg-slate-800"
+                      className="w-10 h-10 p-1 border border-slate-300 dark:border-border rounded-md cursor-pointer dark:bg-card"
                     />
                     <Input
                       type="text"
                       value={
                         data.theme?.professional?.sectionBorderColor ??
-                        "#0f172a40"
+                        defaultProfessionalBorder
                       }
                       onChange={(e) =>
                         onChange({
@@ -355,11 +363,11 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all font-mono dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     />
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
-                    Supports hex with opacity (e.g. #0f172a40).
+                    Supports hex with opacity (e.g. #16A34A40).
                   </p>
                 </div>
               )}
@@ -372,7 +380,9 @@ export const RightSidebar = ({
                   <div className="flex items-center gap-3">
                     <Input
                       type="color"
-                      value={data.theme?.modern?.accentColor ?? "#34d399"}
+                      value={
+                        data.theme?.modern?.accentColor ?? defaultResumeAccent
+                      }
                       onChange={(e) =>
                         onChange({
                           ...data,
@@ -385,11 +395,13 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="w-10 h-10 p-1 border border-slate-300 dark:border-slate-700 rounded-md cursor-pointer dark:bg-slate-800"
+                      className="w-10 h-10 p-1 border border-slate-300 dark:border-border rounded-md cursor-pointer dark:bg-card"
                     />
                     <Input
                       type="text"
-                      value={data.theme?.modern?.accentColor ?? "#34d399"}
+                      value={
+                        data.theme?.modern?.accentColor ?? defaultResumeAccent
+                      }
                       onChange={(e) =>
                         onChange({
                           ...data,
@@ -402,7 +414,7 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all font-mono dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     />
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
@@ -420,7 +432,9 @@ export const RightSidebar = ({
                   <div className="flex items-center gap-3">
                     <Input
                       type="color"
-                      value={data.theme?.minimal?.accentColor ?? "#0f172a"}
+                      value={
+                        data.theme?.minimal?.accentColor ?? defaultResumeAccent
+                      }
                       onChange={(e) =>
                         onChange({
                           ...data,
@@ -433,11 +447,13 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="w-10 h-10 p-1 border border-slate-300 dark:border-slate-700 rounded-md cursor-pointer dark:bg-slate-800"
+                      className="w-10 h-10 p-1 border border-slate-300 dark:border-border rounded-md cursor-pointer dark:bg-card"
                     />
                     <Input
                       type="text"
-                      value={data.theme?.minimal?.accentColor ?? "#0f172a"}
+                      value={
+                        data.theme?.minimal?.accentColor ?? defaultResumeAccent
+                      }
                       onChange={(e) =>
                         onChange({
                           ...data,
@@ -450,7 +466,7 @@ export const RightSidebar = ({
                           },
                         })
                       }
-                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all font-mono dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                      className="flex-1 px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all font-mono dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -473,7 +489,7 @@ export const RightSidebar = ({
                     })
                   }
                 >
-                  <SelectTrigger className="w-full bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
+                  <SelectTrigger className="w-full bg-white dark:bg-card dark:border-border dark:text-slate-200">
                     <SelectValue placeholder="Select a font" />
                   </SelectTrigger>
                   <SelectContent>
@@ -530,7 +546,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -551,7 +567,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -573,7 +589,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -594,7 +610,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -622,7 +638,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -643,7 +659,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -664,7 +680,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -687,7 +703,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -708,7 +724,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -731,7 +747,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
@@ -752,7 +768,7 @@ export const RightSidebar = ({
                         },
                       })
                     }
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md text-sm focus:ring-2 focus:ring-slate-800 dark:focus:ring-slate-400 focus:border-slate-800 dark:focus:border-slate-400 outline-none transition-all dark:bg-slate-800 dark:text-slate-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-border rounded-md text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all dark:bg-card dark:text-slate-200 placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -772,7 +788,7 @@ export const RightSidebar = ({
                     })
                   }
                 >
-                  <SelectTrigger className="w-full bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
+                  <SelectTrigger className="w-full bg-white dark:bg-card dark:border-border dark:text-slate-200">
                     <SelectValue placeholder="Select Page Size" />
                   </SelectTrigger>
                   <SelectContent>
