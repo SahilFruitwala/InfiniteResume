@@ -172,7 +172,7 @@ export const Preview = ({
       {/* Preview Area */}
       <div className="flex-1 overflow-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
         <div
-          className={`shadow-xl shrink-0 print:shadow-none print:m-0 relative transition-colors ${
+          className={`shadow-xl shrink-0 print:shadow-none print:border-0 print:m-0 relative transition-colors ${
             isDark ? "border border-slate-700/60" : "bg-white"
           }`}
           style={{

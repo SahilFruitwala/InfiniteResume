@@ -31,6 +31,8 @@
   [data-resume-theme="dark"] {
     background-color: white !important;
     color: #111827 !important; /* gray-900 */
+    border: none !important;
+    box-shadow: none !important;
   }
 
   /* Background resets */
@@ -333,6 +335,8 @@ a {
     [data-resume-theme="dark"] {
       background-color: white !important;
       color: #111827 !important;
+      border: none !important;
+      box-shadow: none !important;
     }
 
     [data-resume-theme="dark"] .bg-white,
