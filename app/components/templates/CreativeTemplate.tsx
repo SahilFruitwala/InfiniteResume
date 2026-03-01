@@ -561,7 +561,7 @@ export const CreativeTemplate = memo(
 
     return (
       <div
-        className={`transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] overflow-hidden relative shadow-md ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-900"}`}
+        className={`transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] overflow-hidden relative shadow-md print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-900"}`}
         style={
           {
             fontFamily: typography?.fontFamily || "var(--font-poppins)",

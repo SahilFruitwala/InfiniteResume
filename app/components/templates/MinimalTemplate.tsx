@@ -43,7 +43,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -98,7 +97,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -146,7 +144,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -201,7 +198,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -253,7 +249,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -308,7 +303,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -348,7 +342,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -369,7 +362,6 @@ export const MinimalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -416,7 +408,6 @@ export const MinimalTemplate = memo(
                     style={{
                       fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                       marginBottom: `${sectionTitleGap}px`,
-                      color: accentColor,
                       borderColor: accentColor,
                     }}
                   >
@@ -492,7 +483,7 @@ export const MinimalTemplate = memo(
     return (
       <div
         data-print-wrapper
-        className={`px-8 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-900"}`}
+        className={`px-8 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-900"}`}
         style={
           {
             paddingTop: `${pageMarginTop}px`,
@@ -512,7 +503,6 @@ export const MinimalTemplate = memo(
             className={`font-bold mb-2 tracking-tight ${isDark ? "text-slate-100" : "text-gray-900"}`}
             style={{
               fontSize: `${typography?.fontSizeHeading || 36}px`,
-              color: accentColor,
             }}
           >
             {data.personalInfo.fullName || "Your Name"}

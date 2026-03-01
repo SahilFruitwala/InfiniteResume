@@ -33,7 +33,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -59,7 +58,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -124,7 +122,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -178,7 +175,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -242,7 +238,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -304,7 +299,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -369,7 +363,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -401,7 +394,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -425,7 +417,6 @@ export const AcademicTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: accentColor,
                 }}
               >
@@ -478,7 +469,6 @@ export const AcademicTemplate = memo(
                     style={{
                       fontSize: `${typography?.fontSizeSectionHeading || 16}px`,
                       marginBottom: `${sectionTitleGap}px`,
-                      color: accentColor,
                       borderColor: accentColor,
                     }}
                   >
@@ -565,7 +555,7 @@ export const AcademicTemplate = memo(
     return (
       <div
         data-print-wrapper
-        className={`px-12 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-900"}`}
+        className={`px-12 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-900"}`}
         style={
           {
             paddingTop: `${pageMarginTop}px`,
@@ -597,7 +587,6 @@ export const AcademicTemplate = memo(
             className="font-bold uppercase tracking-wider mb-2"
             style={{
               fontSize: `${typography?.fontSizeHeading || 32}px`,
-              color: accentColor,
             }}
           >
             {data.personalInfo.fullName || "Your Name"}

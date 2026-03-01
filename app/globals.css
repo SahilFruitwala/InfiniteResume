@@ -36,7 +36,8 @@
   /* Background resets */
   [data-resume-theme="dark"] .bg-white,
   [data-resume-theme="dark"] .bg-slate-950,
-  [data-resume-theme="dark"] .dark\:bg-slate-950 {
+  [data-resume-theme="dark"] .dark\:bg-slate-950,
+  [data-resume-theme="dark"] .bg-\[\#050505\] {
     background-color: white !important;
   }
 
@@ -55,6 +56,8 @@
   [data-resume-theme="dark"] .text-slate-950,
   [data-resume-theme="dark"] .text-slate-900,
   [data-resume-theme="dark"] .text-slate-800,
+  [data-resume-theme="dark"] .text-slate-200,
+  [data-resume-theme="dark"] .text-slate-100,
   [data-resume-theme="dark"] .text-gray-950,
   [data-resume-theme="dark"] .text-gray-900,
   [data-resume-theme="dark"] .text-gray-800,

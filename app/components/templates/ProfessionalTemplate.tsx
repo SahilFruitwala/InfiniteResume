@@ -55,7 +55,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -110,7 +109,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -158,7 +156,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -213,7 +210,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -265,7 +261,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -320,7 +315,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -360,7 +354,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -381,7 +374,6 @@ export const ProfessionalTemplate = memo(
                 style={{
                   fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                   marginBottom: `${sectionTitleGap}px`,
-                  color: accentColor,
                   borderColor: sectionBorderColor,
                 }}
               >
@@ -428,7 +420,6 @@ export const ProfessionalTemplate = memo(
                     style={{
                       fontSize: `${typography?.fontSizeSectionHeading || 18}px`,
                       marginBottom: `${sectionTitleGap}px`,
-                      color: accentColor,
                       borderColor: sectionBorderColor,
                     }}
                   >
@@ -504,7 +495,7 @@ export const ProfessionalTemplate = memo(
     return (
       <div
         data-print-wrapper
-        className={`px-10 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-800"}`}
+        className={`px-10 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#050505] text-slate-100" : "bg-white text-gray-800"}`}
         style={
           {
             paddingTop: `${pageMarginTop}px`,
@@ -524,7 +515,6 @@ export const ProfessionalTemplate = memo(
             className="font-bold uppercase tracking-widest mb-3"
             style={{
               fontSize: `${typography?.fontSizeHeading || 36}px`,
-              color: accentColor,
             }}
           >
             {data.personalInfo.fullName || "Your Name"}
