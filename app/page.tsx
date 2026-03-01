@@ -1225,6 +1225,12 @@ function CTA() {
 }
 
 function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   const handleScroll = (
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
@@ -1344,7 +1350,7 @@ function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-black/10 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs font-mono uppercase tracking-widest">
-          © {new Date().getFullYear()} InfiniteResume Inc. All rights reserved.
+          © {year || "..."} InfiniteResume Inc. All rights reserved.
         </p>
         <div className="flex gap-4 text-xs font-mono uppercase tracking-widest">
           <Link href="/terms" className="hover:text-accent transition-colors">

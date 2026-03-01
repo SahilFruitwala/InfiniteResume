@@ -2,9 +2,6 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: false,
   },
@@ -20,9 +17,12 @@ const nextConfig: NextConfig = {
     ],
   },
   output: 'standalone',
+  // Next.js 16 uses Turbopack by default for dev and build.
+  // If you have a custom webpack config, you must opt-out or migrate.
+  // We keep this for AI Studio specific requirements.
   webpack: (config, {dev}) => {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
-    // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+    // Do not modify—file watching is disabled to prevent flickering during agent edits.
     if (dev && process.env.DISABLE_HMR === 'true') {
       config.watchOptions = {
         ignored: /.*/,
@@ -30,6 +30,12 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
+  // Set explicit experimental flags if needed
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+  },
+  // Enable Cache Components (Next.js 16 feature)
+  cacheComponents: true,
 };
 
 export default nextConfig;
