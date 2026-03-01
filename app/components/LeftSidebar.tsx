@@ -1311,8 +1311,8 @@ export const LeftSidebar = ({
   );
 
   return (
-    <div className="w-80 md:w-96 bg-white dark:bg-background border-r border-slate-200 dark:border-border h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
-      <div className="p-6 border-b border-slate-200 dark:border-border bg-white dark:bg-background text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
+    <div className="w-80 md:w-96 bg-white dark:bg-card border-r border-slate-200 dark:border-border h-screen flex flex-col shadow-sm transition-colors z-10 print:hidden shrink-0">
+      <div className="p-6 border-b border-slate-200 dark:border-border bg-white dark:bg-card text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Resume Editor</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">

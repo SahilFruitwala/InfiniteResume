@@ -220,7 +220,7 @@ export default function Home() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50"
           >
-            <div className="w-[320px]">
+            <div className="w-80 md:w-96">
               <LeftSidebar
                 data={resumeData}
                 onChange={setResumeData}

@@ -135,6 +135,11 @@ a {
   cursor: pointer;
 }
 
+/* Hide scrollbar for resume preview area */
+.resume-preview-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -260,7 +265,7 @@ a {
   [data-resume-theme="dark"] {
     background-color: #1a1a2e !important; /* Clearly different from #050505 app background */
     color: #f1f5f9 !important; /* slate-100 */
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid #475569  !important;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8) !important;
   }
 

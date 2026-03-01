@@ -69,7 +69,7 @@ const AccordionItem = ({
       value={itemValue}
       className="border-b border-slate-200 dark:border-slate-800 last:border-0"
     >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-background hover:bg-slate-50 dark:hover:bg-card transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-card">
+      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-card hover:bg-slate-50 dark:hover:bg-card transition-colors text-left font-semibold text-slate-800 dark:text-slate-200 hover:no-underline data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-card">
         {title}
       </AccordionTrigger>
       <AccordionContent className="p-6 bg-slate-50/50 dark:bg-card/50 px-6">
@@ -232,7 +232,7 @@ export const RightSidebar = ({
   const defaultProfessionalBorder = "#00000040";
 
   return (
-    <div className="w-80 bg-white dark:bg-background border-l border-slate-200 dark:border-border h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">
+    <div className="w-80 bg-white dark:bg-card border-l border-slate-200 dark:border-border h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">
       <div className="p-6 border-b border-slate-200 dark:border-border bg-white dark:bg-card text-slate-900 dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Design Settings</h2>

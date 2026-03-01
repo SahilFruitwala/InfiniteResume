@@ -170,7 +170,10 @@ export const Preview = ({
       </div>
 
       {/* Preview Area */}
-      <div className="flex-1 overflow-auto p-8 flex justify-center custom-scrollbar print:p-0 print:overflow-visible print:block">
+      <div
+        className="flex-1 overflow-auto p-8 flex justify-center resume-preview-scroll print:p-0 print:overflow-visible print:block"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
         <div
           className={`shadow-xl shrink-0 print:shadow-none print:border-0 print:m-0 relative transition-colors ${
             isDark ? "border border-slate-700/60" : "bg-white"
