@@ -228,8 +228,8 @@ export const RightSidebar = ({
     appTheme === "dark" ||
     (appTheme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
-  const defaultResumeAccent = "#16A34A"; // Standard emerald
-  const defaultProfessionalBorder = "#16A34A40";
+  const defaultResumeAccent = "#000000"; // Neutral black
+  const defaultProfessionalBorder = "#00000040";
 
   return (
     <div className="w-80 bg-white dark:bg-background border-l border-slate-200 dark:border-border h-screen flex flex-col shadow-sm z-10 print:hidden shrink-0 transition-colors">

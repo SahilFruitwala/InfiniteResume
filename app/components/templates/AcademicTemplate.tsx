@@ -13,14 +13,14 @@ export const AcademicTemplate = memo(
     const pageMarginTop = spacing?.pageMarginTop ?? 48;
     const pageMarginBottom = spacing?.pageMarginBottom ?? 48;
 
-    const defaultAccentColor = "#16A34A";
+    const defaultAccentColor = "#000000";
 
     let accentColor =
       theme?.academic?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
 
     // Ensure accent color is readable in dark mode
     if (isDark && isColorTooDarkForDarkBg(accentColor)) {
-      accentColor = defaultAccentColor;
+      accentColor = "#e2e8f0"; // light gray for dark backgrounds
     }
 
     const renderSection = (sectionId: string) => {

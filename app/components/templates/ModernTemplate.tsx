@@ -13,13 +13,13 @@ export const ModernTemplate = memo(
     const pageMarginTop = spacing?.pageMarginTop ?? 32;
     const pageMarginBottom = spacing?.pageMarginBottom ?? 32;
 
-    const defaultAccentColor = "#16A34A";
+    const defaultAccentColor = "#000000";
     let accentColor =
       theme?.modern?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
 
     // Ensure accent color is readable in dark mode
     if (isDark && isColorTooDarkForDarkBg(accentColor)) {
-      accentColor = defaultAccentColor;
+      accentColor = "#e2e8f0"; // light gray for dark backgrounds
     }
 
     const defaultOrder = [

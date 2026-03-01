@@ -12,12 +12,12 @@ export const ProfessionalTemplate = memo(
     const pageMarginTop = spacing?.pageMarginTop ?? 40;
     const pageMarginBottom = spacing?.pageMarginBottom ?? 40;
 
-    const defaultAccentColor = "#16A34A";
+    const defaultAccentColor = "#000000";
     let accentColor = theme?.accentColor ?? defaultAccentColor;
 
     // Ensure accent color is readable in dark mode
     if (isDark && isColorTooDarkForDarkBg(accentColor)) {
-      accentColor = defaultAccentColor;
+      accentColor = "#e2e8f0"; // light gray for dark backgrounds
     }
 
     const sectionBorderColor =

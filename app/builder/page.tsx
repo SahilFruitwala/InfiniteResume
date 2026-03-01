@@ -141,15 +141,15 @@ const initialData: ResumeData = {
     bulletListMargin: 4,
   },
   theme: {
-    accentColor: "#16A34A", // emerald
+    accentColor: "#000000", // neutral black
     professional: {
-      sectionBorderColor: "#16A34A40",
+      sectionBorderColor: "#00000040",
     },
     modern: {
-      accentColor: "#16A34A",
+      accentColor: "#000000",
     },
     minimal: {
-      accentColor: "#16A34A",
+      accentColor: "#000000",
     },
   },
   layout: {
