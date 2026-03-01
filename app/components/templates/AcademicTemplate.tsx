@@ -14,12 +14,18 @@ export const AcademicTemplate = memo(
     const pageMarginBottom = spacing?.pageMarginBottom ?? 48;
 
     const defaultAccentColor = "#000000";
-
+    /* Commented out for now to simplify design settings
     let accentColor =
       theme?.academic?.accentColor ?? theme?.accentColor ?? defaultAccentColor;
 
-    // Ensure accent color is readable in dark mode
     if (isDark && isColorTooDarkForDarkBg(accentColor)) {
+      accentColor = "#e2e8f0";
+    }
+    */
+
+    // New simplified color logic
+    let accentColor = defaultAccentColor;
+    if (isDark) {
       accentColor = "#e2e8f0"; // light gray for dark backgrounds
     }
 

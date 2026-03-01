@@ -13,15 +13,23 @@ export const ProfessionalTemplate = memo(
     const pageMarginBottom = spacing?.pageMarginBottom ?? 40;
 
     const defaultAccentColor = "#000000";
+    /* Commented out for now to simplify design settings
     let accentColor = theme?.accentColor ?? defaultAccentColor;
 
-    // Ensure accent color is readable in dark mode
     if (isDark && isColorTooDarkForDarkBg(accentColor)) {
-      accentColor = "#e2e8f0"; // light gray for dark backgrounds
+      accentColor = "#e2e8f0";
     }
 
     const sectionBorderColor =
       theme?.professional?.sectionBorderColor ?? `${accentColor}40`;
+    */
+
+    // New simplified color logic
+    let accentColor = defaultAccentColor;
+    if (isDark) {
+      accentColor = "#e2e8f0"; // light gray for dark backgrounds
+    }
+    const sectionBorderColor = "#00000040";
 
     const renderSection = (sectionId: string) => {
       switch (sectionId) {

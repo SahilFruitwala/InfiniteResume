@@ -275,6 +275,8 @@ export const RightSidebar = ({
               </div>
             </div>
           </AccordionItem>
+          {/* Theme & Colors hidden for now */}
+          {/* 
           <AccordionItem title="Theme & Colors">
             <div className="space-y-4">
               <div>
@@ -473,6 +475,7 @@ export const RightSidebar = ({
               )}
             </div>
           </AccordionItem>
+          */}
 
           <AccordionItem title="Typography">
             <div className="space-y-4">
