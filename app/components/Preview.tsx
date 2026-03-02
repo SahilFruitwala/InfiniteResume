@@ -117,7 +117,7 @@ export const Preview = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-slate-50 dark:bg-[#080808] overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
+    <div className="flex-1 flex flex-col h-screen bg-slate-50 dark:bg-[#1a1a1a] overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
       {/* Toolbar */}
       <div className="h-16 bg-white dark:bg-card border-b-2 border-black/10 dark:border-white/10 flex items-center justify-between px-4 shrink-0 shadow-none z-10 print:hidden transition-colors">
         <div className="flex items-center gap-2">

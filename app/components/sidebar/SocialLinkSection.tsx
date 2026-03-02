@@ -64,7 +64,7 @@ export const SocialLinkSection = React.memo(
         <Button
           onClick={onAdd}
           variant="outline"
-          className="w-full border-2 border-dashed border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:border-accent hover:text-accent flex items-center justify-center gap-2 transition-colors rounded-none"
+          className="w-full border-2 border-dashed border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:border-accent hover:text-accent hover:bg-accent/10 flex items-center justify-center gap-2 transition-colors rounded-none"
         >
           <Plus className="w-4 h-4" /> Add Link
         </Button>
