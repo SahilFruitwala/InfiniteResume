@@ -146,7 +146,7 @@ export const Preview = ({
             className="flex items-center gap-2 px-6 py-2 bg-accent hover:bg-accent/90 text-black rounded-none text-sm font-bold uppercase tracking-wider transition-all shadow-none"
           >
             <Download className="w-4 h-4" />
-            Save as PDF
+            Download Resume
           </button>
 
           <ThemeToggle />
