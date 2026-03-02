@@ -168,6 +168,8 @@ const initialData: ResumeData = {
 };
 
 import { motion, AnimatePresence } from "motion/react";
+import { Resizer } from "../components/Resizer";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const [resumeData, setResumeData] = React.useState<ResumeData>(initialData);
@@ -175,12 +177,72 @@ export default function Home() {
   const [template, setTemplate] = useState<TemplateType>("minimal");
   const [showLeftSidebar, setShowLeftSidebar] = useState(true);
   const [showRightSidebar, setShowRightSidebar] = useState(true);
+  const [leftWidth, setLeftWidth] = useState(384); // Default md:w-96
+  const [rightWidth, setRightWidth] = useState(320); // Default w-80
+  const [isResizingLeft, setIsResizingLeft] = useState(false);
+  const [isResizingRight, setIsResizingRight] = useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
 
   React.useEffect(() => {
     setIsMounted(true);
+    // Load saved widths
+    const savedLeft = localStorage.getItem("sidebarWidthLeft");
+    const savedRight = localStorage.getItem("sidebarWidthRight");
+    if (savedLeft) setLeftWidth(parseInt(savedLeft, 10));
+    if (savedRight) setRightWidth(parseInt(savedRight, 10));
   }, []);
+
+  const handleMouseDownLeft = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizingLeft(true);
+  };
+
+  const handleMouseDownRight = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizingRight(true);
+  };
+
+  React.useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isResizingLeft) {
+        const newWidth = Math.min(Math.max(280, e.clientX), 600);
+        setLeftWidth(newWidth);
+      }
+      if (isResizingRight) {
+        const newWidth = Math.min(
+          Math.max(280, window.innerWidth - e.clientX),
+          600,
+        );
+        setRightWidth(newWidth);
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (isResizingLeft) {
+        localStorage.setItem("sidebarWidthLeft", leftWidth.toString());
+        setIsResizingLeft(false);
+      }
+      if (isResizingRight) {
+        localStorage.setItem("sidebarWidthRight", rightWidth.toString());
+        setIsResizingRight(false);
+      }
+    };
+
+    if (isResizingLeft || isResizingRight) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "default";
+      document.body.style.userSelect = "auto";
+    };
+  }, [isResizingLeft, isResizingRight, leftWidth, rightWidth]);
 
   const toggleSidebar = React.useCallback(
     (side: "left" | "right") => {
@@ -219,37 +281,55 @@ export default function Home() {
         {showLeftSidebar && (
           <motion.div
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: "auto", opacity: 1 }}
+            animate={{ width: leftWidth, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50"
+            transition={
+              isResizingLeft
+                ? { duration: 0 }
+                : { duration: 0.3, ease: "easeInOut" }
+            }
+            className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50 flex"
           >
-            <div className="w-80 md:w-96">
+            <div className="flex-1 w-full overflow-hidden">
               <LeftSidebar data={resumeData} onChange={setResumeData} />
             </div>
+            <Resizer onMouseDown={handleMouseDownLeft} side="left" />
           </motion.div>
         )}
       </AnimatePresence>
 
-      <Preview
-        data={deferredResumeData}
-        template={template}
-        leftSidebarOpen={showLeftSidebar}
-        rightSidebarOpen={showRightSidebar}
-        onToggleLeftSidebar={() => toggleSidebar("left")}
-        onToggleRightSidebar={() => toggleSidebar("right")}
-      />
+      <div
+        className={cn(
+          "flex-1 flex flex-col min-w-0 transition-opacity",
+          (isResizingLeft || isResizingRight) &&
+            "pointer-events-none opacity-80",
+        )}
+      >
+        <Preview
+          data={deferredResumeData}
+          template={template}
+          leftSidebarOpen={showLeftSidebar}
+          rightSidebarOpen={showRightSidebar}
+          onToggleLeftSidebar={() => toggleSidebar("left")}
+          onToggleRightSidebar={() => toggleSidebar("right")}
+        />
+      </div>
 
       <AnimatePresence initial={false}>
         {showRightSidebar && (
           <motion.div
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: "auto", opacity: 1 }}
+            animate={{ width: rightWidth, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="shrink-0 overflow-hidden h-full z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)]"
+            transition={
+              isResizingRight
+                ? { duration: 0 }
+                : { duration: 0.3, ease: "easeInOut" }
+            }
+            className="shrink-0 overflow-hidden h-full z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)] flex"
           >
-            <div className="w-[320px]">
+            <Resizer onMouseDown={handleMouseDownRight} side="right" />
+            <div className="flex-1 w-full overflow-hidden">
               <RightSidebar
                 data={resumeData}
                 onChange={setResumeData}

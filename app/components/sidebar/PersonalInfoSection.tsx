@@ -46,7 +46,7 @@ export const PersonalInfoSection = React.memo(
               }}
               className="flex-1 text-[10px] font-mono uppercase tracking-widest cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-[10px] file:font-bold file:bg-black/5 dark:file:bg-white/5 file:text-black dark:file:text-white hover:file:bg-accent hover:file:text-black transition-all"
             />
-            {data.profilePicture && (
+            {/* {data.profilePicture && (
               <Button
                 variant="ghost"
                 size="icon"
@@ -56,7 +56,7 @@ export const PersonalInfoSection = React.memo(
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
-            )}
+            )} */}
           </div>
         </div>
         <div>

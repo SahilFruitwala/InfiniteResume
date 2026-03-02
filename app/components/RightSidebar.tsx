@@ -232,7 +232,7 @@ export const RightSidebar = ({
   const defaultProfessionalBorder = "#00000040";
 
   return (
-    <div className="w-80 bg-white dark:bg-card border-l-2 border-black/10 dark:border-white/10 h-screen flex flex-col shadow-none z-10 print:hidden shrink-0 transition-colors">
+    <div className="w-full bg-white dark:bg-card border-l-2 border-black/10 dark:border-white/10 h-screen flex flex-col shadow-none z-10 print:hidden shrink-0 transition-colors">
       <div className="p-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card text-black dark:text-white flex justify-between items-center shrink-0 transition-colors">
         <div>
           <h2 className="font-display text-2xl font-black uppercase tracking-tighter">
