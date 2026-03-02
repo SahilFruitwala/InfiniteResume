@@ -503,7 +503,7 @@ export const ProfessionalTemplate = memo(
     return (
       <div
         data-print-wrapper
-        className={`px-10 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#1a1a2e] text-slate-100" : "bg-white text-gray-800"}`}
+        className={`px-10 transition-colors duration-300 max-w-4xl mx-auto w-full min-h-[1056px] print:!bg-white print:!text-gray-900 ${isDark ? "bg-[#111111] text-slate-100" : "bg-white text-gray-800"}`}
         style={
           {
             paddingTop: `${pageMarginTop}px`,

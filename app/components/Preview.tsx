@@ -181,7 +181,7 @@ export const Preview = ({
           style={{
             width: `${PAGE_WIDTH}px`,
             minHeight: `${PAGE_HEIGHT}px`,
-            ...(isDark ? { backgroundColor: "#1a1a2e" } : {}),
+            ...(isDark ? { backgroundColor: "#111111" } : {}),
           }}
           data-resume-theme={isDark ? "dark" : "light"}
         >
