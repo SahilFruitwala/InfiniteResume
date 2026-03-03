@@ -970,13 +970,13 @@ export const RightSidebar = React.memo(
             >
               {/* Score Dashboard */}
               <div className="flex flex-col items-center text-center p-6 bg-black/5 dark:bg-white/5 border-2 border-black/10 dark:border-white/10 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <Zap className="w-12 h-12 text-accent" />
+                <div className="absolute -top-6 -right-6 opacity-[0.03] dark:opacity-[0.05] group-hover:opacity-10 transition-opacity pointer-events-none -rotate-12 z-0">
+                  <Zap className="w-24 h-24 text-accent" />
                 </div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40 mb-2">
+                <span className="relative z-10 font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40 mb-2">
                   Overall Resume Score
                 </span>
-                <div className="relative">
+                <div className="relative z-10">
                   <span className="text-6xl font-black tracking-tighter text-black dark:text-white">
                     {analysis.standaloneScore}
                     <span className="text-2xl text-accent">/100</span>
