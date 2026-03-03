@@ -16,7 +16,7 @@ export const PersonalInfoSection = React.memo(
   ({ data, onChange }: PersonalInfoSectionProps) => {
     return (
       <div className="space-y-4">
-        <div>
+        {/* <div>
           <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
             Profile Picture (Optional)
           </Label>
@@ -46,19 +46,8 @@ export const PersonalInfoSection = React.memo(
               }}
               className="flex-1 text-[10px] font-mono uppercase tracking-widest cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-[10px] file:font-bold file:bg-black/5 dark:file:bg-white/5 file:text-black dark:file:text-white hover:file:bg-accent hover:file:text-black transition-all"
             />
-            {/* {data.profilePicture && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onChange("profilePicture", "")}
-                className="h-8 w-8 text-black/40 dark:text-white/40 hover:text-red-500"
-                aria-label="Remove profile picture"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            )} */}
           </div>
-        </div>
+        </div> */}
         <div>
           <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
             Full Name

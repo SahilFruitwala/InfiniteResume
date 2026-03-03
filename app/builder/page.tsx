@@ -251,6 +251,8 @@ function BuilderContent() {
   const [isSaving, setIsSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [lastSavedData, setLastSavedData] = useState<string | null>(null);
+  const [lastSavedTemplate, setLastSavedTemplate] =
+    useState<TemplateType | null>(null);
   const [isOverOnePage, setIsOverOnePage] = useState(false);
   const hasLoadedRef = useRef(false);
 
@@ -262,22 +264,24 @@ function BuilderContent() {
     setIsOverOnePage(isOver);
   }, []);
 
-  // Initialize lastSavedData for new resumes
   useEffect(() => {
-    if (!existingResume && !hasLoadedRef.current) {
+    if (!resumeId && !hasLoadedRef.current) {
       setLastSavedData(JSON.stringify(initialData));
+      setLastSavedTemplate("minimal");
       setHasUnsavedChanges(false);
       hasLoadedRef.current = true;
     }
-  }, [existingResume]);
+  }, [resumeId]);
 
-  // Load existing resume when data arrives from Convex
   useEffect(() => {
     if (existingResume && !hasLoadedRef.current) {
       setResumeData(existingResume.content as ResumeData);
-      setTemplate((existingResume.template || "minimal") as TemplateType);
+      const initialTemplate = (existingResume.template ||
+        "minimal") as TemplateType;
+      setTemplate(initialTemplate);
       setResumeTitle(existingResume.title);
       setLastSavedData(JSON.stringify(existingResume.content));
+      setLastSavedTemplate(initialTemplate);
       setHasUnsavedChanges(false);
       hasLoadedRef.current = true;
     }
@@ -285,11 +289,13 @@ function BuilderContent() {
 
   // Track unsaved changes
   useEffect(() => {
-    if (lastSavedData !== null) {
+    if (lastSavedData !== null && lastSavedTemplate !== null) {
       const currentData = JSON.stringify(resumeData);
-      setHasUnsavedChanges(currentData !== lastSavedData);
+      const dataChanged = currentData !== lastSavedData;
+      const templateChanged = template !== lastSavedTemplate;
+      setHasUnsavedChanges(dataChanged || templateChanged);
     }
-  }, [resumeData, lastSavedData]);
+  }, [resumeData, lastSavedData, template, lastSavedTemplate]);
 
   const getDefaultTitle = () => {
     const now = new Date();
@@ -317,6 +323,7 @@ function BuilderContent() {
       });
       setResumeTitle(title);
       setLastSavedData(JSON.stringify(resumeData));
+      setLastSavedTemplate(template);
       setHasUnsavedChanges(false);
       if (!resumeId) {
         // Update URL with new ID without full navigation
