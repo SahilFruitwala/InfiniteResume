@@ -18,6 +18,8 @@ import {
   X,
   Sun,
   Moon,
+  Copy,
+  Loader2,
 } from "lucide-react";
 
 function ThemeToggle() {
@@ -49,10 +51,12 @@ export default function DashboardPage() {
   const resumes = useQuery(api.resumes.list);
   const removeResume = useMutation(api.resumes.remove);
   const renameResume = useMutation(api.resumes.rename);
+  const duplicateResume = useMutation(api.resumes.duplicate);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isDuplicating, setIsDuplicating] = useState<string | null>(null);
 
   const handleRename = async (id: string) => {
     if (editTitle.trim()) {
@@ -67,6 +71,16 @@ export default function DashboardPage() {
   const handleDelete = async (id: string) => {
     await removeResume({ id: id as Id<"resumes"> });
     setDeletingId(null);
+  };
+
+  const handleDuplicate = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    setIsDuplicating(id);
+    try {
+      await duplicateResume({ id: id as Id<"resumes"> });
+    } finally {
+      setIsDuplicating(null);
+    }
   };
 
   const startEditing = (id: string, currentTitle: string) => {
@@ -231,6 +245,18 @@ export default function DashboardPage() {
                   className="absolute bottom-4 right-4 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={(e) => e.stopPropagation()}
                 >
+                  <button
+                    onClick={(e) => handleDuplicate(e, resume._id)}
+                    disabled={isDuplicating === resume._id}
+                    className="p-1.5 text-black/40 dark:text-white/40 hover:text-accent hover:bg-accent/10 transition-colors disabled:opacity-50"
+                    title="Duplicate"
+                  >
+                    {isDuplicating === resume._id ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                  </button>
                   <button
                     onClick={() => startEditing(resume._id, resume.title)}
                     className="p-1.5 text-black/40 dark:text-white/40 hover:text-accent hover:bg-accent/10 transition-colors"

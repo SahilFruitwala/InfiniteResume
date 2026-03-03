@@ -13,7 +13,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { FileText, Save, Loader2 } from "lucide-react";
+import { FileText, Save, Loader2, Pencil } from "lucide-react";
 import { LeftSidebar } from "../components/LeftSidebar";
 import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
@@ -238,6 +238,8 @@ function BuilderContent() {
 
   // Save-related state
   const [resumeTitle, setResumeTitle] = useState("");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -423,12 +425,49 @@ function BuilderContent() {
             </span>
           </Link>
 
-          {resumeTitle && (
+          {resumeTitle !== "" && (
             <>
               <div className="w-px h-5 bg-black/10 dark:bg-white/10" />
-              <span className="text-xs font-mono text-black/40 dark:text-white/40 uppercase tracking-wider truncate max-w-[200px]">
-                {resumeTitle}
-              </span>
+              <div className="relative group/title px-1">
+                {isEditingTitle ? (
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    onBlur={() => {
+                      setIsEditingTitle(false);
+                      if (editTitle.trim() && editTitle !== resumeTitle) {
+                        performSave(editTitle.trim());
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        setIsEditingTitle(false);
+                        if (editTitle.trim() && editTitle !== resumeTitle) {
+                          performSave(editTitle.trim());
+                        }
+                      }
+                      if (e.key === "Escape") {
+                        setIsEditingTitle(false);
+                        setEditTitle(resumeTitle);
+                      }
+                    }}
+                    className="text-xs font-mono bg-black/5 dark:bg-white/5 border border-accent text-black dark:text-white uppercase tracking-wider px-2 py-1 outline-none min-w-[120px]"
+                    autoFocus
+                  />
+                ) : (
+                  <button
+                    onClick={() => {
+                      setEditTitle(resumeTitle);
+                      setIsEditingTitle(true);
+                    }}
+                    className="text-xs font-mono text-black/40 dark:text-white/40 uppercase tracking-wider truncate max-w-[200px] hover:text-black dark:hover:text-white transition-colors flex items-center gap-2"
+                  >
+                    {resumeTitle}
+                    <Pencil className="w-3 h-3 opacity-0 group-hover/title:opacity-100 transition-opacity" />
+                  </button>
+                )}
+              </div>
             </>
           )}
 

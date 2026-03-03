@@ -124,3 +124,23 @@ export const rename = mutation({
     });
   },
 });
+
+export const duplicate = mutation({
+  args: { id: v.id("resumes") },
+  handler: async (ctx, args) => {
+    const resume = await ctx.db.get(args.id);
+    if (!resume) throw new Error("Resume not found");
+
+    const now = Date.now();
+    const newId = await ctx.db.insert("resumes", {
+      userId: resume.userId,
+      title: `Copy of ${resume.title}`,
+      template: resume.template,
+      content: resume.content,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    return newId;
+  },
+});
