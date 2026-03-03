@@ -244,6 +244,15 @@ function BuilderContent() {
   const [lastSavedData, setLastSavedData] = useState<string | null>(null);
   const hasLoadedRef = useRef(false);
 
+  // Initialize lastSavedData for new resumes
+  useEffect(() => {
+    if (!existingResume && !hasLoadedRef.current) {
+      setLastSavedData(JSON.stringify(initialData));
+      setHasUnsavedChanges(false);
+      hasLoadedRef.current = true;
+    }
+  }, [existingResume]);
+
   // Load existing resume when data arrives from Convex
   useEffect(() => {
     if (existingResume && !hasLoadedRef.current) {
@@ -434,8 +443,8 @@ function BuilderContent() {
         <div className="flex items-center gap-2">
           <button
             onClick={handleSaveClick}
-            disabled={isSaving}
-            className="flex items-center gap-2 px-4 py-1.5 border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white rounded-none text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+            disabled={isSaving || !hasUnsavedChanges}
+            className="flex items-center gap-2 px-4 py-1.5 border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white rounded-none text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-30 disabled:hover:border-black/10 dark:disabled:hover:border-white/10"
           >
             {isSaving ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
