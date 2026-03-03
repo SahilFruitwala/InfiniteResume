@@ -13,7 +13,14 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { FileText, Save, Loader2, Pencil } from "lucide-react";
+import {
+  FileText,
+  Save,
+  Loader2,
+  Pencil,
+  Download,
+  AlertTriangle,
+} from "lucide-react";
 import { LeftSidebar } from "../components/LeftSidebar";
 import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
@@ -244,7 +251,16 @@ function BuilderContent() {
   const [isSaving, setIsSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [lastSavedData, setLastSavedData] = useState<string | null>(null);
+  const [isOverOnePage, setIsOverOnePage] = useState(false);
   const hasLoadedRef = useRef(false);
+
+  const handlePrint = useCallback(() => {
+    window.print();
+  }, []);
+
+  const handleHeightChange = useCallback((height: number, isOver: boolean) => {
+    setIsOverOnePage(isOver);
+  }, []);
 
   // Initialize lastSavedData for new resumes
   useEffect(() => {
@@ -474,9 +490,24 @@ function BuilderContent() {
               Unsaved
             </div>
           )}
+
+          {isOverOnePage && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-none text-[10px] font-mono uppercase tracking-wider border border-amber-300 dark:border-amber-600">
+              <AlertTriangle className="w-3.5 h-3.5" />
+              Content exceeds 1 page
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-2 px-4 py-1.5 bg-accent hover:bg-accent/90 text-black rounded-none text-xs font-bold uppercase tracking-wider transition-all shadow-none mr-2"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Download
+          </button>
+
           <button
             onClick={handleSaveClick}
             disabled={isSaving || !hasUnsavedChanges}
@@ -530,6 +561,8 @@ function BuilderContent() {
             rightSidebarOpen={showRightSidebar}
             onToggleLeftSidebar={() => toggleSidebar("left")}
             onToggleRightSidebar={() => toggleSidebar("right")}
+            onPrint={handlePrint}
+            onHeightChange={handleHeightChange}
           />
         </div>
 

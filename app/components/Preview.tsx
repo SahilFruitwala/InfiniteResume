@@ -23,6 +23,8 @@ interface PreviewProps {
   rightSidebarOpen: boolean;
   onToggleLeftSidebar: () => void;
   onToggleRightSidebar: () => void;
+  onPrint?: () => void;
+  onHeightChange?: (height: number, isOver: boolean) => void;
 }
 
 export const Preview = ({
@@ -32,6 +34,8 @@ export const Preview = ({
   rightSidebarOpen,
   onToggleLeftSidebar,
   onToggleRightSidebar,
+  onPrint,
+  onHeightChange,
 }: PreviewProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,13 +51,21 @@ export const Preview = ({
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        setContentHeight(entry.contentRect.height);
+        const height = entry.contentRect.height;
+        setContentHeight(height);
+
+        // Calculate if over one page
+        const pageSize = data.spacing?.pageSize || "LETTER";
+        const pageHeight = pageSize === "A4" ? 1123 : 1056;
+        if (onHeightChange) {
+          onHeightChange(height, height > pageHeight);
+        }
       }
     });
 
     observer.observe(contentRef.current);
     return () => observer.disconnect();
-  }, [data, template]);
+  }, [data, template, onHeightChange]);
 
   const pageSize = data.spacing?.pageSize || "LETTER";
   const PAGE_WIDTH = pageSize === "A4" ? 794 : 816;
@@ -106,14 +118,6 @@ export const Preview = ({
     Math.floor((innerContentHeight - 1) / pdfPrintableHeight),
   );
 
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handlePrint = () => {
-    // The browser's native print dialog takes care of PDF generation instantaneously
-    // and correctly honors all the `print:` Tailwind classes in our templates.
-    window.print();
-  };
-
   const renderTemplate = () => {
     switch (template) {
       case "minimal":
@@ -133,50 +137,33 @@ export const Preview = ({
 
   return (
     <div className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-[#1a1a1a] overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
-      {/* Toolbar */}
-      <div className="h-12 bg-white dark:bg-card border-b border-black/10 dark:border-white/10 flex items-center justify-between px-3 shrink-0 shadow-none z-10 print:hidden transition-colors">
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={onToggleLeftSidebar}
-            className="p-1.5 text-black/50 dark:text-white/50 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
-            title={leftSidebarOpen ? "Hide Data Entry" : "Show Data Entry"}
-          >
-            {leftSidebarOpen ? (
-              <PanelLeftClose className="w-4 h-4" />
-            ) : (
-              <PanelLeft className="w-4 h-4" />
-            )}
-          </button>
-          {isOverOnePage && (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-none text-xs font-mono uppercase tracking-wider border border-amber-300 dark:border-amber-600 ml-1">
-              <AlertTriangle className="w-3.5 h-3.5" />
-              Content exceeds 1 page
-            </div>
+      {/* Internal Toolbar - Left/Right sidebar toggles kept here as they feel specific to the preview container layout */}
+      <div className="h-10 bg-white dark:bg-card border-b border-black/10 dark:border-white/10 flex items-center justify-between px-3 shrink-0 shadow-none z-10 print:hidden transition-colors">
+        <button
+          onClick={onToggleLeftSidebar}
+          className="p-1.5 text-black/50 dark:text-white/50 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
+          title={leftSidebarOpen ? "Hide Data Entry" : "Show Data Entry"}
+        >
+          {leftSidebarOpen ? (
+            <PanelLeftClose className="w-4 h-4" />
+          ) : (
+            <PanelLeft className="w-4 h-4" />
           )}
-        </div>
+        </button>
 
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-1.5 bg-accent hover:bg-accent/90 text-black rounded-none text-xs font-bold uppercase tracking-wider transition-all shadow-none"
-          >
-            <Download className="w-3.5 h-3.5" />
-            Download
-          </button>
-          <button
-            onClick={onToggleRightSidebar}
-            className="p-1.5 text-black/50 dark:text-white/50 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
-            title={
-              rightSidebarOpen ? "Hide Design Settings" : "Show Design Settings"
-            }
-          >
-            {rightSidebarOpen ? (
-              <PanelRightClose className="w-4 h-4" />
-            ) : (
-              <PanelRight className="w-4 h-4" />
-            )}
-          </button>
-        </div>
+        <button
+          onClick={onToggleRightSidebar}
+          className="p-1.5 text-black/50 dark:text-white/50 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
+          title={
+            rightSidebarOpen ? "Hide Design Settings" : "Show Design Settings"
+          }
+        >
+          {rightSidebarOpen ? (
+            <PanelRightClose className="w-4 h-4" />
+          ) : (
+            <PanelRight className="w-4 h-4" />
+          )}
+        </button>
       </div>
 
       {/* Preview Area */}
