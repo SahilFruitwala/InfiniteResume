@@ -25,7 +25,7 @@ export const MinimalTemplate = memo(
     // New simplified color logic
     let accentColor = defaultAccentColor;
     if (isDark) {
-      accentColor = "#e2e8f0"; // light gray for dark backgrounds
+      accentColor = "#ffffff20"; // subtle white border for dark backgrounds
     }
 
     const renderSection = (sectionId: string) => {

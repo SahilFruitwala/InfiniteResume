@@ -182,7 +182,7 @@ export const Preview = ({
       {/* Preview Area */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto overflow-x-hidden p-8 resume-preview-scroll print:p-0 print:overflow-visible print:block"
+        className="flex-1 overflow-y-auto overflow-x-hidden p-8 pb-32 resume-preview-scroll print:p-0 print:overflow-visible print:block bg-slate-50 dark:bg-[#050505]"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {/* Wrapper: sized to match the scaled resume, centered with mx-auto */}
@@ -191,12 +191,12 @@ export const Preview = ({
           style={{
             width: `${PAGE_WIDTH * scale}px`,
             height: `${Math.max(contentHeight, PAGE_HEIGHT) * scale}px`,
-            overflow: "hidden",
+            marginBottom: "2rem",
           }}
         >
           <div
-            className={`shadow-xl print:shadow-none print:border-0 print:m-0 transition-colors ${
-              isDark ? "border border-slate-700/60" : "bg-white"
+            className={`relative shadow-xl print:shadow-none print:border-0 print:m-0 transition-colors ${
+              isDark ? "border border-white/10" : "bg-white"
             }`}
             style={{
               width: `${PAGE_WIDTH}px`,
