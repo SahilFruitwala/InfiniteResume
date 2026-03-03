@@ -144,7 +144,7 @@ function Navbar() {
             href="/"
             className="flex items-center gap-2 group z-50 relative"
           >
-            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black group-hover:rotate-12 transition-transform">
+            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
               <FileText className="w-6 h-6" strokeWidth={2.5} />
             </div>
             <span className="font-display font-bold text-2xl tracking-tight">
@@ -1251,7 +1251,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
         <div className="col-span-2">
           <Link href="/" className="flex items-center gap-2 mb-6 group">
-            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-black group-hover:rotate-12 transition-transform">
+            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
               <FileText className="w-5 h-5" strokeWidth={2.5} />
             </div>
             <span className="font-display font-bold text-xl tracking-tight text-black dark:text-white">

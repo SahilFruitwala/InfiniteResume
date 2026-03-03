@@ -415,7 +415,7 @@ function BuilderContent() {
             className="flex items-center gap-1.5 group"
             title="Back to Dashboard"
           >
-            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-black group-hover:rotate-12 transition-transform">
+            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
               <FileText className="w-4 h-4" strokeWidth={2.5} />
             </div>
             <span className="font-display font-bold text-lg tracking-tight text-black dark:text-white">

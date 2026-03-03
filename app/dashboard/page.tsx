@@ -80,7 +80,7 @@ export default function DashboardPage() {
       <header className="border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black group-hover:rotate-12 transition-transform">
+            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
               <FileText className="w-6 h-6" strokeWidth={2.5} />
             </div>
             <span className="font-display font-bold text-2xl tracking-tight">
