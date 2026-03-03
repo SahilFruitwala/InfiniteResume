@@ -458,7 +458,7 @@ function BuilderContent() {
       </nav>
 
       {/* Sidebars + Preview Row */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden print:block print:overflow-visible">
         <AnimatePresence initial={false}>
           {showLeftSidebar && (
             <motion.div
@@ -470,7 +470,7 @@ function BuilderContent() {
                   ? { duration: 0 }
                   : { duration: 0.3, ease: "easeInOut" }
               }
-              className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50 flex"
+              className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50 flex print:hidden"
             >
               <div className="flex-1 w-full overflow-hidden">
                 <LeftSidebar data={resumeData} onChange={setResumeData} />
@@ -508,7 +508,7 @@ function BuilderContent() {
                   ? { duration: 0 }
                   : { duration: 0.3, ease: "easeInOut" }
               }
-              className="shrink-0 overflow-hidden h-full z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)] flex"
+              className="shrink-0 overflow-hidden h-full z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)] flex print:hidden"
             >
               <Resizer onMouseDown={handleMouseDownRight} side="right" />
               <div className="flex-1 w-full overflow-hidden">
