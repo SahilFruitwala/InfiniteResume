@@ -425,51 +425,48 @@ function BuilderContent() {
             </span>
           </Link>
 
-          {resumeTitle !== "" && (
-            <>
-              <div className="w-px h-5 bg-black/10 dark:bg-white/10" />
-              <div className="relative group/title px-1">
-                {isEditingTitle ? (
-                  <input
-                    type="text"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    onBlur={() => {
-                      setIsEditingTitle(false);
-                      if (editTitle.trim() && editTitle !== resumeTitle) {
-                        performSave(editTitle.trim());
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        setIsEditingTitle(false);
-                        if (editTitle.trim() && editTitle !== resumeTitle) {
-                          performSave(editTitle.trim());
-                        }
-                      }
-                      if (e.key === "Escape") {
-                        setIsEditingTitle(false);
-                        setEditTitle(resumeTitle);
-                      }
-                    }}
-                    className="text-xs font-mono bg-black/5 dark:bg-white/5 border border-accent text-black dark:text-white uppercase tracking-wider px-2 py-1 outline-none min-w-[120px]"
-                    autoFocus
-                  />
-                ) : (
-                  <button
-                    onClick={() => {
-                      setEditTitle(resumeTitle);
-                      setIsEditingTitle(true);
-                    }}
-                    className="text-xs font-mono text-black/40 dark:text-white/40 uppercase tracking-wider truncate max-w-[200px] hover:text-black dark:hover:text-white transition-colors flex items-center gap-2"
-                  >
-                    {resumeTitle}
-                    <Pencil className="w-3 h-3 opacity-0 group-hover/title:opacity-100 transition-opacity" />
-                  </button>
-                )}
-              </div>
-            </>
-          )}
+          <div className="w-px h-5 bg-black/10 dark:bg-white/10" />
+          <div className="relative group/title px-1">
+            {isEditingTitle ? (
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                onBlur={() => {
+                  setIsEditingTitle(false);
+                  if (editTitle.trim() && editTitle !== resumeTitle) {
+                    performSave(editTitle.trim());
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setIsEditingTitle(false);
+                    if (editTitle.trim() && editTitle !== resumeTitle) {
+                      performSave(editTitle.trim());
+                    }
+                  }
+                  if (e.key === "Escape") {
+                    setIsEditingTitle(false);
+                    setEditTitle(resumeTitle || "Untitled Resume");
+                  }
+                }}
+                className="text-xs font-mono bg-black/5 dark:bg-white/5 border border-accent text-black dark:text-white uppercase tracking-wider px-2 py-1 outline-none min-w-[120px]"
+                autoFocus
+              />
+            ) : (
+              <button
+                onClick={() => {
+                  setEditTitle(resumeTitle || "Untitled Resume");
+                  setIsEditingTitle(true);
+                }}
+                className="text-xs font-mono text-black/40 dark:text-white/40 uppercase tracking-wider truncate max-w-[200px] hover:text-black dark:hover:text-white transition-colors flex items-center gap-2 group"
+                title="Click to rename"
+              >
+                {resumeTitle || "Untitled Resume"}
+                <Pencil className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+            )}
+          </div>
 
           {hasUnsavedChanges && (
             <div className="flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono text-amber-600 dark:text-amber-400 uppercase tracking-wider">
