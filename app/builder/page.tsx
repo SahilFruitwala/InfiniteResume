@@ -8,14 +8,17 @@ import React, {
   useRef,
   useEffect,
 } from "react";
+import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { FileText, Save, Loader2 } from "lucide-react";
 import { LeftSidebar } from "../components/LeftSidebar";
 import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
 import { SaveDialog } from "../components/SaveDialog";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { ResumeData, TemplateType } from "../types";
 
 const initialData: ResumeData = {
@@ -394,74 +397,123 @@ function BuilderContent() {
   }
 
   return (
-    <div className="flex h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
-      <AnimatePresence initial={false}>
-        {showLeftSidebar && (
-          <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: leftWidth, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            transition={
-              isResizingLeft
-                ? { duration: 0 }
-                : { duration: 0.3, ease: "easeInOut" }
-            }
-            className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50 flex"
+    <div className="flex flex-col h-screen w-full bg-slate-50 dark:bg-[#050505] overflow-hidden font-sans print:h-auto print:overflow-visible print:block transition-colors">
+      {/* Top Nav Bar */}
+      <nav className="h-14 bg-white dark:bg-[#111] border-b-2 border-black/10 dark:border-white/10 flex items-center justify-between px-4 shrink-0 z-30 print:hidden transition-colors">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-1.5 group"
+            title="Back to Dashboard"
           >
-            <div className="flex-1 w-full overflow-hidden">
-              <LeftSidebar data={resumeData} onChange={setResumeData} />
+            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-black group-hover:rotate-12 transition-transform">
+              <FileText className="w-4 h-4" strokeWidth={2.5} />
             </div>
-            <Resizer onMouseDown={handleMouseDownLeft} side="left" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <span className="font-display font-bold text-lg tracking-tight text-black dark:text-white">
+              Infinite<span className="text-accent">Resume</span>
+            </span>
+          </Link>
 
-      <div
-        className={cn(
-          "flex-1 flex flex-col min-w-0 transition-opacity",
-          (isResizingLeft || isResizingRight) &&
-            "pointer-events-none opacity-80",
-        )}
-      >
-        <Preview
-          data={deferredResumeData}
-          template={template}
-          leftSidebarOpen={showLeftSidebar}
-          rightSidebarOpen={showRightSidebar}
-          onToggleLeftSidebar={() => toggleSidebar("left")}
-          onToggleRightSidebar={() => toggleSidebar("right")}
-          onSave={handleSaveClick}
-          isSaving={isSaving}
-          hasUnsavedChanges={hasUnsavedChanges}
-          resumeTitle={resumeTitle}
-        />
+          {resumeTitle && (
+            <>
+              <div className="w-px h-5 bg-black/10 dark:bg-white/10" />
+              <span className="text-xs font-mono text-black/40 dark:text-white/40 uppercase tracking-wider truncate max-w-[200px]">
+                {resumeTitle}
+              </span>
+            </>
+          )}
+
+          {hasUnsavedChanges && (
+            <div className="flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+              <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
+              Unsaved
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleSaveClick}
+            disabled={isSaving}
+            className="flex items-center gap-2 px-4 py-1.5 border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white rounded-none text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+          >
+            {isSaving ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Save className="w-3.5 h-3.5" />
+            )}
+            {isSaving ? "Saving..." : "Save"}
+          </button>
+          <ThemeToggle />
+        </div>
+      </nav>
+
+      {/* Sidebars + Preview Row */}
+      <div className="flex flex-1 overflow-hidden">
+        <AnimatePresence initial={false}>
+          {showLeftSidebar && (
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: leftWidth, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={
+                isResizingLeft
+                  ? { duration: 0 }
+                  : { duration: 0.3, ease: "easeInOut" }
+              }
+              className="shrink-0 overflow-hidden h-full z-20 shadow-md shadow-slate-200/50 dark:shadow-slate-900/50 flex"
+            >
+              <div className="flex-1 w-full overflow-hidden">
+                <LeftSidebar data={resumeData} onChange={setResumeData} />
+              </div>
+              <Resizer onMouseDown={handleMouseDownLeft} side="left" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div
+          className={cn(
+            "flex-1 flex flex-col min-w-0 transition-opacity",
+            (isResizingLeft || isResizingRight) &&
+              "pointer-events-none opacity-80",
+          )}
+        >
+          <Preview
+            data={deferredResumeData}
+            template={template}
+            leftSidebarOpen={showLeftSidebar}
+            rightSidebarOpen={showRightSidebar}
+            onToggleLeftSidebar={() => toggleSidebar("left")}
+            onToggleRightSidebar={() => toggleSidebar("right")}
+          />
+        </div>
+
+        <AnimatePresence initial={false}>
+          {showRightSidebar && (
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: rightWidth, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={
+                isResizingRight
+                  ? { duration: 0 }
+                  : { duration: 0.3, ease: "easeInOut" }
+              }
+              className="shrink-0 overflow-hidden h-full z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)] flex"
+            >
+              <Resizer onMouseDown={handleMouseDownRight} side="right" />
+              <div className="flex-1 w-full overflow-hidden">
+                <RightSidebar
+                  data={resumeData}
+                  onChange={setResumeData}
+                  template={template}
+                  onTemplateChange={setTemplate}
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      <AnimatePresence initial={false}>
-        {showRightSidebar && (
-          <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: rightWidth, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            transition={
-              isResizingRight
-                ? { duration: 0 }
-                : { duration: 0.3, ease: "easeInOut" }
-            }
-            className="shrink-0 overflow-hidden h-full z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)] flex"
-          >
-            <Resizer onMouseDown={handleMouseDownRight} side="right" />
-            <div className="flex-1 w-full overflow-hidden">
-              <RightSidebar
-                data={resumeData}
-                onChange={setResumeData}
-                template={template}
-                onTemplateChange={setTemplate}
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <SaveDialog
         isOpen={showSaveDialog}

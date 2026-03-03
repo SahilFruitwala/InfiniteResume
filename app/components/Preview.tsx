@@ -13,11 +13,8 @@ import {
   PanelRightClose,
   PanelLeft,
   PanelRight,
-  Save,
-  Loader2,
 } from "lucide-react";
-
-import { ThemeToggle } from "./ThemeToggle";
+import Link from "next/link";
 
 interface PreviewProps {
   data: ResumeData;
@@ -26,10 +23,6 @@ interface PreviewProps {
   rightSidebarOpen: boolean;
   onToggleLeftSidebar: () => void;
   onToggleRightSidebar: () => void;
-  onSave?: () => void;
-  isSaving?: boolean;
-  hasUnsavedChanges?: boolean;
-  resumeTitle?: string;
 }
 
 export const Preview = ({
@@ -39,10 +32,6 @@ export const Preview = ({
   rightSidebarOpen,
   onToggleLeftSidebar,
   onToggleRightSidebar,
-  onSave,
-  isSaving,
-  hasUnsavedChanges,
-  resumeTitle,
 }: PreviewProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
@@ -127,78 +116,48 @@ export const Preview = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-slate-50 dark:bg-[#1a1a1a] overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
+    <div className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-[#1a1a1a] overflow-hidden print:h-auto print:bg-white print:overflow-visible print:block transition-colors">
       {/* Toolbar */}
-      <div className="h-16 bg-white dark:bg-card border-b-2 border-black/10 dark:border-white/10 flex items-center justify-between px-4 shrink-0 shadow-none z-10 print:hidden transition-colors">
-        <div className="flex items-center gap-2">
+      <div className="h-12 bg-white dark:bg-card border-b border-black/10 dark:border-white/10 flex items-center justify-between px-3 shrink-0 shadow-none z-10 print:hidden transition-colors">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={onToggleLeftSidebar}
-            className="p-2 text-black/60 dark:text-white/60 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
+            className="p-1.5 text-black/50 dark:text-white/50 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
             title={leftSidebarOpen ? "Hide Data Entry" : "Show Data Entry"}
           >
             {leftSidebarOpen ? (
-              <PanelLeftClose className="w-5 h-5" />
+              <PanelLeftClose className="w-4 h-4" />
             ) : (
-              <PanelLeft className="w-5 h-5" />
+              <PanelLeft className="w-4 h-4" />
             )}
           </button>
           {isOverOnePage && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-none text-sm font-mono uppercase tracking-wider border-2 border-amber-300 dark:border-amber-600 ml-2">
-              <AlertTriangle className="w-4 h-4" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-none text-xs font-mono uppercase tracking-wider border border-amber-300 dark:border-amber-600 ml-1">
+              <AlertTriangle className="w-3.5 h-3.5" />
               Content exceeds 1 page
             </div>
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          {resumeTitle && (
-            <span className="text-xs font-mono text-black/40 dark:text-white/40 uppercase tracking-wider truncate max-w-[200px] hidden sm:block">
-              {resumeTitle}
-            </span>
-          )}
-          {hasUnsavedChanges && (
-            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-amber-600 dark:text-amber-400 uppercase tracking-wider">
-              <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
-              Unsaved
-            </div>
-          )}
-          {onSave && (
-            <button
-              onClick={onSave}
-              disabled={isSaving}
-              className="flex items-center gap-2 px-4 py-2 border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white rounded-none text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
-            >
-              {isSaving ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Save className="w-4 h-4" />
-              )}
-              {isSaving ? "Saving..." : "Save"}
-            </button>
-          )}
+        <div className="flex items-center gap-1.5">
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-6 py-2 bg-accent hover:bg-accent/90 text-black rounded-none text-sm font-bold uppercase tracking-wider transition-all shadow-none"
+            className="flex items-center gap-2 px-4 py-1.5 bg-accent hover:bg-accent/90 text-black rounded-none text-xs font-bold uppercase tracking-wider transition-all shadow-none"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-3.5 h-3.5" />
             Download
           </button>
-
-          <ThemeToggle />
-
-          <div className="w-px h-6 bg-black/10 dark:bg-white/10 mx-1"></div>
-
           <button
             onClick={onToggleRightSidebar}
-            className="p-2 text-black/60 dark:text-white/60 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
+            className="p-1.5 text-black/50 dark:text-white/50 hover:text-accent hover:bg-accent/10 rounded-none transition-colors"
             title={
               rightSidebarOpen ? "Hide Design Settings" : "Show Design Settings"
             }
           >
             {rightSidebarOpen ? (
-              <PanelRightClose className="w-5 h-5" />
+              <PanelRightClose className="w-4 h-4" />
             ) : (
-              <PanelRight className="w-5 h-5" />
+              <PanelRight className="w-4 h-4" />
             )}
           </button>
         </div>
