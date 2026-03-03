@@ -982,28 +982,76 @@ export const RightSidebar = React.memo(
                     <span className="text-2xl text-accent">/100</span>
                   </span>
                 </div>
-                <div className="w-full mt-6 space-y-3">
+                <div className="w-full mt-6 space-y-4">
+                  {/* Profile & Format (40pts) */}
                   <div className="space-y-1">
-                    <div className="flex justify-between items-center text-[10px] font-mono uppercase tracking-widest px-1">
+                    <div className="flex justify-between items-center text-[9px] font-mono uppercase tracking-widest px-1">
                       <span className="text-black/60 dark:text-white/40">
-                        Content Strength
+                        Profile & Format
                       </span>
                       <span className="text-accent font-bold">
-                        {analysis.scoreBreakdown.actionVerbs +
-                          analysis.scoreBreakdown.metrics}
-                        /60
+                        {analysis.scoreBreakdown.length +
+                          analysis.scoreBreakdown.contactInfo}
+                        /40
                       </span>
                     </div>
                     <Progress
                       value={
-                        ((analysis.scoreBreakdown.actionVerbs +
-                          analysis.scoreBreakdown.metrics) /
-                          60) *
+                        ((analysis.scoreBreakdown.length +
+                          analysis.scoreBreakdown.contactInfo) /
+                          40) *
                         100
                       }
                       className="h-1 bg-black/10 dark:bg-white/10"
                     />
                   </div>
+
+                  {/* Action & Impact (30pts) */}
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center text-[9px] font-mono uppercase tracking-widest px-1">
+                      <span className="text-black/60 dark:text-white/40">
+                        Action & Impact
+                      </span>
+                      <span className="text-accent font-bold">
+                        {analysis.scoreBreakdown.actionVerbs}/30
+                      </span>
+                    </div>
+                    <Progress
+                      value={(analysis.scoreBreakdown.actionVerbs / 30) * 100}
+                      className="h-1 bg-black/10 dark:bg-white/10"
+                    />
+                  </div>
+
+                  {/* Results & Metrics (30pts) */}
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center text-[9px] font-mono uppercase tracking-widest px-1">
+                      <span className="text-black/60 dark:text-white/40">
+                        Results & Metrics
+                      </span>
+                      <span className="text-accent font-bold">
+                        {analysis.scoreBreakdown.metrics}/30
+                      </span>
+                    </div>
+                    <Progress
+                      value={(analysis.scoreBreakdown.metrics / 30) * 100}
+                      className="h-1 bg-black/10 dark:bg-white/10"
+                    />
+                  </div>
+
+                  {/* Penalties (if negative) */}
+                  {analysis.scoreBreakdown.penalties < 0 && (
+                    <div className="pt-1">
+                      <div className="flex justify-between items-center text-[9px] font-mono uppercase tracking-widest px-1 mb-1">
+                        <span className="text-red-500/60 font-bold flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          Optimization Penalties
+                        </span>
+                        <span className="text-red-500 font-bold">
+                          {analysis.scoreBreakdown.penalties}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
