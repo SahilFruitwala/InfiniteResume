@@ -12,6 +12,7 @@ import {
   Sun,
   Laptop,
   Palette,
+  RotateCcw,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import {
@@ -44,12 +45,15 @@ import {
   AccordionItem as ShadcnAccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Slider } from "@/components/ui/slider";
 
 interface RightSidebarProps {
   data: ResumeData;
   onChange: (data: ResumeData | ((prev: ResumeData) => ResumeData)) => void;
   template: TemplateType;
   onTemplateChange: (template: TemplateType) => void;
+  onResetDesign: () => void;
+  hasUnsavedDesignChanges: boolean;
 }
 
 const AccordionItem = ({
@@ -167,6 +171,8 @@ export const RightSidebar = ({
   onChange,
   template,
   onTemplateChange,
+  onResetDesign,
+  hasUnsavedDesignChanges,
 }: RightSidebarProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -242,6 +248,18 @@ export const RightSidebar = ({
             Customize your visual impact.
           </p>
         </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9 text-black/40 dark:text-white/40 hover:text-accent rounded-none disabled:opacity-30 transition-all"
+          onClick={onResetDesign}
+          disabled={!hasUnsavedDesignChanges}
+          title="Restore Design Settings"
+        >
+          <RotateCcw
+            className={`w-4 h-4 ${hasUnsavedDesignChanges ? "text-accent animate-in fade-in zoom-in duration-300" : ""}`}
+          />
+        </Button>
       </div>
 
       <div className="flex-1 overflow-y-auto pb-10 custom-scrollbar">
@@ -624,157 +642,189 @@ export const RightSidebar = ({
 
           <AccordionItem title="Spacing">
             <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Section Gap (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="64"
-                    value={data.spacing?.sectionGap ?? 24}
-                    onChange={(e) =>
+              <div className="grid grid-cols-1 gap-6">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                      Section Gap
+                    </Label>
+                    <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
+                      {data.spacing?.sectionGap ?? 24}px
+                    </span>
+                  </div>
+                  <Slider
+                    value={[data.spacing?.sectionGap ?? 24]}
+                    min={0}
+                    max={64}
+                    step={1}
+                    onValueChange={([value]) =>
                       onChange({
                         ...data,
                         spacing: {
                           ...data.spacing,
-                          sectionGap: parseInt(e.target.value) || 0,
+                          sectionGap: value,
                         },
                       })
                     }
-                    className="w-full"
                   />
                 </div>
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Title Gap (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="48"
-                    value={data.spacing?.sectionTitleGap ?? 16}
-                    onChange={(e) =>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                      Title Gap
+                    </Label>
+                    <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
+                      {data.spacing?.sectionTitleGap ?? 16}px
+                    </span>
+                  </div>
+                  <Slider
+                    value={[data.spacing?.sectionTitleGap ?? 16]}
+                    min={0}
+                    max={48}
+                    step={1}
+                    onValueChange={([value]) =>
                       onChange({
                         ...data,
                         spacing: {
                           ...data.spacing,
-                          sectionTitleGap: parseInt(e.target.value) || 0,
+                          sectionTitleGap: value,
                         },
                       })
                     }
-                    className="w-full"
                   />
                 </div>
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Item Gap (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="48"
-                    value={data.spacing?.itemGap ?? 16}
-                    onChange={(e) =>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                      Item Gap
+                    </Label>
+                    <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
+                      {data.spacing?.itemGap ?? 16}px
+                    </span>
+                  </div>
+                  <Slider
+                    value={[data.spacing?.itemGap ?? 16]}
+                    min={0}
+                    max={48}
+                    step={1}
+                    onValueChange={([value]) =>
                       onChange({
                         ...data,
                         spacing: {
                           ...data.spacing,
-                          itemGap: parseInt(e.target.value) || 0,
+                          itemGap: value,
                         },
                       })
                     }
-                    className="w-full"
                   />
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Top Margin (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="120"
-                    value={data.spacing?.pageMarginTop ?? 32}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        spacing: {
-                          ...data.spacing,
-                          pageMarginTop: parseInt(e.target.value) || 0,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
+
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                        Top Margin
+                      </Label>
+                      <span className="text-[10px] font-mono font-bold text-accent">
+                        {data.spacing?.pageMarginTop ?? 32}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[data.spacing?.pageMarginTop ?? 32]}
+                      min={0}
+                      max={120}
+                      step={1}
+                      onValueChange={([value]) =>
+                        onChange({
+                          ...data,
+                          spacing: {
+                            ...data.spacing,
+                            pageMarginTop: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                        Bottom Margin
+                      </Label>
+                      <span className="text-[10px] font-mono font-bold text-accent">
+                        {data.spacing?.pageMarginBottom ?? 32}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[data.spacing?.pageMarginBottom ?? 32]}
+                      min={0}
+                      max={120}
+                      step={1}
+                      onValueChange={([value]) =>
+                        onChange({
+                          ...data,
+                          spacing: {
+                            ...data.spacing,
+                            pageMarginBottom: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Bottom Margin (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="120"
-                    value={data.spacing?.pageMarginBottom ?? 32}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        spacing: {
-                          ...data.spacing,
-                          pageMarginBottom: parseInt(e.target.value) || 0,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Bullet Gap (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="32"
-                    value={data.spacing?.bulletItemGap ?? 4}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        spacing: {
-                          ...data.spacing,
-                          bulletItemGap: parseInt(e.target.value) || 0,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    List Margin (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="32"
-                    value={data.spacing?.bulletListMargin ?? 4}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        spacing: {
-                          ...data.spacing,
-                          bulletListMargin: parseInt(e.target.value) || 0,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
+
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                        Bullet Gap
+                      </Label>
+                      <span className="text-[10px] font-mono font-bold text-accent">
+                        {data.spacing?.bulletItemGap ?? 4}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[data.spacing?.bulletItemGap ?? 4]}
+                      min={0}
+                      max={32}
+                      step={1}
+                      onValueChange={([value]) =>
+                        onChange({
+                          ...data,
+                          spacing: {
+                            ...data.spacing,
+                            bulletItemGap: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                        List Margin
+                      </Label>
+                      <span className="text-[10px] font-mono font-bold text-accent">
+                        {data.spacing?.bulletListMargin ?? 4}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[data.spacing?.bulletListMargin ?? 4]}
+                      min={0}
+                      max={32}
+                      step={1}
+                      onValueChange={([value]) =>
+                        onChange({
+                          ...data,
+                          spacing: {
+                            ...data.spacing,
+                            bulletListMargin: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
                 </div>
               </div>
               <div className="pt-4 border-t border-black/10 dark:border-white/10 mt-4">

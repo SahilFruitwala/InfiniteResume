@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useRef,
   useEffect,
+  useMemo,
 } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -296,6 +297,44 @@ function BuilderContent() {
       setHasUnsavedChanges(dataChanged || templateChanged);
     }
   }, [resumeData, lastSavedData, template, lastSavedTemplate]);
+
+  const hasUnsavedDesignChanges = useMemo(() => {
+    if (!lastSavedData || !lastSavedTemplate) return false;
+    try {
+      const lastSaved = JSON.parse(lastSavedData) as ResumeData;
+      const typographyChanged =
+        JSON.stringify(resumeData.typography) !==
+        JSON.stringify(lastSaved.typography);
+      const spacingChanged =
+        JSON.stringify(resumeData.spacing) !==
+        JSON.stringify(lastSaved.spacing);
+      const templateChanged = template !== lastSavedTemplate;
+      return typographyChanged || spacingChanged || templateChanged;
+    } catch (e) {
+      return false;
+    }
+  }, [
+    resumeData.typography,
+    resumeData.spacing,
+    template,
+    lastSavedData,
+    lastSavedTemplate,
+  ]);
+
+  const handleResetDesign = useCallback(() => {
+    if (!lastSavedData || !lastSavedTemplate) return;
+    try {
+      const lastSaved = JSON.parse(lastSavedData) as ResumeData;
+      setResumeData((prev) => ({
+        ...prev,
+        typography: lastSaved.typography,
+        spacing: lastSaved.spacing,
+      }));
+      setTemplate(lastSavedTemplate);
+    } catch (e) {
+      console.error("Failed to reset design settings", e);
+    }
+  }, [lastSavedData, lastSavedTemplate]);
 
   const getDefaultTitle = () => {
     const now = new Date();
@@ -593,6 +632,8 @@ function BuilderContent() {
                   onChange={setResumeData}
                   template={template}
                   onTemplateChange={setTemplate}
+                  onResetDesign={handleResetDesign}
+                  hasUnsavedDesignChanges={hasUnsavedDesignChanges}
                 />
               </div>
             </motion.div>
