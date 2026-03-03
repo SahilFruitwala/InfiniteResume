@@ -179,13 +179,13 @@ function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
             <Link
-              href="/builder"
+              href="/dashboard"
               className="text-sm font-medium hover:text-accent transition-colors uppercase tracking-wide"
             >
               Log In
             </Link>
             <Link
-              href="/builder"
+              href="/dashboard"
               className="bg-accent text-black px-6 py-3 rounded-none font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:scale-105 active:scale-95 transition-all duration-200"
             >
               Start Free
@@ -280,14 +280,14 @@ function Navbar() {
               className="mt-auto mb-12 flex flex-col gap-4"
             >
               <Link
-                href="/builder"
+                href="/dashboard"
                 onClick={() => setIsOpen(false)}
                 className="w-full border border-black/20 dark:border-white/20 text-center py-4 font-bold uppercase tracking-wider hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-black dark:text-white"
               >
                 Log In
               </Link>
               <Link
-                href="/builder"
+                href="/dashboard"
                 onClick={() => setIsOpen(false)}
                 className="w-full bg-accent text-black text-center py-4 font-bold uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
               >
@@ -403,7 +403,7 @@ function Hero() {
             className="flex flex-col sm:flex-row gap-4 mt-4 w-full sm:w-auto"
           >
             <Link
-              href="/builder"
+              href="/dashboard"
               className="group flex items-center justify-center gap-3 bg-accent text-black px-8 py-5 text-lg font-bold uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:scale-105 active:scale-95 transition-all duration-200 w-full sm:w-auto"
             >
               Analyze My Resume

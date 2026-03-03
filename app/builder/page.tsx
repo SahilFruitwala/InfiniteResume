@@ -1,9 +1,20 @@
 "use client";
 
-import React, { useState, useDeferredValue } from "react";
+import React, {
+  useState,
+  useDeferredValue,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { LeftSidebar } from "../components/LeftSidebar";
 import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
+import { SaveDialog } from "../components/SaveDialog";
 import { ResumeData, TemplateType } from "../types";
 
 const initialData: ResumeData = {
@@ -172,17 +183,96 @@ import { Resizer } from "../components/Resizer";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const resumeId = searchParams.get("id") as Id<"resumes"> | null;
+
+  const existingResume = useQuery(
+    api.resumes.get,
+    resumeId ? { id: resumeId } : "skip",
+  );
+  const saveResume = useMutation(api.resumes.save);
+
   const [resumeData, setResumeData] = React.useState<ResumeData>(initialData);
   const deferredResumeData = useDeferredValue(resumeData);
   const [template, setTemplate] = useState<TemplateType>("minimal");
   const [showLeftSidebar, setShowLeftSidebar] = useState(true);
   const [showRightSidebar, setShowRightSidebar] = useState(true);
-  const [leftWidth, setLeftWidth] = useState(384); // Default md:w-96
-  const [rightWidth, setRightWidth] = useState(320); // Default w-80
+  const [leftWidth, setLeftWidth] = useState(384);
+  const [rightWidth, setRightWidth] = useState(320);
   const [isResizingLeft, setIsResizingLeft] = useState(false);
   const [isResizingRight, setIsResizingRight] = useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
+
+  // Save-related state
+  const [resumeTitle, setResumeTitle] = useState("");
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [lastSavedData, setLastSavedData] = useState<string | null>(null);
+  const hasLoadedRef = useRef(false);
+
+  // Load existing resume when data arrives from Convex
+  useEffect(() => {
+    if (existingResume && !hasLoadedRef.current) {
+      setResumeData(existingResume.content as ResumeData);
+      setTemplate((existingResume.template || "minimal") as TemplateType);
+      setResumeTitle(existingResume.title);
+      setLastSavedData(JSON.stringify(existingResume.content));
+      setHasUnsavedChanges(false);
+      hasLoadedRef.current = true;
+    }
+  }, [existingResume]);
+
+  // Track unsaved changes
+  useEffect(() => {
+    if (lastSavedData !== null) {
+      const currentData = JSON.stringify(resumeData);
+      setHasUnsavedChanges(currentData !== lastSavedData);
+    }
+  }, [resumeData, lastSavedData]);
+
+  const getDefaultTitle = () => {
+    const now = new Date();
+    return `Resume - ${now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
+  };
+
+  const handleSaveClick = useCallback(() => {
+    if (!resumeId && !resumeTitle) {
+      // First save — show the naming dialog
+      setShowSaveDialog(true);
+    } else {
+      // Subsequent save — just save
+      performSave(resumeTitle || getDefaultTitle());
+    }
+  }, [resumeId, resumeTitle, resumeData, template]);
+
+  const performSave = async (title: string) => {
+    setIsSaving(true);
+    try {
+      const id = await saveResume({
+        id: resumeId || undefined,
+        title,
+        template,
+        content: resumeData,
+      });
+      setResumeTitle(title);
+      setLastSavedData(JSON.stringify(resumeData));
+      setHasUnsavedChanges(false);
+      if (!resumeId) {
+        // Update URL with new ID without full navigation
+        router.replace(`/builder?id=${id}`, { scroll: false });
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveDialogSave = (title: string) => {
+    setShowSaveDialog(false);
+    performSave(title);
+  };
 
   React.useEffect(() => {
     setIsMounted(true);
@@ -312,6 +402,10 @@ export default function Home() {
           rightSidebarOpen={showRightSidebar}
           onToggleLeftSidebar={() => toggleSidebar("left")}
           onToggleRightSidebar={() => toggleSidebar("right")}
+          onSave={handleSaveClick}
+          isSaving={isSaving}
+          hasUnsavedChanges={hasUnsavedChanges}
+          resumeTitle={resumeTitle}
         />
       </div>
 
@@ -340,6 +434,13 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SaveDialog
+        isOpen={showSaveDialog}
+        onClose={() => setShowSaveDialog(false)}
+        onSave={handleSaveDialogSave}
+        defaultTitle={getDefaultTitle()}
+      />
     </div>
   );
 }

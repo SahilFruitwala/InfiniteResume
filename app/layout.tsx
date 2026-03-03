@@ -14,6 +14,7 @@ import {
 import "./globals.css"; // Global styles
 import { ThemeProvider } from "./components/ThemeProvider";
 import StructuredData from "./components/StructuredData";
+import { ConvexClientProvider } from "./components/ConvexClientProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const roboto = Roboto({
@@ -143,7 +144,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ConvexClientProvider>{children}</ConvexClientProvider>
         </ThemeProvider>
       </body>
     </html>

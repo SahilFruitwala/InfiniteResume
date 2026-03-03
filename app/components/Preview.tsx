@@ -13,6 +13,8 @@ import {
   PanelRightClose,
   PanelLeft,
   PanelRight,
+  Save,
+  Loader2,
 } from "lucide-react";
 
 import { ThemeToggle } from "./ThemeToggle";
@@ -24,6 +26,10 @@ interface PreviewProps {
   rightSidebarOpen: boolean;
   onToggleLeftSidebar: () => void;
   onToggleRightSidebar: () => void;
+  onSave?: () => void;
+  isSaving?: boolean;
+  hasUnsavedChanges?: boolean;
+  resumeTitle?: string;
 }
 
 export const Preview = ({
@@ -33,6 +39,10 @@ export const Preview = ({
   rightSidebarOpen,
   onToggleLeftSidebar,
   onToggleRightSidebar,
+  onSave,
+  isSaving,
+  hasUnsavedChanges,
+  resumeTitle,
 }: PreviewProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
@@ -141,12 +151,37 @@ export const Preview = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {resumeTitle && (
+            <span className="text-xs font-mono text-black/40 dark:text-white/40 uppercase tracking-wider truncate max-w-[200px] hidden sm:block">
+              {resumeTitle}
+            </span>
+          )}
+          {hasUnsavedChanges && (
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+              <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
+              Unsaved
+            </div>
+          )}
+          {onSave && (
+            <button
+              onClick={onSave}
+              disabled={isSaving}
+              className="flex items-center gap-2 px-4 py-2 border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white rounded-none text-sm font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+            >
+              {isSaving ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              {isSaving ? "Saving..." : "Save"}
+            </button>
+          )}
           <button
             onClick={handlePrint}
             className="flex items-center gap-2 px-6 py-2 bg-accent hover:bg-accent/90 text-black rounded-none text-sm font-bold uppercase tracking-wider transition-all shadow-none"
           >
             <Download className="w-4 h-4" />
-            Download Resume
+            Download
           </button>
 
           <ThemeToggle />
