@@ -236,8 +236,8 @@ export const RightSidebar = React.memo(
           onValueChange={setActiveTab}
           className="flex flex-col h-full"
         >
-          <div className="px-6 pt-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card shrink-0">
-            <div className="flex justify-between items-center mb-4">
+          <div className="pt-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card shrink-0">
+            <div className="px-6 flex justify-between items-center mb-4">
               <div>
                 <h2 className="font-display text-2xl font-black uppercase tracking-tighter">
                   Resume{" "}
@@ -267,16 +267,16 @@ export const RightSidebar = React.memo(
               )}
             </div>
 
-            <TabsList className="w-full grid grid-cols-2 rounded-none bg-black/5 dark:bg-white/5 h-10 mb-[-2px]">
+            <TabsList className="w-full grid grid-cols-2 rounded-none bg-black/5 dark:bg-white/5 h-10 mb-[-2px] border-t-2 border-black/10 dark:border-white/10">
               <TabsTrigger
                 value="design"
-                className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-accent data-[state=active]:bg-transparent uppercase font-mono text-[10px] tracking-[0.2em] font-bold"
+                className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-accent data-[state=active]:bg-transparent uppercase font-mono text-[10px] tracking-[0.2em] font-bold h-full"
               >
                 Design
               </TabsTrigger>
               <TabsTrigger
                 value="analysis"
-                className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-accent data-[state=active]:bg-transparent uppercase font-mono text-[10px] tracking-[0.2em] font-bold"
+                className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-accent data-[state=active]:bg-transparent uppercase font-mono text-[10px] tracking-[0.2em] font-bold h-full"
               >
                 Analysis
               </TabsTrigger>
@@ -291,7 +291,7 @@ export const RightSidebar = React.memo(
               <Accordion
                 type="multiple"
                 className="w-full"
-                defaultValue={["template", "theme-modes"]}
+                defaultValue={["theme-modes"]}
               >
                 <AccordionItem title="Template Selection" value="template">
                   <div className="space-y-4">
