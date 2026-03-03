@@ -21,7 +21,10 @@ import {
   Pencil,
   Download,
   AlertTriangle,
+  Undo2,
+  Redo2,
 } from "lucide-react";
+import { useHistory } from "../hooks/useHistory";
 import { LeftSidebar } from "../components/LeftSidebar";
 import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
@@ -232,9 +235,37 @@ function BuilderContent() {
   );
   const saveResume = useMutation(api.resumes.save);
 
-  const [resumeData, setResumeData] = React.useState<ResumeData>(initialData);
+  const {
+    state: historyState,
+    setState: setHistoryState,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    reset: resetHistory,
+  } = useHistory({ data: initialData, template: "minimal" as TemplateType });
+
+  const resumeData = historyState.data;
+  const template = historyState.template;
   const deferredResumeData = useDeferredValue(resumeData);
-  const [template, setTemplate] = useState<TemplateType>("minimal");
+
+  const setResumeData = useCallback(
+    (newData: ResumeData | ((prev: ResumeData) => ResumeData)) => {
+      setHistoryState((curr) => ({
+        ...curr,
+        data: typeof newData === "function" ? newData(curr.data) : newData,
+      }));
+    },
+    [setHistoryState],
+  );
+
+  const setTemplate = useCallback(
+    (newTemplate: TemplateType) => {
+      setHistoryState((prev) => ({ ...prev, template: newTemplate }));
+    },
+    [setHistoryState],
+  );
+
   const [showLeftSidebar, setShowLeftSidebar] = useState(true);
   const [showRightSidebar, setShowRightSidebar] = useState(true);
   const [leftWidth, setLeftWidth] = useState(384);
@@ -269,24 +300,44 @@ function BuilderContent() {
     if (!resumeId && !hasLoadedRef.current) {
       setLastSavedData(JSON.stringify(initialData));
       setLastSavedTemplate("minimal");
+      resetHistory({ data: initialData, template: "minimal" });
       setHasUnsavedChanges(false);
       hasLoadedRef.current = true;
     }
-  }, [resumeId]);
+  }, [resumeId, resetHistory]);
 
   useEffect(() => {
     if (existingResume && !hasLoadedRef.current) {
-      setResumeData(existingResume.content as ResumeData);
+      const initialContent = existingResume.content as ResumeData;
       const initialTemplate = (existingResume.template ||
         "minimal") as TemplateType;
-      setTemplate(initialTemplate);
+
+      resetHistory({ data: initialContent, template: initialTemplate });
       setResumeTitle(existingResume.title);
-      setLastSavedData(JSON.stringify(existingResume.content));
+      setLastSavedData(JSON.stringify(initialContent));
       setLastSavedTemplate(initialTemplate);
       setHasUnsavedChanges(false);
       hasLoadedRef.current = true;
     }
-  }, [existingResume]);
+  }, [existingResume, resetHistory]);
+
+  // Add keyboard shortcuts for Undo/Redo
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "z") {
+        if (e.shiftKey) {
+          redo();
+        } else {
+          undo();
+        }
+      } else if ((e.metaKey || e.ctrlKey) && e.key === "y") {
+        redo();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [undo, redo]);
 
   // Track unsaved changes
   useEffect(() => {
@@ -334,22 +385,12 @@ function BuilderContent() {
     } catch (e) {
       console.error("Failed to reset design settings", e);
     }
-  }, [lastSavedData, lastSavedTemplate]);
+  }, [lastSavedData, lastSavedTemplate, setResumeData, setTemplate]);
 
   const getDefaultTitle = () => {
     const now = new Date();
     return `Resume - ${now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
   };
-
-  const handleSaveClick = useCallback(() => {
-    if (!resumeId && !resumeTitle) {
-      // First save — show the naming dialog
-      setShowSaveDialog(true);
-    } else {
-      // Subsequent save — just save
-      performSave(resumeTitle || getDefaultTitle());
-    }
-  }, [resumeId, resumeTitle, resumeData, template]);
 
   const performSave = async (title: string) => {
     setIsSaving(true);
@@ -372,6 +413,16 @@ function BuilderContent() {
       setIsSaving(false);
     }
   };
+
+  const handleSaveClick = useCallback(() => {
+    if (!resumeId && !resumeTitle) {
+      // First save — show the naming dialog
+      setShowSaveDialog(true);
+    } else {
+      // Subsequent save — just save
+      performSave(resumeTitle || getDefaultTitle());
+    }
+  }, [resumeId, resumeTitle, resumeData, template, performSave]);
 
   const handleSaveDialogSave = (title: string) => {
     setShowSaveDialog(false);
@@ -529,6 +580,29 @@ function BuilderContent() {
               </button>
             )}
           </div>
+
+          <div className="w-px h-5 bg-black/10 dark:bg-white/10 mx-1" />
+
+          <div className="flex items-center gap-1">
+            <button
+              onClick={undo}
+              disabled={!canUndo}
+              className="p-2 text-black/40 dark:text-white/40 hover:text-accent disabled:opacity-20 transition-all rounded-none"
+              title="Undo (Cmd+Z)"
+            >
+              <Undo2 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={redo}
+              disabled={!canRedo}
+              className="p-2 text-black/40 dark:text-white/40 hover:text-accent disabled:opacity-20 transition-all rounded-none"
+              title="Redo (Cmd+Shift+Z)"
+            >
+              <Redo2 className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="w-px h-5 bg-black/10 dark:bg-white/10" />
 
           {hasUnsavedChanges && (
             <div className="flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono text-amber-600 dark:text-amber-400 uppercase tracking-wider">
