@@ -30,6 +30,7 @@ import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
 import { SaveDialog } from "../components/SaveDialog";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { ImportResume } from "../components/ImportResume";
 import { ResumeData, TemplateType } from "../types";
 
 const initialData: ResumeData = {
@@ -243,6 +244,7 @@ function BuilderContent() {
     canUndo,
     canRedo,
     reset: resetHistory,
+    version,
   } = useHistory({ data: initialData, template: "minimal" as TemplateType });
 
   const resumeData = historyState.data;
@@ -274,6 +276,11 @@ function BuilderContent() {
   const [isResizingRight, setIsResizingRight] = useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
+  // Refs for resize handlers — avoids re-attaching listeners on every pixel
+  const leftWidthRef = useRef(leftWidth);
+  const rightWidthRef = useRef(rightWidth);
+  leftWidthRef.current = leftWidth;
+  rightWidthRef.current = rightWidth;
 
   // Save-related state
   const [resumeTitle, setResumeTitle] = useState("");
@@ -282,7 +289,7 @@ function BuilderContent() {
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [lastSavedData, setLastSavedData] = useState<string | null>(null);
+  const [lastSavedVersion, setLastSavedVersion] = useState<number | null>(null);
   const [lastSavedTemplate, setLastSavedTemplate] =
     useState<TemplateType | null>(null);
   const [isOverOnePage, setIsOverOnePage] = useState(false);
@@ -298,9 +305,10 @@ function BuilderContent() {
 
   useEffect(() => {
     if (!resumeId && !hasLoadedRef.current) {
-      setLastSavedData(JSON.stringify(initialData));
-      setLastSavedTemplate("minimal");
       resetHistory({ data: initialData, template: "minimal" });
+      setResumeTitle("");
+      setLastSavedVersion(0);
+      setLastSavedTemplate("minimal");
       setHasUnsavedChanges(false);
       hasLoadedRef.current = true;
     }
@@ -314,7 +322,7 @@ function BuilderContent() {
 
       resetHistory({ data: initialContent, template: initialTemplate });
       setResumeTitle(existingResume.title);
-      setLastSavedData(JSON.stringify(initialContent));
+      setLastSavedVersion(0);
       setLastSavedTemplate(initialTemplate);
       setHasUnsavedChanges(false);
       hasLoadedRef.current = true;
@@ -339,80 +347,64 @@ function BuilderContent() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [undo, redo]);
 
-  // Track unsaved changes
+  // Track unsaved changes via version counter — no JSON.stringify needed
   useEffect(() => {
-    if (lastSavedData !== null && lastSavedTemplate !== null) {
-      const currentData = JSON.stringify(resumeData);
-      const dataChanged = currentData !== lastSavedData;
+    if (lastSavedVersion !== null && lastSavedTemplate !== null) {
+      const dataChanged = version !== lastSavedVersion;
       const templateChanged = template !== lastSavedTemplate;
       setHasUnsavedChanges(dataChanged || templateChanged);
     }
-  }, [resumeData, lastSavedData, template, lastSavedTemplate]);
+  }, [version, lastSavedVersion, template, lastSavedTemplate]);
 
+  // Design changes are tracked by version + template diff (cheap check)
   const hasUnsavedDesignChanges = useMemo(() => {
-    if (!lastSavedData || !lastSavedTemplate) return false;
-    try {
-      const lastSaved = JSON.parse(lastSavedData) as ResumeData;
-      const typographyChanged =
-        JSON.stringify(resumeData.typography) !==
-        JSON.stringify(lastSaved.typography);
-      const spacingChanged =
-        JSON.stringify(resumeData.spacing) !==
-        JSON.stringify(lastSaved.spacing);
-      const templateChanged = template !== lastSavedTemplate;
-      return typographyChanged || spacingChanged || templateChanged;
-    } catch (e) {
-      return false;
-    }
-  }, [
-    resumeData.typography,
-    resumeData.spacing,
-    template,
-    lastSavedData,
-    lastSavedTemplate,
-  ]);
+    if (lastSavedVersion === null || !lastSavedTemplate) return false;
+    return version !== lastSavedVersion || template !== lastSavedTemplate;
+  }, [version, lastSavedVersion, template, lastSavedTemplate]);
+
+  const lastSavedDataRef = useRef<ResumeData | null>(null);
 
   const handleResetDesign = useCallback(() => {
-    if (!lastSavedData || !lastSavedTemplate) return;
-    try {
-      const lastSaved = JSON.parse(lastSavedData) as ResumeData;
-      setResumeData((prev) => ({
-        ...prev,
-        typography: lastSaved.typography,
-        spacing: lastSaved.spacing,
-      }));
-      setTemplate(lastSavedTemplate);
-    } catch (e) {
-      console.error("Failed to reset design settings", e);
-    }
-  }, [lastSavedData, lastSavedTemplate, setResumeData, setTemplate]);
+    if (!lastSavedDataRef.current || !lastSavedTemplate) return;
+    const lastSaved = lastSavedDataRef.current;
+    setResumeData((prev) => ({
+      ...prev,
+      typography: lastSaved.typography,
+      spacing: lastSaved.spacing,
+    }));
+    setTemplate(lastSavedTemplate);
+  }, [lastSavedTemplate, setResumeData, setTemplate]);
 
   const getDefaultTitle = () => {
     const now = new Date();
     return `Resume - ${now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
   };
 
-  const performSave = async (title: string) => {
-    setIsSaving(true);
-    try {
-      const id = await saveResume({
-        id: resumeId || undefined,
-        title,
-        template,
-        content: resumeData,
-      });
-      setResumeTitle(title);
-      setLastSavedData(JSON.stringify(resumeData));
-      setLastSavedTemplate(template);
-      setHasUnsavedChanges(false);
-      if (!resumeId) {
-        // Update URL with new ID without full navigation
-        router.replace(`/builder?id=${id}`, { scroll: false });
+  const performSave = useCallback(
+    async (title: string) => {
+      setIsSaving(true);
+      try {
+        const id = await saveResume({
+          id: resumeId || undefined,
+          title,
+          template,
+          content: resumeData,
+        });
+        setResumeTitle(title);
+        lastSavedDataRef.current = resumeData;
+        setLastSavedVersion(version);
+        setLastSavedTemplate(template);
+        setHasUnsavedChanges(false);
+        if (!resumeId) {
+          // Update URL with new ID without full navigation
+          router.replace(`/builder?id=${id}`, { scroll: false });
+        }
+      } finally {
+        setIsSaving(false);
       }
-    } finally {
-      setIsSaving(false);
-    }
-  };
+    },
+    [resumeId, template, resumeData, saveResume, router, version],
+  );
 
   const handleSaveClick = useCallback(() => {
     if (!resumeId && !resumeTitle) {
@@ -465,11 +457,17 @@ function BuilderContent() {
 
     const handleMouseUp = () => {
       if (isResizingLeft) {
-        localStorage.setItem("sidebarWidthLeft", leftWidth.toString());
+        localStorage.setItem(
+          "sidebarWidthLeft",
+          leftWidthRef.current.toString(),
+        );
         setIsResizingLeft(false);
       }
       if (isResizingRight) {
-        localStorage.setItem("sidebarWidthRight", rightWidth.toString());
+        localStorage.setItem(
+          "sidebarWidthRight",
+          rightWidthRef.current.toString(),
+        );
         setIsResizingRight(false);
       }
     };
@@ -487,7 +485,7 @@ function BuilderContent() {
       document.body.style.cursor = "default";
       document.body.style.userSelect = "auto";
     };
-  }, [isResizingLeft, isResizingRight, leftWidth, rightWidth]);
+  }, [isResizingLeft, isResizingRight]);
 
   const toggleSidebar = React.useCallback(
     (side: "left" | "right") => {
@@ -620,6 +618,68 @@ function BuilderContent() {
         </div>
 
         <div className="flex items-center gap-2">
+          <ImportResume
+            onDataImported={async (data) => {
+              // Explicitly clear arrays to ensure fields not in import are emptied
+              const emptySections = {
+                experience: [],
+                education: [],
+                skills: [],
+                projects: [],
+                awards: [],
+                languages: [],
+                volunteerWork: [],
+                interests: [],
+                socialLinks: [],
+              };
+
+              // Create full new data structure starting from initialData (for structure)
+              // then applying empty sections, then imported data, but preserving design settings
+              const newData: ResumeData = {
+                ...initialData,
+                ...emptySections,
+                ...data,
+                typography: resumeData.typography,
+                spacing: resumeData.spacing,
+                theme: resumeData.theme,
+                layout: {
+                  sectionOrder: initialData.layout?.sectionOrder || [],
+                },
+              };
+
+              // Update local state
+              setResumeData(newData);
+
+              // Auto-save to database immediately
+              const title =
+                resumeTitle || data.personalInfo?.fullName || "Imported Resume";
+              setIsSaving(true);
+              try {
+                const id = await saveResume({
+                  id: resumeId || undefined,
+                  title: title,
+                  template: template,
+                  content: newData,
+                });
+
+                if (!resumeTitle) setResumeTitle(title);
+                if (!resumeId) {
+                  router.replace(`/builder?id=${id}`, { scroll: false });
+                }
+
+                // Update save baseline
+                lastSavedDataRef.current = newData;
+                setLastSavedVersion(version + 1); // Approximate next version
+                setLastSavedTemplate(template);
+                setHasUnsavedChanges(false);
+              } catch (error) {
+                console.error("Auto-save failed after import:", error);
+              } finally {
+                setIsSaving(false);
+              }
+            }}
+          />
+
           <button
             onClick={handlePrint}
             className="flex items-center gap-2 px-4 py-1.5 bg-accent hover:bg-accent/90 text-black rounded-none text-xs font-bold uppercase tracking-wider transition-all shadow-none mr-2"

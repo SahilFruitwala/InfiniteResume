@@ -39,13 +39,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem as ShadcnAccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
+import { SidebarAccordionItem as AccordionItem } from "./shared/SidebarAccordionItem";
 import { Slider } from "@/components/ui/slider";
+import { allFontVariables } from "@/lib/fonts";
 
 interface RightSidebarProps {
   data: ResumeData;
@@ -55,33 +52,6 @@ interface RightSidebarProps {
   onResetDesign: () => void;
   hasUnsavedDesignChanges: boolean;
 }
-
-const AccordionItem = ({
-  title,
-  children,
-  defaultOpen = false,
-  value,
-}: {
-  title: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-  value?: string;
-}) => {
-  const itemValue = value || title.toLowerCase().replace(/\s+/g, "-");
-  return (
-    <ShadcnAccordionItem
-      value={itemValue}
-      className="border-b border-black/10 dark:border-white/10 last:border-0"
-    >
-      <AccordionTrigger className="w-full flex justify-between items-center py-4 px-6 bg-white dark:bg-card hover:bg-accent dark:hover:bg-accent hover:text-black transition-colors text-left font-bold uppercase tracking-tight text-black dark:text-white hover:no-underline data-[state=open]:bg-accent data-[state=open]:text-black">
-        {title}
-      </AccordionTrigger>
-      <AccordionContent className="p-6 bg-white dark:bg-[#111111] px-6 border-t-2 border-black/5 dark:border-white/5">
-        {children}
-      </AccordionContent>
-    </ShadcnAccordionItem>
-  );
-};
 
 const SortableSectionItem = ({
   id,
@@ -166,137 +136,138 @@ const SortableSectionItem = ({
   );
 };
 
-export const RightSidebar = ({
-  data,
-  onChange,
-  template,
-  onTemplateChange,
-  onResetDesign,
-  hasUnsavedDesignChanges,
-}: RightSidebarProps) => {
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
+export const RightSidebar = React.memo(
+  ({
+    data,
+    onChange,
+    template,
+    onTemplateChange,
+    onResetDesign,
+    hasUnsavedDesignChanges,
+  }: RightSidebarProps) => {
+    const sensors = useSensors(
+      useSensor(PointerSensor),
+      useSensor(KeyboardSensor, {
+        coordinateGetter: sortableKeyboardCoordinates,
+      }),
+    );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+    const handleDragEnd = (event: DragEndEvent) => {
+      const { active, over } = event;
 
-    if (over && active.id !== over.id) {
-      const oldIndex = (data.layout?.sectionOrder || []).indexOf(
-        active.id as string,
-      );
-      const newIndex = (data.layout?.sectionOrder || []).indexOf(
-        over.id as string,
-      );
-
-      if (oldIndex !== -1 && newIndex !== -1) {
-        const newOrder = arrayMove(
-          data.layout?.sectionOrder || [],
-          oldIndex,
-          newIndex,
+      if (over && active.id !== over.id) {
+        const oldIndex = (data.layout?.sectionOrder || []).indexOf(
+          active.id as string,
         );
-        onChange({
-          ...data,
-          layout: { ...data.layout, sectionOrder: newOrder },
-        });
+        const newIndex = (data.layout?.sectionOrder || []).indexOf(
+          over.id as string,
+        );
+
+        if (oldIndex !== -1 && newIndex !== -1) {
+          const newOrder = arrayMove(
+            data.layout?.sectionOrder || [],
+            oldIndex,
+            newIndex,
+          );
+          onChange({
+            ...data,
+            layout: { ...data.layout, sectionOrder: newOrder },
+          });
+        }
       }
-    }
-  };
+    };
 
-  const sectionNames: Record<string, string> = {
-    summary: "Professional Summary",
-    experience: "Experience",
-    education: "Education",
-    projects: "Projects",
-    volunteerWork: "Volunteer Work",
-    awards: "Awards & Certifications",
-    skills: "Skills",
-    languages: "Languages",
-    interests: "Interests",
-  };
+    const sectionNames: Record<string, string> = {
+      summary: "Professional Summary",
+      experience: "Experience",
+      education: "Education",
+      projects: "Projects",
+      volunteerWork: "Volunteer Work",
+      awards: "Awards & Certifications",
+      skills: "Skills",
+      languages: "Languages",
+      interests: "Interests",
+    };
 
-  const getSectionName = (id: string) => {
-    if (sectionNames[id]) return sectionNames[id];
-    if (id.startsWith("custom-")) {
-      const customId = id.replace("custom-", "");
-      const section = data.customSections?.find((s) => s.id === customId);
-      return section?.title || "Custom Section";
-    }
-    return id;
-  };
-  const { theme: appTheme, setTheme: setAppTheme } = useTheme();
-  // We use the app's theme for dark/light mode consistency,
-  // but we don't force the resume's accent color to follow the app's accent color.
-  const isAppDark =
-    appTheme === "dark" ||
-    (appTheme === "system" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
-  const defaultResumeAccent = "#000000"; // Neutral black
-  const defaultProfessionalBorder = "#00000040";
+    const getSectionName = (id: string) => {
+      if (sectionNames[id]) return sectionNames[id];
+      if (id.startsWith("custom-")) {
+        const customId = id.replace("custom-", "");
+        const section = data.customSections?.find((s) => s.id === customId);
+        return section?.title || "Custom Section";
+      }
+      return id;
+    };
+    const { theme: appTheme, setTheme: setAppTheme } = useTheme();
+    // Safe SSR check for dark mode detection
+    const isAppDark =
+      appTheme === "dark" ||
+      (appTheme === "system" &&
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const defaultResumeAccent = "#000000"; // Neutral black
+    const defaultProfessionalBorder = "#00000040";
 
-  return (
-    <div className="w-full bg-white dark:bg-card border-l-2 border-black/10 dark:border-white/10 h-screen flex flex-col shadow-none z-10 print:hidden shrink-0 transition-colors">
-      <div className="p-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card text-black dark:text-white flex justify-between items-center shrink-0 transition-colors">
-        <div>
-          <h2 className="font-display text-2xl font-black uppercase tracking-tighter">
-            Design <span className="text-accent">Settings</span>
-          </h2>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 dark:text-white/40 mt-1">
-            Customize your visual impact.
-          </p>
+    return (
+      <div className="w-full bg-white dark:bg-card border-l-2 border-black/10 dark:border-white/10 h-screen flex flex-col shadow-none z-10 print:hidden shrink-0 transition-colors">
+        <div className="p-6 border-b-2 border-black/10 dark:border-white/10 bg-white dark:bg-card text-black dark:text-white flex justify-between items-center shrink-0 transition-colors">
+          <div>
+            <h2 className="font-display text-2xl font-black uppercase tracking-tighter">
+              Design <span className="text-accent">Settings</span>
+            </h2>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 dark:text-white/40 mt-1">
+              Customize your visual impact.
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 text-black/40 dark:text-white/40 hover:text-accent rounded-none disabled:opacity-30 transition-all"
+            onClick={onResetDesign}
+            disabled={!hasUnsavedDesignChanges}
+            title="Restore Design Settings"
+          >
+            <RotateCcw
+              className={`w-4 h-4 ${hasUnsavedDesignChanges ? "text-accent animate-in fade-in zoom-in duration-300" : ""}`}
+            />
+          </Button>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-9 w-9 text-black/40 dark:text-white/40 hover:text-accent rounded-none disabled:opacity-30 transition-all"
-          onClick={onResetDesign}
-          disabled={!hasUnsavedDesignChanges}
-          title="Restore Design Settings"
-        >
-          <RotateCcw
-            className={`w-4 h-4 ${hasUnsavedDesignChanges ? "text-accent animate-in fade-in zoom-in duration-300" : ""}`}
-          />
-        </Button>
-      </div>
 
-      <div className="flex-1 overflow-y-auto pb-10 custom-scrollbar">
-        <Accordion
-          type="multiple"
-          className="w-full"
-          defaultValue={["template", "theme-modes"]}
-        >
-          <AccordionItem title="Template Selection" value="template">
-            <div className="space-y-4">
-              <div>
-                <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-2">
-                  Select Template
-                </Label>
-                <Select
-                  value={template}
-                  onValueChange={(value) =>
-                    onTemplateChange(value as TemplateType)
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Template" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="minimal">Minimal</SelectItem>
-                    <SelectItem value="professional">Professional</SelectItem>
-                    <SelectItem value="academic">Academic</SelectItem>
-                    {/* Temporary disabled */}
-                    {/* <SelectItem value="modern">Modern</SelectItem> */}
-                    {/* <SelectItem value="creative">Creative</SelectItem> */}
-                  </SelectContent>
-                </Select>
+        <div className="flex-1 overflow-y-auto pb-10 custom-scrollbar">
+          <Accordion
+            type="multiple"
+            className="w-full"
+            defaultValue={["template", "theme-modes"]}
+          >
+            <AccordionItem title="Template Selection" value="template">
+              <div className="space-y-4">
+                <div>
+                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-2">
+                    Select Template
+                  </Label>
+                  <Select
+                    value={template}
+                    onValueChange={(value) =>
+                      onTemplateChange(value as TemplateType)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Template" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="minimal">Minimal</SelectItem>
+                      <SelectItem value="professional">Professional</SelectItem>
+                      <SelectItem value="academic">Academic</SelectItem>
+                      {/* Temporary disabled */}
+                      {/* <SelectItem value="modern">Modern</SelectItem> */}
+                      {/* <SelectItem value="creative">Creative</SelectItem> */}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </div>
-          </AccordionItem>
-          {/* Theme & Colors hidden for now */}
-          {/* 
+            </AccordionItem>
+            {/* Theme & Colors hidden for now */}
+            {/* 
           <AccordionItem title="Theme & Colors">
             <div className="space-y-4">
               <div>
@@ -497,434 +468,435 @@ export const RightSidebar = ({
           </AccordionItem>
           */}
 
-          <AccordionItem title="Typography">
-            <div className="space-y-4">
-              <div>
-                <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                  Font Family
-                </Label>
-                <Select
-                  value={data.typography.fontFamily}
-                  onValueChange={(value) =>
-                    onChange({
-                      ...data,
-                      typography: { ...data.typography, fontFamily: value },
-                    })
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a font" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="var(--font-inter)">
-                      Inter (Sans-serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-roboto)">
-                      Roboto (Sans-serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-open-sans)">
-                      Open Sans (Sans-serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-merriweather)">
-                      Merriweather (Serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-playfair)">
-                      Playfair Display (Serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-lora)">
-                      Lora (Serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-montserrat)">
-                      Montserrat (Sans-serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-poppins)">
-                      Poppins (Sans-serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-raleway)">
-                      Raleway (Sans-serif)
-                    </SelectItem>
-                    <SelectItem value="var(--font-lato)">
-                      Lato (Sans-serif)
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <AccordionItem title="Typography">
+              <div className="space-y-4">
+                <div>
+                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
+                    Font Family
+                  </Label>
+                  <Select
+                    value={data.typography.fontFamily}
+                    onValueChange={(value) =>
+                      onChange({
+                        ...data,
+                        typography: { ...data.typography, fontFamily: value },
+                      })
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a font" />
+                    </SelectTrigger>
+                    <SelectContent className={allFontVariables}>
+                      <SelectItem value="var(--font-inter)">
+                        Inter (Sans-serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-roboto)">
+                        Roboto (Sans-serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-open-sans)">
+                        Open Sans (Sans-serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-merriweather)">
+                        Merriweather (Serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-playfair)">
+                        Playfair Display (Serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-lora)">
+                        Lora (Serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-montserrat)">
+                        Montserrat (Sans-serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-poppins)">
+                        Poppins (Sans-serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-raleway)">
+                        Raleway (Sans-serif)
+                      </SelectItem>
+                      <SelectItem value="var(--font-lato)">
+                        Lato (Sans-serif)
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Body (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="10"
-                    max="20"
-                    value={data.typography.fontSizeBody}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        typography: {
-                          ...data.typography,
-                          fontSizeBody: parseInt(e.target.value) || 14,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Name (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="16"
-                    max="64"
-                    value={data.typography.fontSizeHeading}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        typography: {
-                          ...data.typography,
-                          fontSizeHeading: parseInt(e.target.value) || 36,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Section (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="12"
-                    max="32"
-                    value={data.typography.fontSizeSectionHeading}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        typography: {
-                          ...data.typography,
-                          fontSizeSectionHeading:
-                            parseInt(e.target.value) || 18,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
-                    Item Title (px)
-                  </Label>
-                  <Input
-                    type="number"
-                    min="10"
-                    max="32"
-                    value={data.typography.fontSizeItemHeading ?? 16}
-                    onChange={(e) =>
-                      onChange({
-                        ...data,
-                        typography: {
-                          ...data.typography,
-                          fontSizeItemHeading: parseInt(e.target.value) || 16,
-                        },
-                      })
-                    }
-                    className="w-full"
-                  />
-                </div>
-              </div>
-            </div>
-          </AccordionItem>
-
-          <AccordionItem title="Spacing">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
-                      Section Gap
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
+                      Body (px)
                     </Label>
-                    <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
-                      {data.spacing?.sectionGap ?? 24}px
-                    </span>
-                  </div>
-                  <Slider
-                    value={[data.spacing?.sectionGap ?? 24]}
-                    min={0}
-                    max={64}
-                    step={1}
-                    onValueChange={([value]) =>
-                      onChange({
-                        ...data,
-                        spacing: {
-                          ...data.spacing,
-                          sectionGap: value,
-                        },
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
-                      Title Gap
-                    </Label>
-                    <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
-                      {data.spacing?.sectionTitleGap ?? 16}px
-                    </span>
-                  </div>
-                  <Slider
-                    value={[data.spacing?.sectionTitleGap ?? 16]}
-                    min={0}
-                    max={48}
-                    step={1}
-                    onValueChange={([value]) =>
-                      onChange({
-                        ...data,
-                        spacing: {
-                          ...data.spacing,
-                          sectionTitleGap: value,
-                        },
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
-                      Item Gap
-                    </Label>
-                    <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
-                      {data.spacing?.itemGap ?? 16}px
-                    </span>
-                  </div>
-                  <Slider
-                    value={[data.spacing?.itemGap ?? 16]}
-                    min={0}
-                    max={48}
-                    step={1}
-                    onValueChange={([value]) =>
-                      onChange({
-                        ...data,
-                        spacing: {
-                          ...data.spacing,
-                          itemGap: value,
-                        },
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
-                        Top Margin
-                      </Label>
-                      <span className="text-[10px] font-mono font-bold text-accent">
-                        {data.spacing?.pageMarginTop ?? 32}
-                      </span>
-                    </div>
-                    <Slider
-                      value={[data.spacing?.pageMarginTop ?? 32]}
-                      min={0}
-                      max={120}
-                      step={1}
-                      onValueChange={([value]) =>
+                    <Input
+                      type="number"
+                      min="10"
+                      max="20"
+                      value={data.typography.fontSizeBody}
+                      onChange={(e) =>
                         onChange({
                           ...data,
-                          spacing: {
-                            ...data.spacing,
-                            pageMarginTop: value,
+                          typography: {
+                            ...data.typography,
+                            fontSizeBody: parseInt(e.target.value) || 14,
                           },
                         })
                       }
+                      className="w-full"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
-                        Bottom Margin
-                      </Label>
-                      <span className="text-[10px] font-mono font-bold text-accent">
-                        {data.spacing?.pageMarginBottom ?? 32}
-                      </span>
-                    </div>
-                    <Slider
-                      value={[data.spacing?.pageMarginBottom ?? 32]}
-                      min={0}
-                      max={120}
-                      step={1}
-                      onValueChange={([value]) =>
+                  <div>
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
+                      Name (px)
+                    </Label>
+                    <Input
+                      type="number"
+                      min="16"
+                      max="64"
+                      value={data.typography.fontSizeHeading}
+                      onChange={(e) =>
                         onChange({
                           ...data,
-                          spacing: {
-                            ...data.spacing,
-                            pageMarginBottom: value,
+                          typography: {
+                            ...data.typography,
+                            fontSizeHeading: parseInt(e.target.value) || 36,
                           },
                         })
                       }
+                      className="w-full"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
-                        Bullet Gap
-                      </Label>
-                      <span className="text-[10px] font-mono font-bold text-accent">
-                        {data.spacing?.bulletItemGap ?? 4}
-                      </span>
-                    </div>
-                    <Slider
-                      value={[data.spacing?.bulletItemGap ?? 4]}
-                      min={0}
-                      max={32}
-                      step={1}
-                      onValueChange={([value]) =>
+                  <div>
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
+                      Section (px)
+                    </Label>
+                    <Input
+                      type="number"
+                      min="12"
+                      max="32"
+                      value={data.typography.fontSizeSectionHeading}
+                      onChange={(e) =>
                         onChange({
                           ...data,
-                          spacing: {
-                            ...data.spacing,
-                            bulletItemGap: value,
+                          typography: {
+                            ...data.typography,
+                            fontSizeSectionHeading:
+                              parseInt(e.target.value) || 18,
                           },
                         })
                       }
+                      className="w-full"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
-                        List Margin
-                      </Label>
-                      <span className="text-[10px] font-mono font-bold text-accent">
-                        {data.spacing?.bulletListMargin ?? 4}
-                      </span>
-                    </div>
-                    <Slider
-                      value={[data.spacing?.bulletListMargin ?? 4]}
-                      min={0}
-                      max={32}
-                      step={1}
-                      onValueChange={([value]) =>
+                  <div>
+                    <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-1">
+                      Item Title (px)
+                    </Label>
+                    <Input
+                      type="number"
+                      min="10"
+                      max="32"
+                      value={data.typography.fontSizeItemHeading ?? 16}
+                      onChange={(e) =>
                         onChange({
                           ...data,
-                          spacing: {
-                            ...data.spacing,
-                            bulletListMargin: value,
+                          typography: {
+                            ...data.typography,
+                            fontSizeItemHeading: parseInt(e.target.value) || 16,
                           },
                         })
                       }
+                      className="w-full"
                     />
                   </div>
                 </div>
               </div>
-              <div className="pt-4 border-t border-black/10 dark:border-white/10 mt-4">
-                <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-2">
-                  Page Size
-                </Label>
-                <Select
-                  value={data.spacing?.pageSize || "LETTER"}
-                  onValueChange={(value) =>
-                    onChange({
-                      ...data,
-                      spacing: {
-                        ...data.spacing,
-                        pageSize: value as "A4" | "LETTER",
-                      },
-                    })
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Page Size" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="LETTER">
-                      US Letter (8.5&quot; x 11&quot;)
-                    </SelectItem>
-                    <SelectItem value="A4">A4 (210mm x 297mm)</SelectItem>
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-black/40 dark:text-white/40 mt-2">
-                  Adjusts the preview dimensions and PDF generation format.
+            </AccordionItem>
+
+            <AccordionItem title="Spacing">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                        Section Gap
+                      </Label>
+                      <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
+                        {data.spacing?.sectionGap ?? 24}px
+                      </span>
+                    </div>
+                    <Slider
+                      value={[data.spacing?.sectionGap ?? 24]}
+                      min={0}
+                      max={64}
+                      step={1}
+                      onValueChange={([value]) =>
+                        onChange({
+                          ...data,
+                          spacing: {
+                            ...data.spacing,
+                            sectionGap: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                        Title Gap
+                      </Label>
+                      <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
+                        {data.spacing?.sectionTitleGap ?? 16}px
+                      </span>
+                    </div>
+                    <Slider
+                      value={[data.spacing?.sectionTitleGap ?? 16]}
+                      min={0}
+                      max={48}
+                      step={1}
+                      onValueChange={([value]) =>
+                        onChange({
+                          ...data,
+                          spacing: {
+                            ...data.spacing,
+                            sectionTitleGap: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                        Item Gap
+                      </Label>
+                      <span className="text-[10px] font-mono font-bold text-accent bg-accent/10 px-1.5 py-0.5">
+                        {data.spacing?.itemGap ?? 16}px
+                      </span>
+                    </div>
+                    <Slider
+                      value={[data.spacing?.itemGap ?? 16]}
+                      min={0}
+                      max={48}
+                      step={1}
+                      onValueChange={([value]) =>
+                        onChange({
+                          ...data,
+                          spacing: {
+                            ...data.spacing,
+                            itemGap: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                          Top Margin
+                        </Label>
+                        <span className="text-[10px] font-mono font-bold text-accent">
+                          {data.spacing?.pageMarginTop ?? 32}
+                        </span>
+                      </div>
+                      <Slider
+                        value={[data.spacing?.pageMarginTop ?? 32]}
+                        min={0}
+                        max={120}
+                        step={1}
+                        onValueChange={([value]) =>
+                          onChange({
+                            ...data,
+                            spacing: {
+                              ...data.spacing,
+                              pageMarginTop: value,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                          Bottom Margin
+                        </Label>
+                        <span className="text-[10px] font-mono font-bold text-accent">
+                          {data.spacing?.pageMarginBottom ?? 32}
+                        </span>
+                      </div>
+                      <Slider
+                        value={[data.spacing?.pageMarginBottom ?? 32]}
+                        min={0}
+                        max={120}
+                        step={1}
+                        onValueChange={([value]) =>
+                          onChange({
+                            ...data,
+                            spacing: {
+                              ...data.spacing,
+                              pageMarginBottom: value,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                          Bullet Gap
+                        </Label>
+                        <span className="text-[10px] font-mono font-bold text-accent">
+                          {data.spacing?.bulletItemGap ?? 4}
+                        </span>
+                      </div>
+                      <Slider
+                        value={[data.spacing?.bulletItemGap ?? 4]}
+                        min={0}
+                        max={32}
+                        step={1}
+                        onValueChange={([value]) =>
+                          onChange({
+                            ...data,
+                            spacing: {
+                              ...data.spacing,
+                              bulletItemGap: value,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40">
+                          List Margin
+                        </Label>
+                        <span className="text-[10px] font-mono font-bold text-accent">
+                          {data.spacing?.bulletListMargin ?? 4}
+                        </span>
+                      </div>
+                      <Slider
+                        value={[data.spacing?.bulletListMargin ?? 4]}
+                        min={0}
+                        max={32}
+                        step={1}
+                        onValueChange={([value]) =>
+                          onChange({
+                            ...data,
+                            spacing: {
+                              ...data.spacing,
+                              bulletListMargin: value,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="pt-4 border-t border-black/10 dark:border-white/10 mt-4">
+                  <Label className="block text-xs font-medium text-black/70 dark:text-white/50 mb-2">
+                    Page Size
+                  </Label>
+                  <Select
+                    value={data.spacing?.pageSize || "LETTER"}
+                    onValueChange={(value) =>
+                      onChange({
+                        ...data,
+                        spacing: {
+                          ...data.spacing,
+                          pageSize: value as "A4" | "LETTER",
+                        },
+                      })
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Page Size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="LETTER">
+                        US Letter (8.5&quot; x 11&quot;)
+                      </SelectItem>
+                      <SelectItem value="A4">A4 (210mm x 297mm)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-black/40 dark:text-white/40 mt-2">
+                    Adjusts the preview dimensions and PDF generation format.
+                  </p>
+                </div>
+              </div>
+            </AccordionItem>
+
+            <AccordionItem title="Layout & Structure">
+              <div className="space-y-2">
+                <p className="text-xs text-black/40 dark:text-white/40 mb-3">
+                  Drag handles or use arrows to reorder resume sections.
                 </p>
-              </div>
-            </div>
-          </AccordionItem>
-
-          <AccordionItem title="Layout & Structure">
-            <div className="space-y-2">
-              <p className="text-xs text-black/40 dark:text-white/40 mb-3">
-                Drag handles or use arrows to reorder resume sections.
-              </p>
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-              >
-                <SortableContext
-                  items={data.layout?.sectionOrder || []}
-                  strategy={verticalListSortingStrategy}
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
                 >
-                  {(
-                    data.layout?.sectionOrder || [
-                      "summary",
-                      "experience",
-                      "education",
-                      "projects",
-                      "volunteerWork",
-                      "awards",
-                      "skills",
-                      "languages",
-                      "interests",
-                    ]
-                  ).map((sectionId, index, array) => (
-                    <SortableSectionItem
-                      key={sectionId}
-                      id={sectionId}
-                      name={getSectionName(sectionId)}
-                      isFirst={index === 0}
-                      isLast={index === array.length - 1}
-                      onMoveUp={() => {
-                        if (index === 0) return;
-                        const newOrder = [...array];
-                        [newOrder[index - 1], newOrder[index]] = [
-                          newOrder[index],
-                          newOrder[index - 1],
-                        ];
-                        onChange({
-                          ...data,
-                          layout: { ...data.layout, sectionOrder: newOrder },
-                        });
-                      }}
-                      onMoveDown={() => {
-                        if (index === array.length - 1) return;
-                        const newOrder = [...array];
-                        [newOrder[index + 1], newOrder[index]] = [
-                          newOrder[index],
-                          newOrder[index + 1],
-                        ];
-                        onChange({
-                          ...data,
-                          layout: { ...data.layout, sectionOrder: newOrder },
-                        });
-                      }}
-                    />
-                  ))}
-                </SortableContext>
-              </DndContext>
-            </div>
-          </AccordionItem>
-        </Accordion>
+                  <SortableContext
+                    items={data.layout?.sectionOrder || []}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {(
+                      data.layout?.sectionOrder || [
+                        "summary",
+                        "experience",
+                        "education",
+                        "projects",
+                        "volunteerWork",
+                        "awards",
+                        "skills",
+                        "languages",
+                        "interests",
+                      ]
+                    ).map((sectionId, index, array) => (
+                      <SortableSectionItem
+                        key={sectionId}
+                        id={sectionId}
+                        name={getSectionName(sectionId)}
+                        isFirst={index === 0}
+                        isLast={index === array.length - 1}
+                        onMoveUp={() => {
+                          if (index === 0) return;
+                          const newOrder = [...array];
+                          [newOrder[index - 1], newOrder[index]] = [
+                            newOrder[index],
+                            newOrder[index - 1],
+                          ];
+                          onChange({
+                            ...data,
+                            layout: { ...data.layout, sectionOrder: newOrder },
+                          });
+                        }}
+                        onMoveDown={() => {
+                          if (index === array.length - 1) return;
+                          const newOrder = [...array];
+                          [newOrder[index + 1], newOrder[index]] = [
+                            newOrder[index],
+                            newOrder[index + 1],
+                          ];
+                          onChange({
+                            ...data,
+                            layout: { ...data.layout, sectionOrder: newOrder },
+                          });
+                        }}
+                      />
+                    ))}
+                  </SortableContext>
+                </DndContext>
+              </div>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  },
+);
