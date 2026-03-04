@@ -5,6 +5,8 @@ import { google } from "@ai-sdk/google";
 import { resumeSchema } from "@/app/lib/schemas";
 
 export async function parseResumeAction(pdfBytes: Uint8Array) {
+  // Builder import now uses browser-only BYOK parsing.
+  // This server action is kept for compatibility with any non-BYOK callers.
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     throw new Error("GOOGLE_GENERATIVE_AI_API_KEY is not set");
   }

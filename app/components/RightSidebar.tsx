@@ -247,8 +247,8 @@ export const RightSidebar = React.memo(
                 </h2>
                 <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 dark:text-white/40 mt-1">
                   {activeTab === "design"
-                    ? "Customize your visual impact."
-                    : "Optimize for ATS & job matching."}
+                    ? "Customize your visual"
+                    : "Optimize for ATS & job match"}
                 </p>
               </div>
               {activeTab === "design" && (

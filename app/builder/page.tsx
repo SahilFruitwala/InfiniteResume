@@ -30,8 +30,13 @@ import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
 import { SaveDialog } from "../components/SaveDialog";
 import { ThemeToggle } from "../components/ThemeToggle";
-import { ImportResume } from "../components/ImportResume";
+import {
+  ImportResume,
+  ImportResumeHandle,
+} from "../components/ImportResume";
+import { ResumeExtractionSettingsPanel } from "../components/ResumeExtractionSettingsPanel";
 import { ResumeData, TemplateType } from "../types";
+import { getResumeExtractionSettings } from "../utils/resume-extraction-settings";
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -293,7 +298,13 @@ function BuilderContent() {
   const [lastSavedTemplate, setLastSavedTemplate] =
     useState<TemplateType | null>(null);
   const [isOverOnePage, setIsOverOnePage] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [settingsPromptMessage, setSettingsPromptMessage] = useState<
+    string | undefined
+  >(undefined);
+  const [resumeImportPending, setResumeImportPending] = useState(false);
   const hasLoadedRef = useRef(false);
+  const importResumeRef = useRef<ImportResumeHandle>(null);
 
   const handlePrint = useCallback(() => {
     window.print();
@@ -497,6 +508,17 @@ function BuilderContent() {
     [startTransition],
   );
 
+  const openSettingsModal = useCallback((message?: string) => {
+    setSettingsPromptMessage(message);
+    setIsSettingsOpen(true);
+  }, []);
+
+  const closeSettingsModal = useCallback(() => {
+    setIsSettingsOpen(false);
+    setSettingsPromptMessage(undefined);
+    setResumeImportPending(false);
+  }, []);
+
   if (!isMounted) {
     return (
       <div className="flex h-screen w-full bg-white dark:bg-[#050505] justify-center items-center text-black dark:text-white transition-colors">
@@ -619,6 +641,13 @@ function BuilderContent() {
 
         <div className="flex items-center gap-2">
           <ImportResume
+            ref={importResumeRef}
+            onRequireApiKey={() => {
+              setResumeImportPending(true);
+              openSettingsModal(
+                "Add your API key in Settings to use AI resume extraction.",
+              );
+            }}
             onDataImported={async (data) => {
               // Explicitly clear arrays to ensure fields not in import are emptied
               const emptySections = {
@@ -703,6 +732,48 @@ function BuilderContent() {
           <ThemeToggle />
         </div>
       </nav>
+      {isSettingsOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={closeSettingsModal}
+          />
+          <div className="relative w-full max-w-lg border-2 border-black/10 dark:border-white/10 bg-white dark:bg-[#050505] p-6 shadow-2xl">
+            <div className="flex items-start justify-between gap-4">
+              <h2 className="font-display text-xl font-black uppercase tracking-tight">
+                AI Extraction Settings
+              </h2>
+              <button
+                onClick={closeSettingsModal}
+                className="text-xs font-bold uppercase tracking-wider text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+              >
+                Close
+              </button>
+            </div>
+            <div className="mt-4">
+              <ResumeExtractionSettingsPanel
+                initialSettings={getResumeExtractionSettings()}
+                description={
+                  settingsPromptMessage ||
+                  "Use your own API key for AI resume extraction."
+                }
+                showClearButton={false}
+                onSaveSuccess={() => {
+                  if (resumeImportPending) {
+                    setResumeImportPending(false);
+                    closeSettingsModal();
+                    window.setTimeout(
+                      () => importResumeRef.current?.openFilePicker(),
+                      0,
+                    );
+                  }
+                }}
+                onClose={closeSettingsModal}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Sidebars + Preview Row */}
       <div className="flex flex-1 overflow-hidden print:block print:overflow-visible">

@@ -18,6 +18,7 @@ import {
   X,
   Copy,
   Loader2,
+  Settings,
 } from "lucide-react";
 import { ThemeToggle } from "../components/ThemeToggle";
 
@@ -86,7 +87,16 @@ export default function DashboardPage() {
               InfiniteResume
             </span>
           </Link>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <Link
+              href="/settings"
+              className="flex items-center gap-2 px-4 py-2 border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white rounded-none text-xs font-bold uppercase tracking-wider transition-all"
+            >
+              <Settings className="w-3.5 h-3.5" />
+              Settings
+            </Link>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 

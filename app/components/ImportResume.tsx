@@ -1,19 +1,50 @@
 "use client";
 
 import React, { useState } from "react";
-import { Upload, Loader2, FileUp, AlertCircle } from "lucide-react";
-import { parseResumeAction } from "../actions/parse-resume";
+import { Loader2, FileUp, AlertCircle } from "lucide-react";
 import { ResumeData } from "../types";
 import { cn } from "@/lib/utils";
+import { getResumeExtractionSettings } from "../utils/resume-extraction-settings";
+import { parseResumeInBrowser } from "../utils/client-resume-parser";
+import { Button } from "@/components/ui/button";
 
 interface ImportResumeProps {
   onDataImported: (data: Partial<ResumeData>) => void;
+  onRequireApiKey?: () => void;
   className?: string;
 }
 
-export function ImportResume({ onDataImported, className }: ImportResumeProps) {
+export interface ImportResumeHandle {
+  openFilePicker: () => void;
+}
+
+export const ImportResume = React.forwardRef<ImportResumeHandle, ImportResumeProps>(
+  ({ onDataImported, onRequireApiKey, className }, ref) => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const openPicker = () => {
+    document.getElementById("resume-upload")?.click();
+  };
+
+  React.useImperativeHandle(ref, () => ({
+    openFilePicker: openPicker,
+  }));
+
+  const handleOpenUpload = () => {
+    const settings = getResumeExtractionSettings();
+    const missingKey =
+      (settings.provider === "google" && !settings.googleApiKey) ||
+      (settings.provider === "openrouter" && !settings.openrouterApiKey);
+
+    if (missingKey) {
+      setError("Add your API key in Settings to use AI resume extraction.");
+      onRequireApiKey?.();
+      return;
+    }
+
+    openPicker();
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -28,10 +59,20 @@ export function ImportResume({ onDataImported, className }: ImportResumeProps) {
     setError(null);
 
     try {
+      const settings = getResumeExtractionSettings();
+      const missingKey =
+        (settings.provider === "google" && !settings.googleApiKey) ||
+        (settings.provider === "openrouter" && !settings.openrouterApiKey);
+
+      if (missingKey) {
+        setError("Add your API key in Settings to use AI resume extraction.");
+        onRequireApiKey?.();
+        return;
+      }
+
       const arrayBuffer = await file.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
-
-      const result = await parseResumeAction(uint8Array);
+      const result = await parseResumeInBrowser(uint8Array, settings);
 
       if (result.success && result.data) {
         onDataImported(result.data as any);
@@ -40,7 +81,15 @@ export function ImportResume({ onDataImported, className }: ImportResumeProps) {
       }
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Something went wrong during import");
+      const message =
+        err?.message || "Something went wrong during import";
+      if (/invalid api key|api key not valid|unauthorized|permission/i.test(message)) {
+        setError("Invalid API key. Update your key in Settings and try again.");
+      } else if (/quota|rate limit|429/i.test(message)) {
+        setError("API quota exceeded or rate-limited. Try again later.");
+      } else {
+        setError(message);
+      }
     } finally {
       setIsUploading(false);
       // Reset input
@@ -58,10 +107,13 @@ export function ImportResume({ onDataImported, className }: ImportResumeProps) {
         onChange={handleFileChange}
         disabled={isUploading}
       />
-      <button
-        onClick={() => document.getElementById("resume-upload")?.click()}
+      <Button
+        type="button"
+        onClick={handleOpenUpload}
         disabled={isUploading}
-        className="flex items-center gap-2 px-4 py-1.5 border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white rounded-none text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+        variant="outline"
+        size="xs"
+        className="border-2 border-black/10 dark:border-white/10 hover:border-accent text-black dark:text-white"
       >
         {isUploading ? (
           <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -69,7 +121,7 @@ export function ImportResume({ onDataImported, className }: ImportResumeProps) {
           <FileUp className="w-3.5 h-3.5" />
         )}
         {isUploading ? "AI Parsing..." : "Import PDF"}
-      </button>
+      </Button>
 
       {error && (
         <div className="absolute top-full left-0 mt-2 w-64 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-2 text-[10px] text-red-600 dark:text-red-400 flex items-start gap-2 z-50">
@@ -85,4 +137,6 @@ export function ImportResume({ onDataImported, className }: ImportResumeProps) {
       )}
     </div>
   );
-}
+});
+
+ImportResume.displayName = "ImportResume";
