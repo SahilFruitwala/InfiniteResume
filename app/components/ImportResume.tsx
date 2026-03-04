@@ -77,7 +77,10 @@ export const ImportResume = React.forwardRef<ImportResumeHandle, ImportResumePro
       if (result.success && result.data) {
         onDataImported(result.data as any);
       } else {
-        throw new Error(result.error || "Failed to parse resume content");
+        const errorMessage = result.success
+          ? "Failed to parse resume content"
+          : result.error;
+        throw new Error(errorMessage || "Failed to parse resume content");
       }
     } catch (err: any) {
       console.error(err);

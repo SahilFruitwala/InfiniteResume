@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import { Bold, Italic, Underline, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { sanitizeRichText } from "@/app/utils/security";
 
 interface RichTextEditorProps {
   value: string;
@@ -17,8 +18,9 @@ export const RichTextEditor = ({
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (editorRef.current && editorRef.current.innerHTML !== value) {
-      editorRef.current.innerHTML = value;
+    const sanitizedValue = sanitizeRichText(value);
+    if (editorRef.current && editorRef.current.innerHTML !== sanitizedValue) {
+      editorRef.current.innerHTML = sanitizedValue;
     }
   }, [value]);
 
@@ -28,7 +30,7 @@ export const RichTextEditor = ({
         clearTimeout(timeoutRef.current);
       }
       timeoutRef.current = setTimeout(() => {
-        onChange(e.currentTarget.innerHTML);
+        onChange(sanitizeRichText(e.currentTarget.innerHTML));
       }, 500);
     },
     [onChange],
@@ -47,7 +49,7 @@ export const RichTextEditor = ({
     document.execCommand(command, false, undefined);
     editorRef.current?.focus();
     if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
+      onChange(sanitizeRichText(editorRef.current.innerHTML));
     }
   };
 
@@ -113,7 +115,7 @@ export const RichTextEditor = ({
         className="p-3 min-h-[80px] max-h-[300px] overflow-y-auto text-sm outline-none dark:text-white [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 whitespace-pre-wrap"
         contentEditable
         onInput={handleInput}
-        onBlur={(e) => onChange(e.currentTarget.innerHTML)}
+        onBlur={(e) => onChange(sanitizeRichText(e.currentTarget.innerHTML))}
         data-placeholder={placeholder}
       />
     </div>

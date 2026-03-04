@@ -1,5 +1,6 @@
 import { resumeSchema } from "@/app/lib/schemas";
 import { ResumeExtractionSettings } from "./resume-extraction-settings";
+import { sanitizeRichText } from "./security";
 
 type ParseSuccess = {
   success: true;
@@ -34,6 +35,53 @@ function extractJson(text: string): string {
     return trimmed.replace(/^```(?:json)?\s*/i, "").replace(/```$/, "").trim();
   }
   return trimmed;
+}
+
+function sanitizeParsedResumePayload(payload: any): any {
+  if (!payload || typeof payload !== "object") {
+    return payload;
+  }
+
+  if (payload.personalInfo && typeof payload.personalInfo === "object") {
+    payload.personalInfo.summary = sanitizeRichText(payload.personalInfo.summary);
+  }
+
+  if (Array.isArray(payload.experience)) {
+    payload.experience = payload.experience.map((item: any) => ({
+      ...item,
+      description: sanitizeRichText(item?.description),
+    }));
+  }
+
+  if (Array.isArray(payload.projects)) {
+    payload.projects = payload.projects.map((item: any) => ({
+      ...item,
+      description: sanitizeRichText(item?.description),
+    }));
+  }
+
+  if (Array.isArray(payload.awards)) {
+    payload.awards = payload.awards.map((item: any) => ({
+      ...item,
+      description: sanitizeRichText(item?.description),
+    }));
+  }
+
+  if (Array.isArray(payload.volunteerWork)) {
+    payload.volunteerWork = payload.volunteerWork.map((item: any) => ({
+      ...item,
+      description: sanitizeRichText(item?.description),
+    }));
+  }
+
+  if (Array.isArray(payload.skills)) {
+    payload.skills = payload.skills.map((item: any) => ({
+      ...item,
+      skills: sanitizeRichText(item?.skills),
+    }));
+  }
+
+  return payload;
 }
 
 export async function parseResumeInBrowser(
@@ -72,10 +120,12 @@ Rules:
     const base64Pdf = toBase64(pdfBytes);
     const response = isGoogle
       ? await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(activeApiKey)}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
           {
             method: "POST",
+            referrerPolicy: "no-referrer",
             headers: {
+              "x-goog-api-key": activeApiKey,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -98,6 +148,7 @@ Rules:
         )
       : await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
+          referrerPolicy: "no-referrer",
           headers: {
             Authorization: `Bearer ${activeApiKey}`,
             "Content-Type": "application/json",
@@ -151,7 +202,7 @@ Rules:
       };
     }
 
-    const parsedJson = JSON.parse(extractJson(text));
+    const parsedJson = sanitizeParsedResumePayload(JSON.parse(extractJson(text)));
     const validated = resumeSchema.safeParse(parsedJson);
     if (!validated.success) {
       return {

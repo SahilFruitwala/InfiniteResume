@@ -1,6 +1,8 @@
 import React, { memo } from "react";
 import { ResumeData } from "../../types";
 import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
+import { sanitizeRichText } from "@/app/utils/security";
+import { SafeExternalLink } from "./SafeExternalLink";
 
 export const MinimalTemplate = memo(
   ({ data, isDark }: { data: ResumeData; isDark?: boolean }) => {
@@ -35,7 +37,7 @@ export const MinimalTemplate = memo(
             <section key="summary" style={{ marginBottom: `${sectionGap}px` }}>
               <div
                 className="leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
+                dangerouslySetInnerHTML={{ __html: sanitizeRichText(data.personalInfo.summary) }}
               />
             </section>
           ) : null;
@@ -86,7 +88,7 @@ export const MinimalTemplate = memo(
                     </div>
                     <div
                       className={`whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: exp.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(exp.description) }}
                     />
                   </div>
                 ))}
@@ -175,19 +177,20 @@ export const MinimalTemplate = memo(
                         {proj.name}
                       </h3>
                       {proj.link && (
-                        <a
-                          href={proj.link}
+                        <SafeExternalLink
+                          url={proj.link}
+                          display="raw"
                           target="_blank"
                           rel="noreferrer"
                           className="text-[0.9em] text-blue-600 hover:underline"
                         >
                           {proj.link}
-                        </a>
+                        </SafeExternalLink>
                       )}
                     </div>
                     <div
                       className={`whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: proj.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(proj.description) }}
                     />
                   </div>
                 ))}
@@ -241,7 +244,7 @@ export const MinimalTemplate = memo(
                     </div>
                     <div
                       className={`whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: vol.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(vol.description) }}
                     />
                   </div>
                 ))}
@@ -292,7 +295,7 @@ export const MinimalTemplate = memo(
                     </div>
                     <div
                       className={`whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: award.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(award.description) }}
                     />
                   </div>
                 ))}
@@ -393,7 +396,7 @@ export const MinimalTemplate = memo(
                     </h3>
                     <div
                       className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-700"}`}
-                      dangerouslySetInnerHTML={{ __html: category.skills }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(category.skills) }}
                     />
                   </div>
                 ))}
@@ -458,9 +461,7 @@ export const MinimalTemplate = memo(
                         {item.description && (
                           <div
                             className={`whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                            dangerouslySetInnerHTML={{
-                              __html: item.description,
-                            }}
+                            dangerouslySetInnerHTML={{ __html: sanitizeRichText(item.description) }}
                           />
                         )}
                       </div>
@@ -523,37 +524,24 @@ export const MinimalTemplate = memo(
               <span>{data.personalInfo.location}</span>
             )}
             {data.personalInfo.website && (
-              <a
-                href={
-                  data.personalInfo.website.startsWith("http")
-                    ? data.personalInfo.website
-                    : `https://${data.personalInfo.website}`
-                }
+              <SafeExternalLink
+                url={data.personalInfo.website}
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-blue-600 hover:underline"
-              >
-                {data.personalInfo.website
-                  .replace(/^https?:\/\//, "")
-                  .replace(/\/$/, "")}
-              </a>
+              />
             )}
             {data.socialLinks &&
               data.socialLinks.length > 0 &&
               data.socialLinks.map((link) => (
-                <a
+                <SafeExternalLink
                   key={link.id}
-                  href={
-                    link.url.startsWith("http")
-                      ? link.url
-                      : `https://${link.url}`
-                  }
+                  url={link.url}
+                  label={link.name}
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-blue-600 hover:underline"
-                >
-                  {link.name}
-                </a>
+                />
               ))}
           </div>
         </header>

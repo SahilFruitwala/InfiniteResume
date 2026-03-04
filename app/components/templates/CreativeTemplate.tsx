@@ -2,6 +2,8 @@ import React, { memo } from "react";
 import Image from "next/image";
 import { ResumeData } from "../../types";
 import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
+import { sanitizeRichText } from "@/app/utils/security";
+import { SafeExternalLink } from "./SafeExternalLink";
 
 export const CreativeTemplate = memo(
   ({ data, isDark }: { data: ResumeData; isDark?: boolean }) => {
@@ -46,7 +48,7 @@ export const CreativeTemplate = memo(
               </h2>
               <div
                 className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-700"}`}
-                dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
+                dangerouslySetInnerHTML={{ __html: sanitizeRichText(data.personalInfo.summary) }}
               />
             </section>
           ) : null;
@@ -107,7 +109,7 @@ export const CreativeTemplate = memo(
                     </div>
                     <div
                       className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: exp.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(exp.description) }}
                     />
                   </div>
                 ))}
@@ -213,21 +215,20 @@ export const CreativeTemplate = memo(
                         {proj.name}
                       </h3>
                       {proj.link && (
-                        <a
-                          href={proj.link}
+                        <SafeExternalLink
+                          url={proj.link}
+                          display="raw"
                           target="_blank"
                           rel="noreferrer"
                           className="text-[0.9em] font-bold underline mt-1 sm:mt-0"
                         >
-                          {proj.link
-                            .replace(/^https?:\/\//, "")
-                            .replace(/\/$/, "")}
-                        </a>
+                          {proj.link}
+                        </SafeExternalLink>
                       )}
                     </div>
                     <div
                       className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: proj.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(proj.description) }}
                     />
                   </div>
                 ))}
@@ -291,7 +292,7 @@ export const CreativeTemplate = memo(
                     </div>
                     <div
                       className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: vol.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(vol.description) }}
                     />
                   </div>
                 ))}
@@ -352,7 +353,7 @@ export const CreativeTemplate = memo(
                     </div>
                     <div
                       className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                      dangerouslySetInnerHTML={{ __html: award.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(award.description) }}
                     />
                   </div>
                 ))}
@@ -456,7 +457,7 @@ export const CreativeTemplate = memo(
                     </h3>
                     <div
                       className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-700"}`}
-                      dangerouslySetInnerHTML={{ __html: category.skills }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(category.skills) }}
                     />
                   </div>
                 ))}
@@ -531,9 +532,7 @@ export const CreativeTemplate = memo(
                         {item.description && (
                           <div
                             className={`leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)] ${isDark ? "text-slate-300" : "text-gray-600"}`}
-                            dangerouslySetInnerHTML={{
-                              __html: item.description,
-                            }}
+                            dangerouslySetInnerHTML={{ __html: sanitizeRichText(item.description) }}
                           />
                         )}
                       </div>
@@ -649,20 +648,12 @@ export const CreativeTemplate = memo(
                       className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: accentColor }}
                     ></span>
-                    <a
-                      href={
-                        data.personalInfo.website.startsWith("http")
-                          ? data.personalInfo.website
-                          : `https://${data.personalInfo.website}`
-                      }
+                    <SafeExternalLink
+                      url={data.personalInfo.website}
                       target="_blank"
                       rel="noreferrer"
                       className="hover:underline"
-                    >
-                      {data.personalInfo.website
-                        .replace(/^https?:\/\//, "")
-                        .replace(/\/$/, "")}
-                    </a>
+                    />
                   </div>
                 )}
                 {data.socialLinks &&
@@ -673,18 +664,13 @@ export const CreativeTemplate = memo(
                         className="w-2 h-2 rounded-full"
                         style={{ backgroundColor: accentColor }}
                       ></span>
-                      <a
-                        href={
-                          link.url.startsWith("http")
-                            ? link.url
-                            : `https://${link.url}`
-                        }
+                      <SafeExternalLink
+                        url={link.url}
+                        label={link.name}
                         target="_blank"
                         rel="noreferrer"
                         className="hover:underline"
-                      >
-                        {link.name}
-                      </a>
+                      />
                     </div>
                   ))}
               </div>

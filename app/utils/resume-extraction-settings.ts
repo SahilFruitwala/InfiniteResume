@@ -4,7 +4,7 @@ export interface ResumeExtractionSettings {
   openrouterApiKey: string;
 }
 
-const STORAGE_KEY = "resumeExtractionSettings:v1";
+const PROVIDER_STORAGE_KEY = "resumeExtractionProvider:v1";
 
 const DEFAULT_SETTINGS: ResumeExtractionSettings = {
   provider: "google",
@@ -12,31 +12,26 @@ const DEFAULT_SETTINGS: ResumeExtractionSettings = {
   openrouterApiKey: "",
 };
 
+let inMemorySettings: ResumeExtractionSettings = { ...DEFAULT_SETTINGS };
+
 export function getResumeExtractionSettings(): ResumeExtractionSettings {
   if (typeof window === "undefined") {
-    return DEFAULT_SETTINGS;
+    return inMemorySettings;
   }
 
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_SETTINGS;
-
-    const parsed = JSON.parse(raw) as Partial<ResumeExtractionSettings>;
+    const rawProvider = window.localStorage.getItem(PROVIDER_STORAGE_KEY);
+    const provider: ResumeExtractionSettings["provider"] =
+      rawProvider === "openrouter" || rawProvider === "google"
+        ? rawProvider
+        : "google";
 
     return {
-      provider:
-        parsed.provider === "openrouter" || parsed.provider === "google"
-          ? parsed.provider
-          : "google",
-      googleApiKey:
-        typeof parsed.googleApiKey === "string" ? parsed.googleApiKey.trim() : "",
-      openrouterApiKey:
-        typeof parsed.openrouterApiKey === "string"
-          ? parsed.openrouterApiKey.trim()
-          : "",
+      ...inMemorySettings,
+      provider,
     };
   } catch {
-    return DEFAULT_SETTINGS;
+    return inMemorySettings;
   }
 }
 
@@ -48,17 +43,20 @@ export function setResumeExtractionSettings(
   }
 
   try {
-    window.localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        provider: next.provider,
-        googleApiKey: next.googleApiKey.trim(),
-        openrouterApiKey: next.openrouterApiKey.trim(),
-      }),
-    );
+    inMemorySettings = {
+      provider: next.provider,
+      googleApiKey: next.googleApiKey.trim(),
+      openrouterApiKey: next.openrouterApiKey.trim(),
+    };
+    window.localStorage.setItem(PROVIDER_STORAGE_KEY, next.provider);
     return true;
   } catch {
-    return false;
+    inMemorySettings = {
+      provider: next.provider,
+      googleApiKey: next.googleApiKey.trim(),
+      openrouterApiKey: next.openrouterApiKey.trim(),
+    };
+    return true;
   }
 }
 
@@ -68,9 +66,11 @@ export function clearResumeExtractionSettings(): boolean {
   }
 
   try {
-    window.localStorage.removeItem(STORAGE_KEY);
+    inMemorySettings = { ...DEFAULT_SETTINGS };
+    window.localStorage.removeItem(PROVIDER_STORAGE_KEY);
     return true;
   } catch {
-    return false;
+    inMemorySettings = { ...DEFAULT_SETTINGS };
+    return true;
   }
 }

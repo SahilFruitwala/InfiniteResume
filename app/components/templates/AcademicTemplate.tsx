@@ -2,6 +2,8 @@ import React, { memo } from "react";
 import Image from "next/image";
 import { ResumeData } from "../../types";
 import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
+import { sanitizeRichText } from "@/app/utils/security";
+import { SafeExternalLink } from "./SafeExternalLink";
 
 export const AcademicTemplate = memo(
   ({ data, isDark }: { data: ResumeData; isDark?: boolean }) => {
@@ -49,7 +51,7 @@ export const AcademicTemplate = memo(
                 style={{
                   fontFamily: typography?.fontFamily || "var(--font-lora)",
                 }}
-                dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
+                dangerouslySetInnerHTML={{ __html: sanitizeRichText(data.personalInfo.summary) }}
               />
             </section>
           ) : null;
@@ -110,7 +112,7 @@ export const AcademicTemplate = memo(
                         fontFamily:
                           typography?.fontFamily || "var(--font-lora)",
                       }}
-                      dangerouslySetInnerHTML={{ __html: exp.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(exp.description) }}
                     />
                   </div>
                 ))}
@@ -207,17 +209,16 @@ export const AcademicTemplate = memo(
                         {proj.name}
                       </h3>
                       {proj.link && (
-                        <a
-                          href={proj.link}
+                        <SafeExternalLink
+                          url={proj.link}
+                          display="raw"
                           target="_blank"
                           rel="noreferrer"
                           style={{ color: accentColor }}
                           className="text-[0.9em] hover:underline ml-4 whitespace-nowrap"
                         >
-                          {proj.link
-                            .replace(/^https?:\/\//, "")
-                            .replace(/\/$/, "")}
-                        </a>
+                          {proj.link}
+                        </SafeExternalLink>
                       )}
                     </div>
                     <div
@@ -226,7 +227,7 @@ export const AcademicTemplate = memo(
                         fontFamily:
                           typography?.fontFamily || "var(--font-lora)",
                       }}
-                      dangerouslySetInnerHTML={{ __html: proj.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(proj.description) }}
                     />
                   </div>
                 ))}
@@ -290,7 +291,7 @@ export const AcademicTemplate = memo(
                         fontFamily:
                           typography?.fontFamily || "var(--font-lora)",
                       }}
-                      dangerouslySetInnerHTML={{ __html: vol.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(vol.description) }}
                     />
                   </div>
                 ))}
@@ -351,7 +352,7 @@ export const AcademicTemplate = memo(
                         fontFamily:
                           typography?.fontFamily || "var(--font-lora)",
                       }}
-                      dangerouslySetInnerHTML={{ __html: award.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(award.description) }}
                     />
                   </div>
                 ))}
@@ -453,7 +454,7 @@ export const AcademicTemplate = memo(
                         fontFamily:
                           typography?.fontFamily || "var(--font-lora)",
                       }}
-                      dangerouslySetInnerHTML={{ __html: category.skills }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(category.skills) }}
                     />
                   </div>
                 ))}
@@ -528,9 +529,7 @@ export const AcademicTemplate = memo(
                               fontFamily:
                                 typography?.fontFamily || "var(--font-lora)",
                             }}
-                            dangerouslySetInnerHTML={{
-                              __html: item.description,
-                            }}
+                            dangerouslySetInnerHTML={{ __html: sanitizeRichText(item.description) }}
                           />
                         )}
                       </div>
@@ -608,21 +607,13 @@ export const AcademicTemplate = memo(
             {data.personalInfo.website && (
               <span>
                 |{" "}
-                <a
-                  href={
-                    data.personalInfo.website.startsWith("http")
-                      ? data.personalInfo.website
-                      : `https://${data.personalInfo.website}`
-                  }
+                <SafeExternalLink
+                  url={data.personalInfo.website}
                   target="_blank"
                   rel="noreferrer"
                   style={{ color: accentColor }}
                   className="hover:underline"
-                >
-                  {data.personalInfo.website
-                    .replace(/^https?:\/\//, "")
-                    .replace(/\/$/, "")}
-                </a>
+                />
               </span>
             )}
             {data.socialLinks &&
@@ -630,19 +621,14 @@ export const AcademicTemplate = memo(
               data.socialLinks.map((link) => (
                 <span key={link.id}>
                   |{" "}
-                  <a
-                    href={
-                      link.url.startsWith("http")
-                        ? link.url
-                        : `https://${link.url}`
-                    }
+                  <SafeExternalLink
+                    url={link.url}
+                    label={link.name}
                     target="_blank"
                     rel="noreferrer"
                     style={{ color: accentColor }}
                     className="hover:underline"
-                  >
-                    {link.name}
-                  </a>
+                  />
                 </span>
               ))}
           </div>

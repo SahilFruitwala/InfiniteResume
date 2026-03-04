@@ -47,8 +47,8 @@ export function ResumeExtractionSettingsPanel({
     const saved = setResumeExtractionSettings(settings);
     setMessage(
       saved
-        ? "API key saved locally."
-        : "Unable to access local storage in this browser.",
+        ? "Settings saved for this tab session."
+        : "Unable to save settings in this browser.",
     );
     if (saved) {
       onSaveSuccess?.();
@@ -63,9 +63,9 @@ export function ResumeExtractionSettingsPanel({
         googleApiKey: "",
         openrouterApiKey: "",
       });
-      setMessage("API key cleared from local storage.");
+      setMessage("API keys cleared.");
     } else {
-      setMessage("Unable to access local storage in this browser.");
+      setMessage("Unable to clear settings in this browser.");
     }
   };
 
@@ -166,9 +166,8 @@ export function ResumeExtractionSettingsPanel({
 
       <div className="mt-4 space-y-1 text-[10px] font-mono uppercase tracking-wider text-black/60 dark:text-white/60">
         <p>Selected provider: {providerLabel}.</p>
-        <p>Stored in your browser local storage only.</p>
-        <p>Your key is stored only in this browser&rsquo;s local storage and is never saved to our server.</p>
-        <p>Not saved to our servers.</p>
+        <p>API keys are kept in memory for this tab only.</p>
+        <p>Keys are never persisted and never saved to our servers.</p>
       </div>
 
       {message && (

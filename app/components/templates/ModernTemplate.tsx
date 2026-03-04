@@ -2,6 +2,8 @@ import React, { memo } from "react";
 import Image from "next/image";
 import { ResumeData } from "../../types";
 import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
+import { sanitizeRichText } from "@/app/utils/security";
+import { SafeExternalLink } from "./SafeExternalLink";
 
 export const ModernTemplate = memo(
   ({ data, isDark }: { data: ResumeData; isDark?: boolean }) => {
@@ -146,7 +148,7 @@ export const ModernTemplate = memo(
                     </h3>
                     <div
                       className="text-slate-300 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                      dangerouslySetInnerHTML={{ __html: category.skills }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(category.skills) }}
                     />
                   </div>
                 ))}
@@ -234,7 +236,7 @@ export const ModernTemplate = memo(
               </h2>
               <div
                 className="leading-relaxed text-slate-600 whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                dangerouslySetInnerHTML={{ __html: data.personalInfo.summary }}
+                dangerouslySetInnerHTML={{ __html: sanitizeRichText(data.personalInfo.summary) }}
               />
             </section>
           ) : null;
@@ -293,7 +295,7 @@ export const ModernTemplate = memo(
                     </div>
                     <div
                       className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                      dangerouslySetInnerHTML={{ __html: exp.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(exp.description) }}
                     />
                   </div>
                 ))}
@@ -339,19 +341,20 @@ export const ModernTemplate = memo(
                         {proj.name}
                       </h3>
                       {proj.link && (
-                        <a
-                          href={proj.link}
+                        <SafeExternalLink
+                          url={proj.link}
+                          display="raw"
                           target="_blank"
                           rel="noreferrer"
                           className="text-[0.85em] font-medium hover:underline"
                         >
                           {proj.link}
-                        </a>
+                        </SafeExternalLink>
                       )}
                     </div>
                     <div
                       className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                      dangerouslySetInnerHTML={{ __html: proj.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(proj.description) }}
                     />
                   </div>
                 ))}
@@ -413,7 +416,7 @@ export const ModernTemplate = memo(
                     </div>
                     <div
                       className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                      dangerouslySetInnerHTML={{ __html: vol.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(vol.description) }}
                     />
                   </div>
                 ))}
@@ -472,7 +475,7 @@ export const ModernTemplate = memo(
                     </div>
                     <div
                       className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                      dangerouslySetInnerHTML={{ __html: award.description }}
+                      dangerouslySetInnerHTML={{ __html: sanitizeRichText(award.description) }}
                     />
                   </div>
                 ))}
@@ -545,9 +548,7 @@ export const ModernTemplate = memo(
                         {item.description && (
                           <div
                             className="text-slate-600 leading-relaxed whitespace-pre-line [&_b]:font-bold [&_strong]:font-bold [&_i]:italic [&_em]:italic [&_u]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-[var(--bullet-gap)] [&_ul]:my-[var(--list-margin)]"
-                            dangerouslySetInnerHTML={{
-                              __html: item.description,
-                            }}
+                            dangerouslySetInnerHTML={{ __html: sanitizeRichText(item.description) }}
                           />
                         )}
                       </div>
@@ -646,20 +647,12 @@ export const ModernTemplate = memo(
                   >
                     Website
                   </span>
-                  <a
-                    href={
-                      data.personalInfo.website.startsWith("http")
-                        ? data.personalInfo.website
-                        : `https://${data.personalInfo.website}`
-                    }
+                  <SafeExternalLink
+                    url={data.personalInfo.website}
                     target="_blank"
                     rel="noreferrer"
                     className="hover:text-white hover:underline break-all"
-                  >
-                    {data.personalInfo.website
-                      .replace(/^https?:\/\//, "")
-                      .replace(/\/$/, "")}
-                  </a>
+                  />
                 </div>
               )}
               {data.socialLinks &&
@@ -671,18 +664,13 @@ export const ModernTemplate = memo(
                     >
                       {link.name}
                     </span>
-                    <a
-                      href={
-                        link.url.startsWith("http")
-                          ? link.url
-                          : `https://${link.url}`
-                      }
+                    <SafeExternalLink
+                      url={link.url}
+                      display="formatted"
                       target="_blank"
                       rel="noreferrer"
                       className="hover:text-white hover:underline break-all"
-                    >
-                      {link.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                    </a>
+                    />
                   </div>
                 ))}
             </div>
