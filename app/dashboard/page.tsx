@@ -2,8 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { RedirectToSignIn, SignOutButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useQuery, useMutation } from "convex/react";
+import {
+  Authenticated,
+  AuthLoading,
+  Unauthenticated,
+  useMutation,
+  useQuery,
+} from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { motion, AnimatePresence } from "motion/react";
@@ -33,6 +40,39 @@ function formatDate(timestamp: number) {
 }
 
 export default function DashboardPage() {
+  return (
+    <>
+      <AuthLoading>
+        <DashboardLoading />
+      </AuthLoading>
+      <Authenticated>
+        <DashboardContent />
+      </Authenticated>
+      <Unauthenticated>
+        <RedirectToSignIn redirectUrl="/dashboard" />
+      </Unauthenticated>
+    </>
+  );
+}
+
+function DashboardLoading() {
+  return (
+    <div className="min-h-screen bg-white dark:bg-[#050505] text-black dark:text-white transition-colors">
+      <main className="max-w-6xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-24">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-64 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 animate-pulse"
+            />
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function DashboardContent() {
   const router = useRouter();
   const resumes = useQuery(api.resumes.list);
   const removeResume = useMutation(api.resumes.remove);
@@ -95,6 +135,14 @@ export default function DashboardPage() {
               <Settings className="w-3.5 h-3.5" />
               Settings
             </Link>
+            <SignOutButton>
+              <button
+                type="button"
+                className="px-4 py-2 border-2 border-black/10 dark:border-white/10 hover:border-red-500 hover:text-red-600 dark:hover:text-red-400 text-black dark:text-white rounded-none text-xs font-bold uppercase tracking-wider transition-all"
+              >
+                Log Out
+              </button>
+            </SignOutButton>
             <ThemeToggle />
           </div>
         </div>

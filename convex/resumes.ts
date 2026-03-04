@@ -1,33 +1,82 @@
 import { v } from "convex/values";
-import { mutation, query, internalMutation } from "./_generated/server";
+import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
+import type { Doc, Id } from "./_generated/dataModel";
 
-// --- Dummy user bootstrap ---
-// Creates a dummy user if one doesn't exist yet.
-// Called automatically on first resume save.
-const DUMMY_CLERK_ID = "dummy_user_1";
+type ReadCtx = QueryCtx | MutationCtx;
 
-export const ensureDummyUser = mutation({
-  args: {},
-  handler: async (ctx) => {
-    const existing = await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", DUMMY_CLERK_ID))
-      .first();
+type Identity = NonNullable<Awaited<ReturnType<QueryCtx["auth"]["getUserIdentity"]>>>;
 
-    if (existing) return existing._id;
+async function requireIdentity(ctx: ReadCtx): Promise<Identity> {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity) {
+    throw new Error("Not authenticated");
+  }
+  return identity;
+}
 
-    const id = await ctx.db.insert("users", {
-      clerkId: DUMMY_CLERK_ID,
-      email: "demo@infiniteresume.app",
-      name: "Demo User",
-      plan: "free",
-      createdAt: Date.now(),
-    });
-    return id;
-  },
-});
+async function findUserByClerkId(
+  ctx: ReadCtx,
+  clerkId: string,
+): Promise<Doc<"users"> | null> {
+  return await ctx.db
+    .query("users")
+    .withIndex("by_clerk_id", (q) => q.eq("clerkId", clerkId))
+    .first();
+}
 
-// --- Resume CRUD ---
+async function requireUserForMutation(ctx: MutationCtx): Promise<Doc<"users">> {
+  const identity = await requireIdentity(ctx);
+  const clerkId = identity.subject;
+
+  const existingUser = await findUserByClerkId(ctx, clerkId);
+  if (existingUser) {
+    return existingUser;
+  }
+
+  const fullName =
+    identity.name ||
+    [identity.givenName, identity.familyName].filter(Boolean).join(" ") ||
+    undefined;
+
+  const userId = await ctx.db.insert("users", {
+    clerkId,
+    email: identity.email ?? "",
+    name: fullName,
+    avatarUrl: identity.pictureUrl,
+    plan: "free",
+    createdAt: Date.now(),
+  });
+
+  const createdUser = await ctx.db.get(userId);
+  if (!createdUser) {
+    throw new Error("Failed to create user");
+  }
+
+  return createdUser;
+}
+
+async function findUserForQuery(ctx: QueryCtx): Promise<Doc<"users"> | null> {
+  const identity = await requireIdentity(ctx);
+  return await findUserByClerkId(ctx, identity.subject);
+}
+
+async function getOwnedResume(
+  ctx: ReadCtx,
+  resumeId: Id<"resumes">,
+  userId: Id<"users">,
+): Promise<Doc<"resumes"> | null> {
+  const resume = await ctx.db.get(resumeId);
+
+  if (!resume) {
+    return null;
+  }
+
+  if (resume.userId !== userId) {
+    throw new Error("Not authorized");
+  }
+
+  return resume;
+}
 
 export const save = mutation({
   args: {
@@ -38,57 +87,42 @@ export const save = mutation({
   },
   handler: async (ctx, args) => {
     const now = Date.now();
-
-    // Get or create dummy user
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", DUMMY_CLERK_ID))
-      .first();
-
-    let userId = user?._id;
-
-    if (!userId) {
-      userId = await ctx.db.insert("users", {
-        clerkId: DUMMY_CLERK_ID,
-        email: "demo@infiniteresume.app",
-        name: "Demo User",
-        plan: "free",
-        createdAt: now,
-      });
-    }
+    const user = await requireUserForMutation(ctx);
 
     if (args.id) {
+      const existingResume = await getOwnedResume(ctx, args.id, user._id);
+      if (!existingResume) {
+        throw new Error("Not authorized");
+      }
+
       await ctx.db.patch(args.id, {
         title: args.title,
         template: args.template,
         content: args.content,
         updatedAt: now,
       });
+
       return args.id;
-    } else {
-      const id = await ctx.db.insert("resumes", {
-        userId,
-        title: args.title,
-        template: args.template,
-        content: args.content,
-        createdAt: now,
-        updatedAt: now,
-      });
-      return id;
     }
+
+    return await ctx.db.insert("resumes", {
+      userId: user._id,
+      title: args.title,
+      template: args.template,
+      content: args.content,
+      createdAt: now,
+      updatedAt: now,
+    });
   },
 });
 
 export const list = query({
   args: {},
   handler: async (ctx) => {
-    // For now, list all resumes for dummy user
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", DUMMY_CLERK_ID))
-      .first();
-
-    if (!user) return [];
+    const user = await findUserForQuery(ctx);
+    if (!user) {
+      return [];
+    }
 
     return await ctx.db
       .query("resumes")
@@ -101,13 +135,25 @@ export const list = query({
 export const get = query({
   args: { id: v.id("resumes") },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.id);
+    const user = await findUserForQuery(ctx);
+    if (!user) {
+      return null;
+    }
+
+    return await getOwnedResume(ctx, args.id, user._id);
   },
 });
 
 export const remove = mutation({
   args: { id: v.id("resumes") },
   handler: async (ctx, args) => {
+    const user = await requireUserForMutation(ctx);
+    const resume = await getOwnedResume(ctx, args.id, user._id);
+
+    if (!resume) {
+      throw new Error("Not authorized");
+    }
+
     await ctx.db.delete(args.id);
   },
 });
@@ -118,6 +164,13 @@ export const rename = mutation({
     title: v.string(),
   },
   handler: async (ctx, args) => {
+    const user = await requireUserForMutation(ctx);
+    const resume = await getOwnedResume(ctx, args.id, user._id);
+
+    if (!resume) {
+      throw new Error("Not authorized");
+    }
+
     await ctx.db.patch(args.id, {
       title: args.title,
       updatedAt: Date.now(),
@@ -128,19 +181,21 @@ export const rename = mutation({
 export const duplicate = mutation({
   args: { id: v.id("resumes") },
   handler: async (ctx, args) => {
-    const resume = await ctx.db.get(args.id);
-    if (!resume) throw new Error("Resume not found");
+    const user = await requireUserForMutation(ctx);
+    const resume = await getOwnedResume(ctx, args.id, user._id);
+
+    if (!resume) {
+      throw new Error("Not authorized");
+    }
 
     const now = Date.now();
-    const newId = await ctx.db.insert("resumes", {
-      userId: resume.userId,
+    return await ctx.db.insert("resumes", {
+      userId: user._id,
       title: `Copy of ${resume.title}`,
       template: resume.template,
       content: resume.content,
       createdAt: now,
       updatedAt: now,
     });
-
-    return newId;
   },
 });

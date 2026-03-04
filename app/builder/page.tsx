@@ -10,8 +10,15 @@ import React, {
   useMemo,
 } from "react";
 import Link from "next/link";
+import { RedirectToSignIn } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useMutation, useQuery } from "convex/react";
+import {
+  Authenticated,
+  AuthLoading,
+  Unauthenticated,
+  useMutation,
+  useQuery,
+} from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import {
@@ -203,30 +210,42 @@ import { motion, AnimatePresence } from "motion/react";
 import { Resizer } from "../components/Resizer";
 import { cn } from "@/lib/utils";
 
+function BuilderLoadingScreen() {
+  return (
+    <div className="flex h-screen w-full bg-white dark:bg-[#050505] justify-center items-center text-black dark:text-white transition-colors">
+      <div className="flex flex-col items-center gap-6">
+        <div className="relative w-16 h-16">
+          <div className="absolute inset-0 border-4 border-accent/20 rounded-none"></div>
+          <div className="absolute inset-0 border-4 border-accent border-t-transparent animate-spin rounded-none"></div>
+        </div>
+        <div className="text-center">
+          <p className="font-display text-2xl font-black uppercase tracking-tighter animate-pulse">
+            Infinite<span className="text-accent">Resume</span>
+          </p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40 mt-2">
+            Initializing Engine...
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex h-screen w-full bg-white dark:bg-[#050505] justify-center items-center text-black dark:text-white transition-colors">
-          <div className="flex flex-col items-center gap-6">
-            <div className="relative w-16 h-16">
-              <div className="absolute inset-0 border-4 border-accent/20 rounded-none"></div>
-              <div className="absolute inset-0 border-4 border-accent border-t-transparent animate-spin rounded-none"></div>
-            </div>
-            <div className="text-center">
-              <p className="font-display text-2xl font-black uppercase tracking-tighter animate-pulse">
-                Infinite<span className="text-accent">Resume</span>
-              </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40 mt-2">
-                Initializing Engine...
-              </p>
-            </div>
-          </div>
-        </div>
-      }
-    >
-      <BuilderContent />
-    </Suspense>
+    <>
+      <AuthLoading>
+        <BuilderLoadingScreen />
+      </AuthLoading>
+      <Authenticated>
+        <Suspense fallback={<BuilderLoadingScreen />}>
+          <BuilderContent />
+        </Suspense>
+      </Authenticated>
+      <Unauthenticated>
+        <RedirectToSignIn redirectUrl="/builder" />
+      </Unauthenticated>
+    </>
   );
 }
 
