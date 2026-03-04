@@ -77,7 +77,7 @@ export function CTA() {
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 text-sm font-bold uppercase tracking-widest text-black"
             >
-              You're on the list! We'll be in touch soon.
+              You&apos;re on the list! We&apos;ll be in touch soon.
             </motion.p>
           )}
         </motion.div>

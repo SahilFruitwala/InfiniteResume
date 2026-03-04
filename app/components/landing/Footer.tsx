@@ -1,31 +1,7 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FileText } from "lucide-react";
 
 export function Footer() {
-  const [year, setYear] = useState<number | null>(null);
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
-
-  const handleScroll = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    href: string,
-  ) => {
-    if (href.startsWith("#")) {
-      e.preventDefault();
-      const targetId = href.replace("#", "");
-      const elem = document.getElementById(targetId);
-      if (elem) {
-        elem.scrollIntoView({ behavior: "smooth" });
-        window.history.pushState(null, "", href);
-      }
-    }
-  };
-
   return (
     <footer className="bg-transparent text-black/60 dark:text-white/60 py-20 border-t border-black/10 dark:border-white/10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
@@ -52,7 +28,6 @@ export function Footer() {
             <li>
               <Link
                 href="#features"
-                onClick={(e) => handleScroll(e, "#features")}
                 className="hover:text-accent transition-colors"
               >
                 Features
@@ -61,7 +36,6 @@ export function Footer() {
             <li>
               <Link
                 href="#how-it-works"
-                onClick={(e) => handleScroll(e, "#how-it-works")}
                 className="hover:text-accent transition-colors"
               >
                 How it Works
@@ -70,7 +44,6 @@ export function Footer() {
             <li>
               <Link
                 href="#pricing"
-                onClick={(e) => handleScroll(e, "#pricing")}
                 className="hover:text-accent transition-colors"
               >
                 Pricing
@@ -130,7 +103,7 @@ export function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-black/10 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs font-mono uppercase tracking-widest">
-          © {year || "..."} InfiniteResume Inc. All rights reserved.
+          © InfiniteResume Inc. All rights reserved.
         </p>
         <div className="flex gap-4 text-xs font-mono uppercase tracking-widest">
           <Link href="/terms" className="hover:text-accent transition-colors">

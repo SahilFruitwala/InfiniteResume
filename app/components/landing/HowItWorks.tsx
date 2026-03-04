@@ -59,6 +59,7 @@ export function HowItWorks() {
 
             <Link
               href="/builder"
+              prefetch={false}
               className="group inline-flex items-center justify-center gap-3 bg-transparent border border-accent text-accent px-8 py-4 text-lg font-bold uppercase tracking-wider hover:bg-accent hover:text-black hover:scale-105 active:scale-95 transition-all duration-200 w-full sm:w-auto"
             >
               Start Building Now

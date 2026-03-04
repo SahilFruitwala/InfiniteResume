@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 
@@ -17,20 +17,19 @@ export function SaveDialog({
   onSave,
   defaultTitle,
 }: SaveDialogProps) {
-  const [title, setTitle] = useState(defaultTitle);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setTitle(defaultTitle);
       // Focus the input after animation
       setTimeout(() => inputRef.current?.select(), 100);
     }
-  }, [isOpen, defaultTitle]);
+  }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const finalTitle = title.trim() || defaultTitle;
+    const rawTitle = inputRef.current?.value ?? "";
+    const finalTitle = rawTitle.trim() || defaultTitle;
     onSave(finalTitle);
   };
 
@@ -76,10 +75,10 @@ export function SaveDialog({
                     Resume Name
                   </label>
                   <input
+                    key={defaultTitle}
                     ref={inputRef}
                     type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    defaultValue={defaultTitle}
                     placeholder={defaultTitle}
                     className="w-full px-4 py-3 bg-black/5 dark:bg-white/5 border-2 border-black/10 dark:border-white/10 focus:border-accent dark:focus:border-accent text-black dark:text-white font-medium outline-none transition-colors placeholder:text-black/30 dark:placeholder:text-white/30"
                   />

@@ -55,7 +55,6 @@ import {
 import { Accordion } from "@/components/ui/accordion";
 import { SidebarAccordionItem as AccordionItem } from "./shared/SidebarAccordionItem";
 import { Slider } from "@/components/ui/slider";
-import { allFontVariables } from "@/lib/fonts";
 
 interface RightSidebarProps {
   data: ResumeData;
@@ -545,36 +544,18 @@ export const RightSidebar = React.memo(
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select a font" />
                         </SelectTrigger>
-                        <SelectContent className={allFontVariables}>
+                        <SelectContent>
                           <SelectItem value="var(--font-inter)">
                             Inter (Sans-serif)
-                          </SelectItem>
-                          <SelectItem value="var(--font-roboto)">
-                            Roboto (Sans-serif)
-                          </SelectItem>
-                          <SelectItem value="var(--font-open-sans)">
-                            Open Sans (Sans-serif)
-                          </SelectItem>
-                          <SelectItem value="var(--font-merriweather)">
-                            Merriweather (Serif)
-                          </SelectItem>
-                          <SelectItem value="var(--font-playfair)">
-                            Playfair Display (Serif)
                           </SelectItem>
                           <SelectItem value="var(--font-lora)">
                             Lora (Serif)
                           </SelectItem>
-                          <SelectItem value="var(--font-montserrat)">
-                            Montserrat (Sans-serif)
-                          </SelectItem>
                           <SelectItem value="var(--font-poppins)">
                             Poppins (Sans-serif)
                           </SelectItem>
-                          <SelectItem value="var(--font-raleway)">
-                            Raleway (Sans-serif)
-                          </SelectItem>
-                          <SelectItem value="var(--font-lato)">
-                            Lato (Sans-serif)
+                          <SelectItem value="var(--font-system)">
+                            System UI (Sans-serif)
                           </SelectItem>
                         </SelectContent>
                       </Select>

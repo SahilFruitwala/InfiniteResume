@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight, CheckCircle2, FileCheck2, Zap } from "lucide-react";
+import { smoothScrollToId } from "./smooth-scroll";
 
 export function Hero() {
   const ref = useRef(null);
@@ -108,6 +109,7 @@ export function Hero() {
           >
             <Link
               href="/dashboard"
+              prefetch={false}
               className="group flex items-center justify-center gap-3 bg-accent text-black px-8 py-5 text-lg font-bold uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:scale-105 active:scale-95 transition-all duration-200 w-full sm:w-auto"
             >
               Analyze My Resume
@@ -117,10 +119,7 @@ export function Hero() {
               href="#demo"
               onClick={(e) => {
                 e.preventDefault();
-                document
-                  .getElementById("demo")
-                  ?.scrollIntoView({ behavior: "smooth" });
-                window.history.pushState(null, "", "#demo");
+                smoothScrollToId("demo");
               }}
               className="flex items-center justify-center gap-3 bg-transparent border border-black/20 dark:border-white/20 text-black dark:text-white px-8 py-5 text-lg font-bold uppercase tracking-wider hover:bg-black/5 dark:hover:bg-white/5 hover:border-black dark:hover:border-white hover:scale-105 active:scale-95 transition-all duration-200 w-full sm:w-auto"
             >

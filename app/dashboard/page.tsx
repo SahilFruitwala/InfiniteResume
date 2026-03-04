@@ -14,7 +14,6 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { motion, AnimatePresence } from "motion/react";
-import { useTheme } from "next-themes";
 import {
   FileText,
   Plus,
@@ -27,7 +26,8 @@ import {
   Loader2,
   Settings,
 } from "lucide-react";
-import { ThemeToggle } from "../components/ThemeToggle";
+import { ThemeToggle } from "@/app/components/ThemeToggle";
+import { AppProviders } from "@/app/components/AppProviders";
 
 function formatDate(timestamp: number) {
   return new Date(timestamp).toLocaleDateString("en-US", {
@@ -41,7 +41,7 @@ function formatDate(timestamp: number) {
 
 export default function DashboardPage() {
   return (
-    <>
+    <AppProviders>
       <AuthLoading>
         <DashboardLoading />
       </AuthLoading>
@@ -51,7 +51,7 @@ export default function DashboardPage() {
       <Unauthenticated>
         <RedirectToSignIn redirectUrl="/dashboard" />
       </Unauthenticated>
-    </>
+    </AppProviders>
   );
 }
 

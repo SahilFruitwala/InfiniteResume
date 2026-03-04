@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { FileText, Menu, X } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
+import { smoothScrollToId } from "./smooth-scroll";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,11 +71,7 @@ export function Navbar() {
 
       setTimeout(() => {
         const targetId = href.replace("#", "");
-        const elem = document.getElementById(targetId);
-        if (elem) {
-          elem.scrollIntoView({ behavior: "smooth" });
-          window.history.pushState(null, "", href);
-        }
+        smoothScrollToId(targetId);
       }, 100);
     }
   };
@@ -127,12 +124,14 @@ export function Navbar() {
             <ThemeToggle />
             <Link
               href="/dashboard"
+              prefetch={false}
               className="text-sm font-medium hover:text-accent transition-colors uppercase tracking-wide"
             >
               Log In
             </Link>
             <Link
               href="/dashboard"
+              prefetch={false}
               className="bg-accent text-black px-6 py-3 rounded-none font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black hover:scale-105 active:scale-95 transition-all duration-200"
             >
               Start Free
@@ -228,6 +227,7 @@ export function Navbar() {
             >
               <Link
                 href="/dashboard"
+                prefetch={false}
                 onClick={() => setIsOpen(false)}
                 className="w-full border border-black/20 dark:border-white/20 text-center py-4 font-bold uppercase tracking-wider hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-black dark:text-white"
               >
@@ -235,6 +235,7 @@ export function Navbar() {
               </Link>
               <Link
                 href="/dashboard"
+                prefetch={false}
                 onClick={() => setIsOpen(false)}
                 className="w-full bg-accent text-black text-center py-4 font-bold uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
               >

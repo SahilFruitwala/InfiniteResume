@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
-import { inter } from "@/lib/fonts";
+import { rootFontVariables } from "@/lib/fonts";
 import "./globals.css"; // Global styles
 import { ThemeProvider } from "./components/ThemeProvider";
 import StructuredData from "./components/StructuredData";
-import { ConvexClientProvider } from "./components/ConvexClientProvider";
+import { WebVitalsReporter } from "./components/WebVitalsReporter";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -83,21 +82,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html lang="en" suppressHydrationWarning className={rootFontVariables}>
       <head>
         <StructuredData />
       </head>
       <body>
-        <ClerkProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ConvexClientProvider>{children}</ConvexClientProvider>
-          </ThemeProvider>
-        </ClerkProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <WebVitalsReporter />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { Bold, Italic, Underline, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,6 +14,7 @@ export const RichTextEditor = ({
   placeholder,
 }: RichTextEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) {
@@ -21,22 +22,25 @@ export const RichTextEditor = ({
     }
   }, [value]);
 
-  // Debounced change handler
-  const debouncedOnChange = useMemo(() => {
-    let timeoutId: NodeJS.Timeout;
-    return (val: string) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        onChange(val);
-      }, 500); // 500ms debounce
-    };
-  }, [onChange]);
-
   const handleInput = useCallback(
     (e: React.FormEvent<HTMLDivElement>) => {
-      debouncedOnChange(e.currentTarget.innerHTML);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        onChange(e.currentTarget.innerHTML);
+      }, 500);
     },
-    [debouncedOnChange],
+    [onChange],
+  );
+
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    },
+    [],
   );
 
   const execCommand = (command: string) => {

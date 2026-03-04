@@ -1,9 +1,10 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 
 interface HistoryState<T> {
   past: T[];
   present: T;
   future: T[];
+  version: number;
 }
 
 export function useHistory<T>(initialPresent: T, limit = 50) {
@@ -11,9 +12,8 @@ export function useHistory<T>(initialPresent: T, limit = 50) {
     past: [],
     present: initialPresent,
     future: [],
+    version: 0,
   });
-  // Track a version number to cheaply detect changes without JSON.stringify
-  const versionRef = useRef(0);
 
   const canUndo = state.past.length > 0;
   const canRedo = state.future.length > 0;
@@ -24,12 +24,12 @@ export function useHistory<T>(initialPresent: T, limit = 50) {
 
       const previous = curr.past[curr.past.length - 1];
       const newPast = curr.past.slice(0, curr.past.length - 1);
-      versionRef.current++;
 
       return {
         past: newPast,
         present: previous,
         future: [curr.present, ...curr.future],
+        version: curr.version + 1,
       };
     });
   }, []);
@@ -40,12 +40,12 @@ export function useHistory<T>(initialPresent: T, limit = 50) {
 
       const next = curr.future[0];
       const newFuture = curr.future.slice(1);
-      versionRef.current++;
 
       return {
         past: [...curr.past, curr.present],
         present: next,
         future: newFuture,
+        version: curr.version + 1,
       };
     });
   }, []);
@@ -63,12 +63,12 @@ export function useHistory<T>(initialPresent: T, limit = 50) {
           return curr;
         }
 
-        versionRef.current++;
         const newPast = [...curr.past, curr.present].slice(-limit);
         return {
           past: newPast,
           present: newPresent,
           future: [],
+          version: curr.version + 1,
         };
       });
     },
@@ -76,11 +76,11 @@ export function useHistory<T>(initialPresent: T, limit = 50) {
   );
 
   const reset = useCallback((newPresent: T) => {
-    versionRef.current = 0;
     setState({
       past: [],
       present: newPresent,
       future: [],
+      version: 0,
     });
   }, []);
 
@@ -92,6 +92,6 @@ export function useHistory<T>(initialPresent: T, limit = 50) {
     canUndo,
     canRedo,
     reset,
-    version: versionRef.current,
+    version: state.version,
   };
 }

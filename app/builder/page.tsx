@@ -9,6 +9,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -33,7 +34,6 @@ import {
 } from "lucide-react";
 import { useHistory } from "../hooks/useHistory";
 import { LeftSidebar } from "../components/LeftSidebar";
-import { RightSidebar } from "../components/RightSidebar";
 import { Preview } from "../components/Preview";
 import { SaveDialog } from "../components/SaveDialog";
 import { ThemeToggle } from "../components/ThemeToggle";
@@ -41,9 +41,9 @@ import {
   ImportResume,
   ImportResumeHandle,
 } from "../components/ImportResume";
-import { ResumeExtractionSettingsPanel } from "../components/ResumeExtractionSettingsPanel";
 import { ResumeData, TemplateType } from "../types";
 import { getResumeExtractionSettings } from "../utils/resume-extraction-settings";
+import { AppProviders } from "@/app/components/AppProviders";
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -210,6 +210,30 @@ import { motion, AnimatePresence } from "motion/react";
 import { Resizer } from "../components/Resizer";
 import { cn } from "@/lib/utils";
 
+const RightSidebar = dynamic(
+  () =>
+    import("../components/RightSidebar").then((module) => ({
+      default: module.RightSidebar,
+    })),
+  {
+    loading: () => (
+      <div className="w-full h-full bg-white dark:bg-card animate-pulse" />
+    ),
+  },
+);
+
+const ResumeExtractionSettingsPanel = dynamic(
+  () =>
+    import("../components/ResumeExtractionSettingsPanel").then((module) => ({
+      default: module.ResumeExtractionSettingsPanel,
+    })),
+  {
+    loading: () => (
+      <div className="w-full h-40 bg-black/5 dark:bg-white/5 animate-pulse" />
+    ),
+  },
+);
+
 function BuilderLoadingScreen() {
   return (
     <div className="flex h-screen w-full bg-white dark:bg-[#050505] justify-center items-center text-black dark:text-white transition-colors">
@@ -233,7 +257,7 @@ function BuilderLoadingScreen() {
 
 export default function Home() {
   return (
-    <>
+    <AppProviders>
       <AuthLoading>
         <BuilderLoadingScreen />
       </AuthLoading>
@@ -245,7 +269,7 @@ export default function Home() {
       <Unauthenticated>
         <RedirectToSignIn redirectUrl="/builder" />
       </Unauthenticated>
-    </>
+    </AppProviders>
   );
 }
 
@@ -444,7 +468,7 @@ function BuilderContent() {
       // Subsequent save — just save
       performSave(resumeTitle || getDefaultTitle());
     }
-  }, [resumeId, resumeTitle, resumeData, template, performSave]);
+  }, [resumeId, resumeTitle, performSave]);
 
   const handleSaveDialogSave = (title: string) => {
     setShowSaveDialog(false);

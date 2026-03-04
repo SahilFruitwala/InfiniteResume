@@ -598,3 +598,5 @@ export const LeftSidebar = React.memo(
     );
   },
 );
+
+LeftSidebar.displayName = "LeftSidebar";

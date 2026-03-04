@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, lazy, Suspense } from "react";
 import { useTheme } from "next-themes";
 import { ResumeData, TemplateType } from "../types";
-import { allFontVariables } from "@/lib/fonts";
 
 // Lazy-load templates — only the selected template is downloaded
 const MinimalTemplate = lazy(() =>
@@ -56,14 +55,13 @@ export const Preview = React.memo(
     rightSidebarOpen,
     onToggleLeftSidebar,
     onToggleRightSidebar,
-    onPrint,
     onHeightChange,
   }: PreviewProps) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [contentHeight, setContentHeight] = useState(0);
     const [scale, setScale] = useState(1);
-    const { theme, resolvedTheme } = useTheme();
+    const { resolvedTheme } = useTheme();
 
     // Use resolvedTheme to handle 'system' preference correctly
     const isDark = resolvedTheme === "dark";
@@ -204,7 +202,7 @@ export const Preview = React.memo(
         {/* Preview Area */}
         <div
           ref={containerRef}
-          className={`flex-1 overflow-y-auto overflow-x-hidden p-8 pb-32 resume-preview-scroll print:p-0 print:overflow-visible print:block bg-slate-50 dark:bg-[#050505] ${allFontVariables}`}
+          className="flex-1 overflow-y-auto overflow-x-hidden p-8 pb-32 resume-preview-scroll print:p-0 print:overflow-visible print:block bg-slate-50 dark:bg-[#050505]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {/* Wrapper: sized to match the scaled resume, centered with mx-auto */}
@@ -263,3 +261,5 @@ export const Preview = React.memo(
     );
   },
 );
+
+Preview.displayName = "Preview";
