@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { Suspense, useMemo } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, FileText } from "lucide-react";
-import { ThemeToggle } from "@/app/components/ThemeToggle";
-import { ResumeExtractionSettingsPanel } from "@/app/components/ResumeExtractionSettingsPanel";
-import { getResumeExtractionSettings } from "@/app/utils/resume-extraction-settings";
+import { ThemeToggle } from "@app/components/ThemeToggle";
+import { ResumeExtractionSettingsPanel } from "@app/components/ResumeExtractionSettingsPanel";
+import { getResumeExtractionSettings } from "@app/utils/resume-extraction-settings";
 
-export default function GlobalSettingsPage() {
+function GlobalSettingsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo");
@@ -65,5 +65,13 @@ export default function GlobalSettingsPage() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function GlobalSettingsPage() {
+  return (
+    <Suspense fallback={null}>
+      <GlobalSettingsPageContent />
+    </Suspense>
   );
 }

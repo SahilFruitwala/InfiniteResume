@@ -2,8 +2,8 @@
 
 import { generateText, Output } from "ai";
 import { google } from "@ai-sdk/google";
-import { resumeSchema } from "@/app/lib/schemas";
-import { sanitizeRichText } from "@/app/utils/security";
+import { resumeSchema } from "@app/lib/schemas";
+import { sanitizeRichText } from "@app/utils/security";
 
 function sanitizeParsedResumePayload(payload: any): any {
   if (!payload || typeof payload !== "object") {

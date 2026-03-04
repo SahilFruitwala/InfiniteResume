@@ -2,7 +2,7 @@ import React from "react";
 import {
   formatExternalUrlForDisplay,
   sanitizeExternalUrl,
-} from "@/app/utils/security";
+} from "@app/utils/security";
 
 interface SafeExternalLinkProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {

@@ -227,6 +227,9 @@ a {
   --font-system:
     "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  --font-inter: var(--font-system);
+  --font-lora: "Lora", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  --font-poppins: var(--font-system);
   --font-roboto: var(--font-inter);
   --font-open-sans: var(--font-inter);
   --font-merriweather: var(--font-lora);

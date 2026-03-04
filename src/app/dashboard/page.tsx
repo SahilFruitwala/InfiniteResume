@@ -26,8 +26,8 @@ import {
   Loader2,
   Settings,
 } from "lucide-react";
-import { ThemeToggle } from "@/app/components/ThemeToggle";
-import { AppProviders } from "@/app/components/AppProviders";
+import { ThemeToggle } from "@app/components/ThemeToggle";
+import { AppProviders } from "@app/components/AppProviders";
 
 function formatDate(timestamp: number) {
   return new Date(timestamp).toLocaleDateString("en-US", {

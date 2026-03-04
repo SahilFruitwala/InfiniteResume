@@ -43,7 +43,7 @@ import {
 } from "../components/ImportResume";
 import { ResumeData, TemplateType } from "../types";
 import { getResumeExtractionSettings } from "../utils/resume-extraction-settings";
-import { AppProviders } from "@/app/components/AppProviders";
+import { AppProviders } from "@app/components/AppProviders";
 
 const initialData: ResumeData = {
   personalInfo: {

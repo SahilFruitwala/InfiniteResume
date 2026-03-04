@@ -1,4 +1,4 @@
-import { resumeSchema } from "@/app/lib/schemas";
+import { resumeSchema } from "@app/lib/schemas";
 import { ResumeExtractionSettings } from "./resume-extraction-settings";
 import { sanitizeRichText } from "./security";
 

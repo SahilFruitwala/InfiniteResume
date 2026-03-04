@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import Image from "next/image";
 import { ResumeData } from "../../types";
 import { isColorTooDarkForDarkBg } from "../../utils/colorUtils";
-import { sanitizeRichText } from "@/app/utils/security";
+import { sanitizeRichText } from "@app/utils/security";
 import { SafeExternalLink } from "./SafeExternalLink";
 
 export const CreativeTemplate = memo(
