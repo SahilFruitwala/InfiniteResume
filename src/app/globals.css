@@ -380,6 +380,18 @@ a {
     border-color: #334155 !important; /* slate-700 */
   }
 
+  /* Override inline borderColor values that are invisible on dark backgrounds:
+     - #ffffff20 (MinimalTemplate accent — 12.5% white, too faint)
+     - #00000040 (ProfessionalTemplate sectionBorderColor — 25% black, invisible on dark bg)
+     CSS !important beats normal inline styles so this works */
+  [data-resume-theme="dark"] [style*="border-color: rgb(255, 255, 255)"],
+  [data-resume-theme="dark"] [style*="borderColor: #ffffff20"],
+  [data-resume-theme="dark"] [style*="border-color: rgba(0, 0, 0, 0.25)"],
+  [data-resume-theme="dark"] [style*="border-color: rgba(255, 255, 255, 0.125)"] {
+    border-color: #334155 !important; /* slate-700 — visible on dark backgrounds */
+  }
+
+
   [data-resume-theme="dark"] .bg-slate-700\/50 {
     background-color: rgba(51, 65, 85, 0.5) !important;
   }

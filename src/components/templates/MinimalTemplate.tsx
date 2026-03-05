@@ -27,7 +27,7 @@ export const MinimalTemplate = memo(
     // New simplified color logic
     let accentColor = defaultAccentColor;
     if (isDark) {
-      accentColor = "#ffffff20"; // subtle white border for dark backgrounds
+      accentColor = "#334155"; // slate-700 — visible border color for dark backgrounds
     }
 
     const renderSection = (sectionId: string) => {

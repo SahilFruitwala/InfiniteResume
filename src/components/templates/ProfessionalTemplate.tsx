@@ -31,7 +31,7 @@ export const ProfessionalTemplate = memo(
     if (isDark) {
       accentColor = "#e2e8f0"; // light gray for dark backgrounds
     }
-    const sectionBorderColor = "#00000040";
+    const sectionBorderColor = isDark ? "#334155" : "#00000040";
 
     const renderSection = (sectionId: string) => {
       switch (sectionId) {
