@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -97,15 +97,29 @@ export function ResumeExtractionSettingsPanel({
 
       {settings.provider === "google" && (
         <div className="mt-4">
-          <label className="mb-2 block text-[10px] font-mono uppercase tracking-[0.2em] text-black/60 dark:text-white/60">
-            Google API Key
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-black/60 dark:text-white/60">
+              Google API Key
+            </label>
+            <a
+              href="https://ai.google.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-accent hover:underline decoration-accent/30 underline-offset-2"
+            >
+              Get Key
+              <ExternalLink className="w-2.5 h-2.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </div>
           <div className="flex gap-2">
             <Input
               type={showGoogleKey ? "text" : "password"}
               value={settings.googleApiKey}
               onChange={(e) =>
-                setSettings((prev) => ({ ...prev, googleApiKey: e.target.value }))
+                setSettings((prev) => ({
+                  ...prev,
+                  googleApiKey: e.target.value,
+                }))
               }
               placeholder="AIza..."
               autoComplete="off"
@@ -130,9 +144,20 @@ export function ResumeExtractionSettingsPanel({
       {settings.provider === "openrouter" && (
         <div className="mt-4">
           <div>
-            <label className="mb-2 block text-[10px] font-mono uppercase tracking-[0.2em] text-black/60 dark:text-white/60">
-              OpenRouter API Key
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-black/60 dark:text-white/60">
+                OpenRouter API Key
+              </label>
+              <a
+                href="https://openrouter.ai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-accent hover:underline decoration-accent/30 underline-offset-2"
+              >
+                Get Key
+                <ExternalLink className="w-2.5 h-2.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            </div>
             <div className="flex gap-2">
               <Input
                 type={showOpenRouterKey ? "text" : "password"}
