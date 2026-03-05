@@ -1,6 +1,31 @@
 {
   "version": 1,
   "skills": {
+    "clerk": {
+      "source": "clerk/skills",
+      "sourceType": "github",
+      "computedHash": "c572ed569adffe980406a99754c5614a867126f12bb96c66fedf3e7478e10daf"
+    },
+    "clerk-backend-api": {
+      "source": "clerk/skills",
+      "sourceType": "github",
+      "computedHash": "4f51a8aac3bb33c5dd6ec06740e13db9c45ad40bb372c918155ea8076f80367b"
+    },
+    "clerk-custom-ui": {
+      "source": "clerk/skills",
+      "sourceType": "github",
+      "computedHash": "974f431c27988975ce6088e2561eac9bfc164a7e98ca4e739399c6fd47134529"
+    },
+    "clerk-nextjs-patterns": {
+      "source": "clerk/skills",
+      "sourceType": "github",
+      "computedHash": "0e53a074a76337ac7c46a51ea3544829b8ebdbb9c5962103df2d077ef40e8e65"
+    },
+    "clerk-webhooks": {
+      "source": "clerk/skills",
+      "sourceType": "github",
+      "computedHash": "6a13eea450dda0b57edc358970f53c55ad7a2eb237d31decbc38e312555ddac5"
+    },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
