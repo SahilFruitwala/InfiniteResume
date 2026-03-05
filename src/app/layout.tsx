@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { rootFontVariables } from "@/lib/fonts";
 import "./globals.css"; // Global styles
-import { ThemeProvider } from "./components/ThemeProvider";
-import StructuredData from "./components/StructuredData";
-import { WebVitalsReporter } from "./components/WebVitalsReporter";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import StructuredData from "@/components/StructuredData";
+import { WebVitalsReporter } from "@/components/WebVitalsReporter";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -82,21 +83,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={rootFontVariables}>
-      <head>
-        <StructuredData />
-      </head>
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <WebVitalsReporter />
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning className={rootFontVariables}>
+        <head>
+          <StructuredData />
+        </head>
+        <body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <WebVitalsReporter />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

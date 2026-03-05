@@ -4,8 +4,8 @@ import React, { Suspense, useMemo } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, FileText } from "lucide-react";
-import { ThemeToggle } from "@app/components/ThemeToggle";
-import { ResumeExtractionSettingsPanel } from "@app/components/ResumeExtractionSettingsPanel";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { ResumeExtractionSettingsPanel } from "@/components/ResumeExtractionSettingsPanel";
 import { getResumeExtractionSettings } from "@app/utils/resume-extraction-settings";
 
 function GlobalSettingsPageContent() {

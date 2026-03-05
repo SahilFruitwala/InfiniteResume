@@ -33,17 +33,14 @@ import {
   Redo2,
 } from "lucide-react";
 import { useHistory } from "../hooks/useHistory";
-import { LeftSidebar } from "../components/LeftSidebar";
-import { Preview } from "../components/Preview";
-import { SaveDialog } from "../components/SaveDialog";
-import { ThemeToggle } from "../components/ThemeToggle";
-import {
-  ImportResume,
-  ImportResumeHandle,
-} from "../components/ImportResume";
+import { LeftSidebar } from "@/components/LeftSidebar";
+import { Preview } from "@/components/Preview";
+import { SaveDialog } from "@/components/SaveDialog";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { ImportResume, ImportResumeHandle } from "@/components/ImportResume";
 import { ResumeData, TemplateType } from "../types";
 import { getResumeExtractionSettings } from "../utils/resume-extraction-settings";
-import { AppProviders } from "@app/components/AppProviders";
+import { AppProviders } from "@/components/AppProviders";
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -207,12 +204,12 @@ const initialData: ResumeData = {
 };
 
 import { motion, AnimatePresence } from "motion/react";
-import { Resizer } from "../components/Resizer";
+import { Resizer } from "@/components/Resizer";
 import { cn } from "@/lib/utils";
 
 const RightSidebar = dynamic(
   () =>
-    import("../components/RightSidebar").then((module) => ({
+    import("@/components/RightSidebar").then((module) => ({
       default: module.RightSidebar,
     })),
   {
@@ -224,7 +221,7 @@ const RightSidebar = dynamic(
 
 const ResumeExtractionSettingsPanel = dynamic(
   () =>
-    import("../components/ResumeExtractionSettingsPanel").then((module) => ({
+    import("@/components/ResumeExtractionSettingsPanel").then((module) => ({
       default: module.ResumeExtractionSettingsPanel,
     })),
   {
