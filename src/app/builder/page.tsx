@@ -338,6 +338,7 @@ function BuilderContent() {
   const [lastSavedTemplate, setLastSavedTemplate] =
     useState<TemplateType | null>(null);
   const [isOverOnePage, setIsOverOnePage] = useState(false);
+  const [forceLightMode, setForceLightMode] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [settingsPromptMessage, setSettingsPromptMessage] = useState<
     string | undefined
@@ -347,7 +348,15 @@ function BuilderContent() {
   const importResumeRef = useRef<ImportResumeHandle>(null);
 
   const handlePrint = useCallback(() => {
-    window.print();
+    // Force light mode so templates render with black text for PDF
+    setForceLightMode(true);
+    // Wait for React to re-render, then print
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.print();
+        setForceLightMode(false);
+      });
+    });
   }, []);
 
   const handleHeightChange = useCallback((height: number, isOver: boolean) => {
@@ -854,6 +863,7 @@ function BuilderContent() {
             onToggleRightSidebar={() => toggleSidebar("right")}
             onPrint={handlePrint}
             onHeightChange={handleHeightChange}
+            forceLightMode={forceLightMode}
           />
         </div>
 

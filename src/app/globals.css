@@ -38,10 +38,6 @@
     color: black !important;
   }
 
-  /* @page margin must be 0 — templates apply their own paddingTop/paddingBottom.
-     CSS custom properties set on DOM elements cannot be read inside @page rules;
-     they only work from :root. Setting non-zero @page margins AND template padding
-     would double-count space. */
   @page {
     margin: 0;
   }
@@ -51,16 +47,16 @@
   [data-resume-theme="dark"],
   [data-resume-theme="light"] {
     background-color: white !important;
-    color: #111827 !important;
+    color: #1a1a1a !important;
     border: none !important;
     box-shadow: none !important;
+    text-shadow: none !important;
     transform: none !important;
     width: 100% !important;
     min-height: auto !important;
   }
 
-  /* Remove min-height forcing on all template root divs during print
-     so the PDF page ends at the last line of content, not at PAGE_HEIGHT */
+  /* Remove min-height forcing on template root divs during print */
   [data-resume-theme] [data-print-wrapper],
   [data-resume-theme] > div {
     min-height: 0 !important;
@@ -74,7 +70,7 @@
     transform: none !important;
   }
 
-  /* Background resets */
+  /* Background resets for dark mode */
   [data-resume-theme="dark"] .bg-white,
   [data-resume-theme="dark"] .bg-slate-950,
   [data-resume-theme="dark"] .dark\:bg-slate-950,
@@ -93,45 +89,20 @@
     background-color: rgba(241, 245, 249, 0.5) !important;
   }
 
-  /* Text color resets — dark text for print */
-  [data-resume-theme="dark"] .text-slate-950,
-  [data-resume-theme="dark"] .text-slate-900,
-  [data-resume-theme="dark"] .text-slate-800,
-  [data-resume-theme="dark"] .text-slate-200,
-  [data-resume-theme="dark"] .text-slate-100,
-  [data-resume-theme="dark"] .text-gray-950,
-  [data-resume-theme="dark"] .text-gray-900,
-  [data-resume-theme="dark"] .text-gray-800,
-  [data-resume-theme="dark"] .text-black,
-  [data-resume-theme="dark"] .dark\:text-slate-100 {
-    color: #111827 !important;
+  /* ===== MASTER TEXT COLOR RESET =====
+     Force ALL text inside the resume preview to near-black for print.
+     Uses the broadest possible selector to beat any Tailwind utility class. */
+  [data-resume-theme] *,
+  [data-resume-theme] *::before,
+  [data-resume-theme] *::after {
+    color: #1a1a1a !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  [data-resume-theme="dark"] .text-slate-700,
-  [data-resume-theme="dark"] .text-slate-600,
-  [data-resume-theme="dark"] .text-gray-700,
-  [data-resume-theme="dark"] .text-gray-600 {
-    color: #4b5563 !important;
-  }
-
-  [data-resume-theme="dark"] .text-slate-500,
-  [data-resume-theme="dark"] .text-gray-500,
-  [data-resume-theme="dark"] .text-slate-400,
-  [data-resume-theme="dark"] .text-gray-400,
-  [data-resume-theme="dark"] .text-slate-300,
-  [data-resume-theme="dark"] .text-gray-300,
-  [data-resume-theme="dark"] .dark\:text-slate-400 {
-    color: #6b7280 !important;
-  }
-
-  [data-resume-theme="dark"] .text-blue-900,
-  [data-resume-theme="dark"] .text-blue-800,
-  [data-resume-theme="dark"] .text-blue-700,
-  [data-resume-theme="dark"] .text-blue-600 {
-    color: #1e40af !important;
-  }
-
-  /* Border resets */
+  /* Border resets for dark mode */
   [data-resume-theme="dark"] .border-slate-300,
   [data-resume-theme="dark"] .border-slate-200,
   [data-resume-theme="dark"] .border-slate-100,
@@ -141,34 +112,6 @@
   [data-resume-theme="dark"] .border-white,
   [data-resume-theme="dark"] .border-black {
     border-color: #e5e7eb !important;
-  }
-
-  /* Inline heading style overrides */
-  [data-resume-theme="dark"] h1[style*="color: rgb(15, 23, 42)"],
-  [data-resume-theme="dark"] h1[style*="color: #0f172a"],
-  [data-resume-theme="dark"] h2[style*="color: rgb(15, 23, 42)"],
-  [data-resume-theme="dark"] h2[style*="color: #0f172a"] {
-    color: #111827 !important;
-  }
-  [data-resume-theme="dark"] h1[style*="color: rgb(30, 58, 138)"],
-  [data-resume-theme="dark"] h1[style*="color: #1e3a8a"],
-  [data-resume-theme="dark"] h2[style*="color: rgb(30, 58, 138)"],
-  [data-resume-theme="dark"] h2[style*="color: #1e3a8a"] {
-    color: #1e40af !important;
-  }
-
-  /* Reset any inverted text (e.g. white text on accent backgrounds) */
-  [data-resume-theme="dark"] .text-white {
-    color: white !important;
-  }
-
-
-
-
-  /* Catch-all: reset all elements inside dark theme to inherit proper colors */
-  [data-resume-theme="dark"] * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
   }
 }
 

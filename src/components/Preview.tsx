@@ -45,6 +45,7 @@ interface PreviewProps {
   onToggleRightSidebar: () => void;
   onPrint?: () => void;
   onHeightChange?: (height: number, isOver: boolean) => void;
+  forceLightMode?: boolean;
 }
 
 export const Preview = React.memo(
@@ -56,6 +57,7 @@ export const Preview = React.memo(
     onToggleLeftSidebar,
     onToggleRightSidebar,
     onHeightChange,
+    forceLightMode,
   }: PreviewProps) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -63,8 +65,10 @@ export const Preview = React.memo(
     const [scale, setScale] = useState(1);
     const { resolvedTheme } = useTheme();
 
-    // Use resolvedTheme to handle 'system' preference correctly
-    const isDark = resolvedTheme === "dark";
+    // Use resolvedTheme to handle 'system' preference correctly.
+    // When forceLightMode is true (during print), force light mode
+    // so all text renders black.
+    const isDark = forceLightMode ? false : resolvedTheme === "dark";
 
     useEffect(() => {
       if (!contentRef.current) return;
