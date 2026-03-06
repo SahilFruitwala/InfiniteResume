@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AppProviders } from "@/components/AppProviders";
+import posthog from "posthog-js";
 
 function formatDate(timestamp: number) {
   return new Date(timestamp).toLocaleDateString("en-US", {
@@ -95,7 +96,13 @@ function DashboardContent() {
   };
 
   const handleDelete = async (id: string) => {
+    const resume = resumes?.find((r) => r._id === id);
     await removeResume({ id: id as Id<"resumes"> });
+    posthog.capture("resume_deleted", {
+      resume_id: id,
+      resume_title: resume?.title,
+      template: resume?.template,
+    });
     setDeletingId(null);
   };
 
@@ -103,7 +110,13 @@ function DashboardContent() {
     e.stopPropagation();
     setIsDuplicating(id);
     try {
+      const resume = resumes?.find((r) => r._id === id);
       await duplicateResume({ id: id as Id<"resumes"> });
+      posthog.capture("resume_duplicated", {
+        resume_id: id,
+        resume_title: resume?.title,
+        template: resume?.template,
+      });
     } finally {
       setIsDuplicating(null);
     }

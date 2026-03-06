@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Check } from "lucide-react";
+import posthog from "posthog-js";
 
 const plans = [
   {
@@ -96,6 +99,14 @@ export function Pricing() {
               <Link
                 href="/builder"
                 prefetch={false}
+                onClick={() =>
+                  posthog.capture("pricing_cta_clicked", {
+                    plan: plan.name,
+                    price: plan.price,
+                    cta_text: plan.cta,
+                    is_highlighted: plan.highlight,
+                  })
+                }
                 className={`block w-full py-4 font-bold uppercase tracking-wider transition-all duration-200 hover:scale-105 active:scale-95 ${plan.highlight ? "bg-accent text-black hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black" : "bg-black/10 dark:bg-white/10 text-black dark:text-white hover:bg-black/20 dark:hover:bg-white/20"}`}
               >
                 {plan.cta}

@@ -44,6 +44,7 @@ import {
   loadResumeExtractionSettings,
 } from "../utils/resume-extraction-settings";
 import { AppProviders } from "@/components/AppProviders";
+import posthog from "posthog-js";
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -312,9 +313,14 @@ function BuilderContent() {
 
   const setTemplate = useCallback(
     (newTemplate: TemplateType) => {
+      posthog.capture("template_changed", {
+        from_template: template,
+        to_template: newTemplate,
+        resume_id: resumeId,
+      });
       setHistoryState((prev) => ({ ...prev, template: newTemplate }));
     },
-    [setHistoryState],
+    [setHistoryState, template, resumeId],
   );
 
   const [showLeftSidebar, setShowLeftSidebar] = useState(true);
@@ -358,7 +364,23 @@ function BuilderContent() {
     }
   }, [user?.id]);
 
+  // Identify user in PostHog using Clerk user ID
+  useEffect(() => {
+    if (user?.id) {
+      posthog.identify(user.id, {
+        email: user.primaryEmailAddress?.emailAddress,
+        name: user.fullName,
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
   const handlePrint = useCallback(() => {
+    posthog.capture("resume_downloaded", {
+      template,
+      resume_id: resumeId,
+      resume_title: resumeTitle,
+    });
     // Force light mode so templates render with black text for PDF
     setForceLightMode(true);
     // Wait for React to re-render, then print
@@ -368,7 +390,7 @@ function BuilderContent() {
         setForceLightMode(false);
       });
     });
-  }, []);
+  }, [template, resumeId, resumeTitle]);
 
   const handleHeightChange = useCallback((height: number, isOver: boolean) => {
     setIsOverOnePage(isOver);
@@ -455,18 +477,25 @@ function BuilderContent() {
     async (title: string) => {
       setIsSaving(true);
       try {
+        const isFirstSave = !resumeId;
         const id = await saveResume({
           id: resumeId || undefined,
           title,
           template,
           content: resumeData,
         });
+        posthog.capture("resume_saved", {
+          resume_id: id,
+          resume_title: title,
+          template,
+          is_first_save: isFirstSave,
+        });
         setResumeTitle(title);
         lastSavedDataRef.current = resumeData;
         setLastSavedVersion(version);
         setLastSavedTemplate(template);
         setHasUnsavedChanges(false);
-        if (!resumeId) {
+        if (isFirstSave) {
           // Update URL with new ID without full navigation
           router.replace(`/builder?id=${id}`, { scroll: false });
         }

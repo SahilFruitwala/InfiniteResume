@@ -16,6 +16,7 @@ import {
   loadResumeExtractionSettings,
 } from "@app/utils/resume-extraction-settings";
 import { useUser } from "@clerk/nextjs";
+import posthog from "posthog-js";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -442,8 +443,14 @@ export function AnalysisTab({
         improvements: result.data.improvements,
         aiSummary: result.data.aiSummary,
       });
+      posthog.capture("ai_analysis_run", {
+        resume_id: resumeId,
+        overall_score: result.data.overallScore,
+        provider: settings.provider,
+      });
     } catch (err: any) {
       setError(err?.message || "Analysis failed");
+      posthog.captureException(err);
     } finally {
       setIsAnalyzing(false);
     }
@@ -495,10 +502,18 @@ export function AnalysisTab({
         matchedKeywords: result.data.matchedKeywords,
         aiSummary: result.data.aiSummary,
       });
+      posthog.capture("ai_jd_match_run", {
+        resume_id: resumeId,
+        overall_score: result.data.overallScore,
+        match_score: result.data.matchScore,
+        job_title: result.data.jobTitle,
+        provider: settings.provider,
+      });
 
       setJobDescription(""); // Clear JD after successful analysis
     } catch (err: any) {
       setError(err?.message || "Analysis failed");
+      posthog.captureException(err);
     } finally {
       setIsAnalyzingJd(false);
     }

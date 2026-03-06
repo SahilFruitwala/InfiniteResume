@@ -11,6 +11,7 @@ import {
 import { useUser } from "@clerk/nextjs";
 import { parseResumeInBrowser } from "@app/utils/client-resume-parser";
 import { Button } from "@/components/ui/button";
+import posthog from "posthog-js";
 
 interface ImportResumeProps {
   onDataImported: (data: Partial<ResumeData>) => void;
@@ -89,6 +90,11 @@ export const ImportResume = React.forwardRef<
       const result = await parseResumeInBrowser(uint8Array, settings);
 
       if (result.success && result.data) {
+        posthog.capture("resume_imported", {
+          provider: settings.provider,
+          file_name: file.name,
+          file_size_kb: Math.round(file.size / 1024),
+        });
         onDataImported(result.data as any);
       } else {
         const errorMessage = result.success
@@ -99,17 +105,25 @@ export const ImportResume = React.forwardRef<
     } catch (err: any) {
       console.error(err);
       const message = err?.message || "Something went wrong during import";
+      let errorType = "parse_error";
       if (
         /invalid api key|api key not valid|unauthorized|permission/i.test(
           message,
         )
       ) {
+        errorType = "invalid_api_key";
         setError("Invalid API key. Update your key in Settings and try again.");
       } else if (/quota|rate limit|429/i.test(message)) {
+        errorType = "quota_exceeded";
         setError("API quota exceeded or rate-limited. Try again later.");
       } else {
         setError(message);
       }
+      posthog.capture("resume_import_failed", {
+        error_type: errorType,
+        provider: getResumeExtractionSettings().provider,
+      });
+      posthog.captureException(err);
     } finally {
       setIsUploading(false);
       // Reset input
