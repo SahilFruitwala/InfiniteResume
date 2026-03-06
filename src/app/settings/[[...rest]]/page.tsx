@@ -3,7 +3,8 @@
 import React, { Suspense, useMemo } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, FileText, User, Settings } from "lucide-react";
+import { ArrowLeft, User, Settings } from "lucide-react";
+import Image from "next/image";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ResumeExtractionSettingsPanel } from "@/components/ResumeExtractionSettingsPanel";
 import { getResumeExtractionSettings } from "@app/utils/resume-extraction-settings";
@@ -24,8 +25,14 @@ function GlobalSettingsPageContent() {
       <header className="border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
-              <FileText className="w-6 h-6" strokeWidth={2.5} />
+            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+              <Image
+                src="/icon.png"
+                alt="InfiniteResume Logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="font-display font-bold text-2xl tracking-tight">
               InfiniteResume

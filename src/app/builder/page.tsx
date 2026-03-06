@@ -11,6 +11,7 @@ import React, {
 } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Image from "next/image";
 import { RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
@@ -23,7 +24,6 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import {
-  FileText,
   Save,
   Loader2,
   Pencil,
@@ -610,8 +610,14 @@ function BuilderContent() {
             className="flex items-center gap-1.5 group"
             title="Back to Dashboard"
           >
-            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
-              <FileText className="w-4 h-4" strokeWidth={2.5} />
+            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+              <Image
+                src="/icon.png"
+                alt="InfiniteResume Logo"
+                width={32}
+                height={32}
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="font-display font-bold text-lg tracking-tight text-black dark:text-white">
               Infinite<span className="text-accent">Resume</span>

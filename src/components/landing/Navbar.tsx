@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { FileText, Menu, X } from "lucide-react";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 import { smoothScrollToId } from "./smooth-scroll";
 
@@ -88,8 +89,14 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-2 group z-50 relative"
           >
-            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
-              <FileText className="w-6 h-6" strokeWidth={2.5} />
+            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+              <Image
+                src="/icon.png"
+                alt="InfiniteResume Logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="font-display font-bold text-2xl tracking-tight">
               InfiniteResume

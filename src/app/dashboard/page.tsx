@@ -14,8 +14,8 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { motion, AnimatePresence } from "motion/react";
+import Image from "next/image";
 import {
-  FileText,
   Plus,
   Trash2,
   Pencil,
@@ -120,8 +120,14 @@ function DashboardContent() {
       <header className="border-b border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
-              <FileText className="w-6 h-6" strokeWidth={2.5} />
+            <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+              <Image
+                src="/icon.png"
+                alt="InfiniteResume Logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="font-display font-bold text-2xl tracking-tight">
               InfiniteResume
@@ -187,8 +193,14 @@ function DashboardContent() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center justify-center py-32 text-center"
           >
-            <div className="w-24 h-24 bg-black/5 dark:bg-white/5 border-2 border-dashed border-black/20 dark:border-white/20 flex items-center justify-center mb-6">
-              <FileText className="w-12 h-12 text-black/20 dark:text-white/20" />
+            <div className="w-24 h-24 bg-black/5 dark:bg-white/5 border-2 border-dashed border-black/20 dark:border-white/20 flex items-center justify-center overflow-hidden mb-6">
+              <Image
+                src="/icon.png"
+                alt="InfiniteResume Logo"
+                width={64}
+                height={64}
+                className="opacity-20 grayscale brightness-0 dark:invert"
+              />
             </div>
             <h2 className="font-display text-2xl font-bold uppercase tracking-tight mb-2">
               No Resumes Yet

@@ -1,6 +1,6 @@
 import { BackgroundGrid } from "@/components/landing/BackgroundGrid";
 import Link from "next/link";
-import { FileText } from "lucide-react";
+import Image from "next/image";
 
 export default function AuthLayout({
   children,
@@ -16,8 +16,14 @@ export default function AuthLayout({
 
       <div className="absolute top-10 left-10">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center text-black transition-transform group-hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(22,163,74,0.3)]">
-            <FileText className="w-6 h-6" strokeWidth={2.5} />
+          <div className="w-10 h-10 bg-accent rounded-sm flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(22,163,74,0.3)]">
+            <Image
+              src="/icon.png"
+              alt="InfiniteResume Logo"
+              width={40}
+              height={40}
+              className="w-full h-full object-cover"
+            />
           </div>
           <span className="font-display font-bold text-2xl tracking-tight hidden sm:block">
             InfiniteResume

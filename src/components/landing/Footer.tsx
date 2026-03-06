@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -7,8 +7,14 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
         <div className="col-span-2">
           <Link href="/" className="flex items-center gap-2 mb-6 group">
-            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-black transition-transform">
-              <FileText className="w-5 h-5" strokeWidth={2.5} />
+            <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+              <Image
+                src="/icon.png"
+                alt="InfiniteResume Logo"
+                width={32}
+                height={32}
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="font-display font-bold text-xl tracking-tight text-black dark:text-white">
               InfiniteResume
