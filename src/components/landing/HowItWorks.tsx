@@ -10,19 +10,19 @@ const steps = [
     number: "01",
     title: "Upload & Target",
     description:
-      "Drop in your current resume and the exact job description you want to apply for. We instantly parse both.",
+      "Drop your current resume and the exact job description you're applying for into our client-side, privacy-first interface.",
   },
   {
     number: "02",
     title: "Analyze & Score",
     description:
-      "Our engine runs your resume against the same algorithms used by Fortune 500 ATS systems, giving you a match score.",
+      "Our AI engine safely evaluates your resume against the job description, calculating a match score based on relevant skills and experience.",
   },
   {
     number: "03",
-    title: "Optimize & Export",
+    title: "Review & Improve",
     description:
-      "Follow our line-by-line recommendations to inject missing keywords, fix formatting, and download a machine-readable PDF.",
+      "Get actionable, line-by-line recommendations to inject missing keywords. Your analysis history is saved to your account so you can track your progress.",
   },
 ];
 

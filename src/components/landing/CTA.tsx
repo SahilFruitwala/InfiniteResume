@@ -34,12 +34,12 @@ export function CTA() {
             Working.
           </h2>
 
-          <p className="text-xl md:text-2xl font-medium max-w-2xl mx-auto mb-12 opacity-80">
+          <p className="text-xl md:text-2xl font-medium max-w-2xl mx-auto opacity-80">
             Join 10,000+ job seekers who beat the ATS and landed their dream
             roles at top tech companies.
           </p>
 
-          <form
+          {/* <form
             onSubmit={handleSubmit}
             className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto justify-center"
           >
@@ -70,8 +70,8 @@ export function CTA() {
                 </>
               )}
             </button>
-          </form>
-          {status === "success" && (
+          </form> */}
+          {/* {status === "success" && (
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ export function CTA() {
             >
               You&apos;re on the list! We&apos;ll be in touch soon.
             </motion.p>
-          )}
+          )} */}
         </motion.div>
       </div>
 
@@ -92,16 +92,16 @@ export function CTA() {
         >
           <span className="mx-4">ATS OPTIMIZED</span> •
           <span className="mx-4">KEYWORD MATCHING</span> •
-          <span className="mx-4">FORMAT VALIDATION</span> •
-          <span className="mx-4">INSTANT SCORING</span> •
+          <span className="mx-4">LOCAL PRIVACY</span> •
+          <span className="mx-4">AI ANALYSIS</span> •
           <span className="mx-4">ATS OPTIMIZED</span> •
           <span className="mx-4">KEYWORD MATCHING</span> •
-          <span className="mx-4">FORMAT VALIDATION</span> •
-          <span className="mx-4">INSTANT SCORING</span> •
+          <span className="mx-4">LOCAL PRIVACY</span> •
+          <span className="mx-4">AI ANALYSIS</span> •
           <span className="mx-4">ATS OPTIMIZED</span> •
           <span className="mx-4">KEYWORD MATCHING</span> •
-          <span className="mx-4">FORMAT VALIDATION</span> •
-          <span className="mx-4">INSTANT SCORING</span> •
+          <span className="mx-4">LOCAL PRIVACY</span> •
+          <span className="mx-4">AI ANALYSIS</span> •
         </motion.div>
       </div>
     </section>

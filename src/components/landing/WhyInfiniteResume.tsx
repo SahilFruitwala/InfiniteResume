@@ -7,21 +7,21 @@ import { Database, Cpu, ShieldAlert } from "lucide-react";
 const reasons = [
   {
     icon: <Database className="w-8 h-8" />,
-    title: "Data-Driven, Not Guesswork",
+    title: "Data-Driven Insights",
     description:
-      "We don't rely on generic career advice. Our engine is trained on millions of data points from successful hires at FAANG and Fortune 500 companies.",
+      "We don't rely on generic career advice. Our AI engine evaluates your resume against the specific job description to provide tailored, actionable feedback.",
   },
   {
     icon: <Cpu className="w-8 h-8" />,
-    title: "Advanced NLP Parsing",
+    title: "Advanced AI Parsing",
     description:
-      "Generic builders just format text. We use advanced Natural Language Processing to understand context, ensuring your skills map perfectly to the job description.",
+      "Generic builders just format text. We use advanced LLMs to understand the context of your experience, ensuring your skills map perfectly to the role.",
   },
   {
     icon: <ShieldAlert className="w-8 h-8" />,
-    title: "Beat the Rejection Filter",
+    title: "Zero-Trust Privacy",
     description:
-      "Most resumes die in the 'auto-reject' pile because of poor formatting or missing exact-match keywords. We simulate the exact filters used by Workday and Greenhouse.",
+      "Bring your own OpenAI API key. We encrypt and store it locally on your device using AES-GCM. Your data never touches our servers.",
   },
 ];
 

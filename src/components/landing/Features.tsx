@@ -2,36 +2,36 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Target, FileSearch, Layers, Zap } from "lucide-react";
+import { Target, FileSearch, Shield, History } from "lucide-react";
 
 const features = [
   {
     id: "01",
-    title: "ATS Scoring Engine",
+    title: "AI Résumé Analysis",
     description:
-      "Upload your resume and a job description. Our AI instantly scores your match percentage based on the exact algorithms used by Workday, Greenhouse, and Lever.",
+      "Upload your resume and a target job description. Our AI evaluates your profile and provides a comprehensive match score, identifying missing skills and experience gaps.",
     icon: <Target className="w-8 h-8" />,
   },
   {
     id: "02",
-    title: "Keyword Optimization",
+    title: "Actionable Insights",
     description:
-      "Stop guessing which words matter. We extract the hard skills, soft skills, and action verbs the ATS is looking for and tell you exactly where to put them.",
+      "Stop guessing what recruiters want. Get concrete, line-by-line recommendations on which keywords to add and how to frame your experience.",
     icon: <FileSearch className="w-8 h-8" />,
   },
   {
     id: "03",
-    title: "Format Validation",
+    title: "Client-Side Privacy",
     description:
-      "Complex layouts confuse robots. We scan your PDF or Docx for parsing errors, ensuring every word is readable by the machines that screen you.",
-    icon: <Layers className="w-8 h-8" />,
+      "Your API keys and data are perfectly safe. We use enterprise-grade AES-GCM encryption to store your credentials securely in your own browser.",
+    icon: <Shield className="w-8 h-8" />,
   },
   {
     id: "04",
-    title: "Smart Builder",
+    title: "Analysis History",
     description:
-      "Start from scratch with our ATS-native templates. Built to be 100% machine-readable while remaining visually striking for human recruiters.",
-    icon: <Zap className="w-8 h-8" />,
+      "Every resume review is automatically saved to your account. Track your application progress, compare different versions, and revisit past feedback instantly.",
+    icon: <History className="w-8 h-8" />,
   },
 ];
 

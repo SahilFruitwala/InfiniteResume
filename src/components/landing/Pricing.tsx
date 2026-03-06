@@ -6,31 +6,18 @@ import posthog from "posthog-js";
 
 const plans = [
   {
-    name: "Free",
+    name: "Early Access",
     price: "$0",
-    description: "Basic ATS analysis for one resume.",
+    period: "forever",
+    description: "100% free while we're in early access beta.",
     features: [
-      "1 Resume Scan per month",
-      "Basic Keyword Matching",
-      "Format Validation",
-      "Standard Templates",
-    ],
-    cta: "Start Free",
-    highlight: false,
-  },
-  {
-    name: "Pro",
-    price: "$19",
-    period: "/mo",
-    description: "Unlimited scans and advanced optimization.",
-    features: [
+      "Bring Your Own OpenAI Key",
       "Unlimited Resume Scans",
-      "Advanced Keyword Extraction",
+      "Client-Side 100% Privacy",
+      "Saved Analysis History",
       "Line-by-line Recommendations",
-      "Premium ATS-Native Templates",
-      "Cover Letter Generator",
     ],
-    cta: "Get Pro",
+    cta: "Start Building Now",
     highlight: true,
   },
 ];
@@ -49,11 +36,11 @@ export function Pricing() {
           </h2>
           <p className="text-xl text-black/60 dark:text-white/60 font-light max-w-2xl mx-auto mb-20">
             Stop sending your resume into the void. Get the tools you need to
-            beat the bots and land the interview.
+            beat the bots and land the interview. Currently 100% free.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-1 gap-8 max-w-2xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.name}
