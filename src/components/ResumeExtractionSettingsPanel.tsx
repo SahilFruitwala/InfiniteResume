@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Eye, EyeOff, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,10 +15,12 @@ import {
   ResumeExtractionSettings,
   clearResumeExtractionSettings,
   setResumeExtractionSettings,
+  loadResumeExtractionSettings,
 } from "@app/utils/resume-extraction-settings";
 
 interface ResumeExtractionSettingsPanelProps {
   initialSettings: ResumeExtractionSettings;
+  userId?: string | null;
   description?: string;
   onClose?: () => void;
   onSaveSuccess?: () => void;
@@ -27,6 +29,7 @@ interface ResumeExtractionSettingsPanelProps {
 
 export function ResumeExtractionSettingsPanel({
   initialSettings,
+  userId,
   description,
   onClose,
   onSaveSuccess,
@@ -38,16 +41,31 @@ export function ResumeExtractionSettingsPanel({
   const [showOpenRouterKey, setShowOpenRouterKey] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  // Hydrate from encrypted localStorage when the panel mounts
+  useEffect(() => {
+    if (!userId) return;
+    let cancelled = false;
+    loadResumeExtractionSettings(userId).then((loaded) => {
+      if (!cancelled) setSettings(loaded);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
+
   const providerLabel = useMemo(
     () => (settings.provider === "google" ? "Google Gemini" : "OpenRouter"),
     [settings.provider],
   );
 
-  const handleSave = () => {
-    const saved = setResumeExtractionSettings(settings);
+  const handleSave = async () => {
+    const saved = await setResumeExtractionSettings(
+      settings,
+      userId ?? undefined,
+    );
     setMessage(
       saved
-        ? "Settings saved for this tab session."
+        ? "Settings saved and encrypted in your browser."
         : "Unable to save settings in this browser.",
     );
     if (saved) {
@@ -191,8 +209,8 @@ export function ResumeExtractionSettingsPanel({
 
       <div className="mt-4 space-y-1 text-[10px] font-mono uppercase tracking-wider text-black/60 dark:text-white/60">
         <p>Selected provider: {providerLabel}.</p>
-        <p>API keys are kept in memory for this tab only.</p>
-        <p>Keys are never persisted and never saved to our servers.</p>
+        <p>API keys are encrypted and saved in your browser.</p>
+        <p>Keys are never sent to our servers.</p>
       </div>
 
       {message && (

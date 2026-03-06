@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { RedirectToSignIn } from "@clerk/nextjs";
+import { RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   Authenticated,
@@ -39,7 +39,10 @@ import { SaveDialog } from "@/components/SaveDialog";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ImportResume, ImportResumeHandle } from "@/components/ImportResume";
 import { ResumeData, TemplateType } from "../types";
-import { getResumeExtractionSettings } from "../utils/resume-extraction-settings";
+import {
+  getResumeExtractionSettings,
+  loadResumeExtractionSettings,
+} from "../utils/resume-extraction-settings";
 import { AppProviders } from "@/components/AppProviders";
 
 const initialData: ResumeData = {
@@ -274,6 +277,7 @@ function BuilderContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const resumeId = searchParams.get("id") as Id<"resumes"> | null;
+  const { user } = useUser();
 
   const existingResume = useQuery(
     api.resumes.get,
@@ -346,6 +350,13 @@ function BuilderContent() {
   const [resumeImportPending, setResumeImportPending] = useState(false);
   const hasLoadedRef = useRef(false);
   const importResumeRef = useRef<ImportResumeHandle>(null);
+
+  // Hydrate encrypted API keys from localStorage on mount
+  useEffect(() => {
+    if (user?.id) {
+      loadResumeExtractionSettings(user.id);
+    }
+  }, [user?.id]);
 
   const handlePrint = useCallback(() => {
     // Force light mode so templates render with black text for PDF
@@ -802,6 +813,7 @@ function BuilderContent() {
             <div className="mt-4">
               <ResumeExtractionSettingsPanel
                 initialSettings={getResumeExtractionSettings()}
+                userId={user?.id}
                 description={
                   settingsPromptMessage ||
                   "Use your own API key for AI resume extraction."
@@ -889,6 +901,7 @@ function BuilderContent() {
                   onTemplateChange={setTemplate}
                   onResetDesign={handleResetDesign}
                   hasUnsavedDesignChanges={hasUnsavedDesignChanges}
+                  resumeId={resumeId}
                 />
               </div>
             </motion.div>

@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Loader2, FileUp, AlertCircle } from "lucide-react";
 import { ResumeData } from "@app/types";
 import { cn } from "@/lib/utils";
-import { getResumeExtractionSettings } from "@app/utils/resume-extraction-settings";
+import {
+  getResumeExtractionSettings,
+  loadResumeExtractionSettings,
+} from "@app/utils/resume-extraction-settings";
+import { useUser } from "@clerk/nextjs";
 import { parseResumeInBrowser } from "@app/utils/client-resume-parser";
 import { Button } from "@/components/ui/button";
 
@@ -18,10 +22,20 @@ export interface ImportResumeHandle {
   openFilePicker: () => void;
 }
 
-export const ImportResume = React.forwardRef<ImportResumeHandle, ImportResumeProps>(
-  ({ onDataImported, onRequireApiKey, className }, ref) => {
+export const ImportResume = React.forwardRef<
+  ImportResumeHandle,
+  ImportResumeProps
+>(({ onDataImported, onRequireApiKey, className }, ref) => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useUser();
+
+  // Hydrate encrypted API keys from localStorage
+  useEffect(() => {
+    if (user?.id) {
+      loadResumeExtractionSettings(user.id);
+    }
+  }, [user?.id]);
 
   const openPicker = () => {
     document.getElementById("resume-upload")?.click();
@@ -84,9 +98,12 @@ export const ImportResume = React.forwardRef<ImportResumeHandle, ImportResumePro
       }
     } catch (err: any) {
       console.error(err);
-      const message =
-        err?.message || "Something went wrong during import";
-      if (/invalid api key|api key not valid|unauthorized|permission/i.test(message)) {
+      const message = err?.message || "Something went wrong during import";
+      if (
+        /invalid api key|api key not valid|unauthorized|permission/i.test(
+          message,
+        )
+      ) {
         setError("Invalid API key. Update your key in Settings and try again.");
       } else if (/quota|rate limit|429/i.test(message)) {
         setError("API quota exceeded or rate-limited. Try again later.");

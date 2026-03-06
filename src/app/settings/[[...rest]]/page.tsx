@@ -7,7 +7,7 @@ import { ArrowLeft, FileText, User, Settings } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ResumeExtractionSettingsPanel } from "@/components/ResumeExtractionSettingsPanel";
 import { getResumeExtractionSettings } from "@app/utils/resume-extraction-settings";
-import { UserProfile } from "@clerk/nextjs";
+import { UserProfile, useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 
@@ -15,6 +15,7 @@ function GlobalSettingsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { theme } = useTheme();
+  const { user } = useUser();
   const returnTo = searchParams.get("returnTo");
   const initialSettings = useMemo(() => getResumeExtractionSettings(), []);
 
@@ -153,7 +154,8 @@ function GlobalSettingsPageContent() {
             </h3>
             <ResumeExtractionSettingsPanel
               initialSettings={initialSettings}
-              description="Use your own API key for AI resume extraction. These keys are only stored in your browser's session."
+              userId={user?.id}
+              description="Use your own API key for AI resume extraction. Keys are encrypted and saved in your browser."
               showClearButton={true}
             />
           </section>

@@ -170,6 +170,7 @@ export default defineSchema({
       ),
     }),
     isPublic: v.optional(v.boolean()),
+    contentHash: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   }).index("by_user", ["userId"]),
@@ -182,5 +183,33 @@ export default defineSchema({
     exportedAt: v.number(),
   })
     .index("by_resume", ["resumeId"])
+    .index("by_user", ["userId"]),
+
+  resumeAnalyses: defineTable({
+    resumeId: v.id("resumes"),
+    userId: v.id("users"),
+    type: v.string(), // "standalone" | "jd_match"
+    jobTitle: v.optional(v.string()),
+    jobCompany: v.optional(v.string()),
+    jobDescription: v.optional(v.string()),
+    resumeContentHash: v.string(),
+    isStale: v.boolean(),
+    overallScore: v.number(),
+    scoreBreakdown: v.object({
+      content: v.number(),
+      format: v.number(),
+      impact: v.number(),
+      keywords: v.number(),
+    }),
+    matchScore: v.optional(v.number()),
+    strengths: v.array(v.string()),
+    improvements: v.array(v.string()),
+    missingKeywords: v.optional(v.array(v.string())),
+    matchedKeywords: v.optional(v.array(v.string())),
+    aiSummary: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_resume", ["resumeId"])
+    .index("by_resume_type", ["resumeId", "type"])
     .index("by_user", ["userId"]),
 });
