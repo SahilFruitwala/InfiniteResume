@@ -52,7 +52,6 @@
     box-shadow: none !important;
     text-shadow: none !important;
     transform: none !important;
-    width: 100% !important;
     min-height: auto !important;
   }
 
@@ -60,6 +59,11 @@
   [data-resume-theme] [data-print-wrapper],
   [data-resume-theme] > div {
     min-height: 0 !important;
+  }
+
+  [data-resume-theme] [data-print-wrapper] > section:last-of-type,
+  [data-resume-theme] > div > section:last-of-type {
+    margin-bottom: 0 !important;
   }
 
   /* Reset scaling wrapper for print */

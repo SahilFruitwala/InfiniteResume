@@ -211,11 +211,10 @@ export const Preview = React.memo(
         >
           {/* Wrapper: sized to match the scaled resume, centered with mx-auto */}
           <div
-            className="resume-scale-wrapper mx-auto print:!w-auto print:!h-auto print:!transform-none"
+            className="resume-scale-wrapper mx-auto mb-8 print:mb-0 print:!w-auto print:!h-auto print:!transform-none"
             style={{
               width: `${PAGE_WIDTH * scale}px`,
               height: `${Math.max(contentHeight, PAGE_HEIGHT) * scale}px`,
-              marginBottom: "2rem",
             }}
           >
             <div
@@ -236,6 +235,13 @@ export const Preview = React.memo(
                 ref={contentRef}
                 className="w-full"
               >
+                <style>{`
+                  @media print {
+                    @page {
+                      size: ${pageSize === "A4" ? "A4" : "letter"} portrait;
+                    }
+                  }
+                `}</style>
                 {renderTemplate()}
               </div>
 
