@@ -26,11 +26,12 @@ export const RichTextEditor = ({
 
   const handleInput = useCallback(
     (e: React.FormEvent<HTMLDivElement>) => {
+      const htmlContent = e.currentTarget.innerHTML;
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
       timeoutRef.current = setTimeout(() => {
-        onChange(sanitizeRichText(e.currentTarget.innerHTML));
+        onChange(sanitizeRichText(htmlContent));
       }, 500);
     },
     [onChange],

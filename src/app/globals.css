@@ -39,7 +39,8 @@
   }
 
   @page {
-    margin: 0;
+    margin-top: 5mm;
+    margin-bottom: 5mm;
   }
 
   /* ===== Force light mode for all resume content during print ===== */
@@ -64,6 +65,17 @@
   [data-resume-theme] [data-print-wrapper] > section:last-of-type,
   [data-resume-theme] > div > section:last-of-type {
     margin-bottom: 0 !important;
+  }
+
+  /* Prevent awkward page breaks inside sections and items */
+  [data-resume-theme] section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  [data-resume-theme] section > div > div {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   /* Reset scaling wrapper for print */
