@@ -169,9 +169,10 @@ Rules:
                     text: prompt,
                   },
                   {
-                    type: "file",
-                    filename: "resume.pdf",
-                    file_data: `data:application/pdf;base64,${base64Pdf}`,
+                    type: "image_url",
+                    image_url: {
+                      url: `data:application/pdf;base64,${base64Pdf}`,
+                    },
                   },
                 ],
               },
