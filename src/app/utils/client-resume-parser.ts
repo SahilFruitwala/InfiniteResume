@@ -15,7 +15,7 @@ type ParseFailure = {
 type ParseResult = ParseSuccess | ParseFailure;
 
 const MODEL = "gemini-2.5-flash";
-const OPENROUTER_MODEL = "google/gemini-2.0-flash-001";
+const OPENROUTER_MODEL = "google/gemini-2.5-flash";
 
 function toBase64(bytes: Uint8Array): string {
   let binary = "";
@@ -32,7 +32,10 @@ function toBase64(bytes: Uint8Array): string {
 function extractJson(text: string): string {
   const trimmed = text.trim();
   if (trimmed.startsWith("```")) {
-    return trimmed.replace(/^```(?:json)?\s*/i, "").replace(/```$/, "").trim();
+    return trimmed
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/```$/, "")
+      .trim();
   }
   return trimmed;
 }
@@ -43,7 +46,9 @@ function sanitizeParsedResumePayload(payload: any): any {
   }
 
   if (payload.personalInfo && typeof payload.personalInfo === "object") {
-    payload.personalInfo.summary = sanitizeRichText(payload.personalInfo.summary);
+    payload.personalInfo.summary = sanitizeRichText(
+      payload.personalInfo.summary,
+    );
   }
 
   if (Array.isArray(payload.experience)) {
@@ -202,7 +207,9 @@ Rules:
       };
     }
 
-    const parsedJson = sanitizeParsedResumePayload(JSON.parse(extractJson(text)));
+    const parsedJson = sanitizeParsedResumePayload(
+      JSON.parse(extractJson(text)),
+    );
     const validated = resumeSchema.safeParse(parsedJson);
     if (!validated.success) {
       return {

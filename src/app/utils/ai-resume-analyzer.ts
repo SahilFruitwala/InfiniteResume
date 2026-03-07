@@ -31,7 +31,7 @@ type AnalysisFailure = {
 type AnalysisResponse = AnalysisSuccess | AnalysisFailure;
 
 const MODEL = "gemini-2.5-flash";
-const OPENROUTER_MODEL = "google/gemini-2.0-flash-001";
+const OPENROUTER_MODEL = "google/gemini-2.5-flash";
 
 function extractJson(text: string): string {
   const trimmed = text.trim();
