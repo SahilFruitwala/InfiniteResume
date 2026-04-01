@@ -29,107 +29,6 @@
   animation: landing-grid-pan 4s linear infinite;
 }
 
-@media print {
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    background-color: white !important;
-    color: black !important;
-  }
-
-  @page {
-    margin-top: 5mm;
-    margin-bottom: 5mm;
-  }
-
-  /* ===== Force light mode for all resume content during print ===== */
-
-  [data-resume-theme="dark"],
-  [data-resume-theme="light"] {
-    background-color: white !important;
-    color: #1a1a1a !important;
-    border: none !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    transform: none !important;
-    min-height: auto !important;
-  }
-
-  /* Remove min-height forcing on template root divs during print */
-  [data-resume-theme] [data-print-wrapper],
-  [data-resume-theme] > div {
-    min-height: 0 !important;
-  }
-
-  [data-resume-theme] [data-print-wrapper] > section:last-of-type,
-  [data-resume-theme] > div > section:last-of-type {
-    margin-bottom: 0 !important;
-  }
-
-  /* Prevent awkward page breaks inside sections and items */
-  [data-resume-theme] section {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  [data-resume-theme] section > div > div {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  /* Reset scaling wrapper for print */
-  .resume-scale-wrapper {
-    width: auto !important;
-    height: auto !important;
-    overflow: visible !important;
-    transform: none !important;
-  }
-
-  /* Background resets for dark mode */
-  [data-resume-theme="dark"] .bg-white,
-  [data-resume-theme="dark"] .bg-slate-950,
-  [data-resume-theme="dark"] .dark\:bg-slate-950,
-  [data-resume-theme="dark"] .bg-\[\#050505\] {
-    background-color: white !important;
-  }
-
-  [data-resume-theme="dark"] .bg-slate-100,
-  [data-resume-theme="dark"] .bg-slate-50,
-  [data-resume-theme="dark"] .bg-gray-100,
-  [data-resume-theme="dark"] .bg-gray-50 {
-    background-color: #f9fafb !important;
-  }
-
-  [data-resume-theme="dark"] .bg-slate-700\/50 {
-    background-color: rgba(241, 245, 249, 0.5) !important;
-  }
-
-  /* ===== MASTER TEXT COLOR RESET =====
-     Force ALL text inside the resume preview to near-black for print.
-     Uses the broadest possible selector to beat any Tailwind utility class. */
-  [data-resume-theme] *,
-  [data-resume-theme] *::before,
-  [data-resume-theme] *::after {
-    color: #1a1a1a !important;
-    text-shadow: none !important;
-    box-shadow: none !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  /* Border resets for dark mode */
-  [data-resume-theme="dark"] .border-slate-300,
-  [data-resume-theme="dark"] .border-slate-200,
-  [data-resume-theme="dark"] .border-slate-100,
-  [data-resume-theme="dark"] .border-gray-300,
-  [data-resume-theme="dark"] .border-gray-200,
-  [data-resume-theme="dark"] .border-gray-100,
-  [data-resume-theme="dark"] .border-white,
-  [data-resume-theme="dark"] .border-black {
-    border-color: #e5e7eb !important;
-  }
-}
-
 button,
 a {
   cursor: pointer;
@@ -176,14 +75,6 @@ a {
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 :root {
@@ -191,16 +82,9 @@ a {
     "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
   --font-inter: var(--font-system);
-  --font-lora:
-    "Lora", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino,
-    serif;
   --font-poppins: var(--font-system);
   --font-roboto: var(--font-inter);
   --font-open-sans: var(--font-inter);
-  --font-merriweather: var(--font-lora);
-  --font-playfair: var(--font-lora);
-  --font-montserrat: var(--font-poppins);
-  --font-raleway: var(--font-poppins);
   --font-lato: var(--font-inter);
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -226,14 +110,6 @@ a {
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -260,14 +136,6 @@ a {
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: #050505;
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: #16a34a;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: #111111;
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @layer base {
@@ -280,94 +148,5 @@ a {
   body {
     @apply bg-background text-foreground;
   }
-
-  /* Resume Dark Mode Styles */
-  [data-resume-theme="dark"] {
-    background-color: #111111 !important; /* Neutral dark gray, matching app theme better */
-    color: #f1f5f9 !important; /* slate-100 */
-  }
-
-
-
-  [data-resume-theme="dark"] .bg-white {
-    background-color: #111111 !important;
-  }
-
-  [data-resume-theme="dark"] .bg-slate-100,
-  [data-resume-theme="dark"] .bg-slate-50,
-  [data-resume-theme="dark"] .bg-gray-100,
-  [data-resume-theme="dark"] .bg-gray-50 {
-    background-color: #1a1a1a !important; /* Slightly lighter than #111111 */
-  }
-
-  [data-resume-theme="dark"] .text-slate-950,
-  [data-resume-theme="dark"] .text-slate-900,
-  [data-resume-theme="dark"] .text-slate-800,
-  [data-resume-theme="dark"] .text-slate-700,
-  [data-resume-theme="dark"] .text-slate-600,
-  [data-resume-theme="dark"] .text-slate-500,
-  [data-resume-theme="dark"] .text-gray-950,
-  [data-resume-theme="dark"] .text-gray-900,
-  [data-resume-theme="dark"] .text-gray-800,
-  [data-resume-theme="dark"] .text-gray-700,
-  [data-resume-theme="dark"] .text-gray-600,
-  [data-resume-theme="dark"] .text-gray-500,
-  [data-resume-theme="dark"] .text-blue-900,
-  [data-resume-theme="dark"] .text-blue-800,
-  [data-resume-theme="dark"] .text-blue-700,
-  [data-resume-theme="dark"] .text-blue-600,
-  [data-resume-theme="dark"] .text-black {
-    color: #f1f5f9 !important; /* slate-100 */
-  }
-
-  [data-resume-theme="dark"] .text-slate-400,
-  [data-resume-theme="dark"] .text-gray-400,
-  [data-resume-theme="dark"] .text-slate-300,
-  [data-resume-theme="dark"] .text-gray-300 {
-    color: #94a3b8 !important; /* slate-400 */
-  }
-
-  [data-resume-theme="dark"] .border-slate-300,
-  [data-resume-theme="dark"] .border-slate-200,
-  [data-resume-theme="dark"] .border-slate-100,
-  [data-resume-theme="dark"] .border-gray-300,
-  [data-resume-theme="dark"] .border-gray-200,
-  [data-resume-theme="dark"] .border-gray-100,
-  [data-resume-theme="dark"] .border-white,
-  [data-resume-theme="dark"] .border-black {
-    border-color: #334155 !important; /* slate-700 */
-  }
-
-  /* Override inline borderColor values that are invisible on dark backgrounds:
-     - #ffffff20 (MinimalTemplate accent — 12.5% white, too faint)
-     - #00000040 (ProfessionalTemplate sectionBorderColor — 25% black, invisible on dark bg)
-     CSS !important beats normal inline styles so this works */
-  [data-resume-theme="dark"] [style*="border-color: rgb(255, 255, 255)"],
-  [data-resume-theme="dark"] [style*="borderColor: #ffffff20"],
-  [data-resume-theme="dark"] [style*="border-color: rgba(0, 0, 0, 0.25)"],
-  [data-resume-theme="dark"] [style*="border-color: rgba(255, 255, 255, 0.125)"] {
-    border-color: #334155 !important; /* slate-700 — visible on dark backgrounds */
-  }
-
-
-  [data-resume-theme="dark"] .bg-slate-700\/50 {
-    background-color: rgba(51, 65, 85, 0.5) !important;
-  }
-
-  /* Overwrite inline styles for headings if they are using dark defaults in dark mode */
-  [data-resume-theme="dark"] h1[style*="color: rgb(15, 23, 42)"],
-  [data-resume-theme="dark"] h1[style*="color: #0f172a"],
-  [data-resume-theme="dark"] h1[style*="color: rgb(30, 58, 138)"],
-  [data-resume-theme="dark"] h1[style*="color: #1e3a8a"],
-  [data-resume-theme="dark"] h2[style*="color: rgb(15, 23, 42)"],
-  [data-resume-theme="dark"] h2[style*="color: #0f172a"],
-  [data-resume-theme="dark"] h2[style*="color: rgb(30, 58, 138)"],
-  [data-resume-theme="dark"] h2[style*="color: #1e3a8a"] {
-    color: #f1f5f9 !important; /* slate-100 */
-  }
 }
 
-button,
-a {
-  cursor: pointer;
-}

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { rootFontVariables } from "@/lib/fonts";
 import "./globals.css"; // Global styles
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -25,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${rootFontVariables} dark`}>
+    <html lang="en" suppressHydrationWarning className="dark">
       <head />
       <body>
         <ThemeProvider
